@@ -1,5 +1,10 @@
 package com.whzw.yz.pojo;
 
+import java.net.http.HttpRequest;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 /**
  * 教室
  * 

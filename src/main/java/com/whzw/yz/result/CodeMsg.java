@@ -15,7 +15,7 @@ public class CodeMsg {
 	public static final CodeMsg SERVER_ERROR = new CodeMsg(5001, "服务端异常");
 	//登录模块5002XX
 	public static final CodeMsg SESSION_ERROR = new CodeMsg(5002, "Session失效或不存在");
-	public static final CodeMsg MOBILE_NOT_EXIST = new CodeMsg(5003, "用户手机号不存在");
+	public static final CodeMsg STUDENT_NOT_EXIST = new CodeMsg(5003, "用户不存在");
 	public static final CodeMsg PASSWORD_ERROR = new CodeMsg(5004, "用户密码错误");
 	
 	//预约模块

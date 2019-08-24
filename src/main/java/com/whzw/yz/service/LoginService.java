@@ -1,0 +1,44 @@
+package com.whzw.yz.service;
+
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.whzw.yz.exception.GlobalException;
+import com.whzw.yz.mapper.LoginMapper;
+import com.whzw.yz.result.CodeMsg;
+import com.whzw.yz.util.UUIDUtil;
+import com.whzw.yz.vo.LoginVo;
+
+@Service
+public class LoginService {
+
+	@Autowired
+	private LoginMapper loginMapper;
+	
+	public boolean doLogin(LoginVo loginVo, HttpServletRequest req, HttpServletResponse resp) {
+		String id = loginVo.getStudentId();
+		String password = loginVo.getPassword();
+		LoginVo loginVoDb = loginMapper.getStudent(id);
+		
+		if(loginVoDb==null) {
+			throw new GlobalException(CodeMsg.STUDENT_NOT_EXIST);
+		}
+		
+		if(!password.equals(loginVoDb.getPassword())) {
+			throw new GlobalException(CodeMsg.PASSWORD_ERROR);
+		}
+		HttpSession session = req.getSession();
+		String uuid = UUIDUtil.uuid();
+		session.setAttribute("token", uuid);
+		resp.addCookie(new Cookie("token", uuid));
+		return true;
+	}
+
+	
+	
+}
