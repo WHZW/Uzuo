@@ -1,7 +1,11 @@
 package com.whzw.yz.pojo;
 
 import java.util.Date;
-
+/**
+ * 
+ * @author zzy
+ * @author WuBN
+ */
 public class OrderLog {
 
 	private String id;

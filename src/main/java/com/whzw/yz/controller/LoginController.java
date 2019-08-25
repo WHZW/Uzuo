@@ -15,6 +15,12 @@ import com.whzw.yz.result.Result;
 import com.whzw.yz.service.LoginService;
 import com.whzw.yz.vo.LoginVo;
 
+/**
+ * 学生用户登录控制器
+ * 
+ * @author zzy
+ * @author WuBN
+ */
 @Controller
 @RequestMapping("/login")
 public class LoginController {
@@ -30,8 +36,6 @@ public class LoginController {
 	@PostMapping("/do_login")
 	@ResponseBody
 	public Result<Boolean> login(@RequestBody LoginVo loginVo, HttpServletRequest req, HttpServletResponse resp) {
-		System.out.println(loginVo.toString());
-
 		boolean isSucceed = loginService.doLogin(loginVo, req, resp);
 		return Result.success(isSucceed);
 	}

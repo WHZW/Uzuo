@@ -1,5 +1,9 @@
 package com.whzw.yz.vo;
-
+/**
+ * 
+ * @author zzy
+ * @author WuBN
+ */
 public class LoginVo {
 
 	private String studentId;

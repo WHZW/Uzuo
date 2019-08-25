@@ -14,6 +14,12 @@ import com.whzw.yz.result.CodeMsg;
 import com.whzw.yz.util.UUIDUtil;
 import com.whzw.yz.vo.LoginVo;
 
+/**
+ * 
+ * @author zheng
+ * @author WuBN
+ *
+ */
 @Service
 public class LoginService {
 

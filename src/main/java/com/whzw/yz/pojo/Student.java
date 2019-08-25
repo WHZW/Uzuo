@@ -1,5 +1,9 @@
 package com.whzw.yz.pojo;
-
+/**
+ * 
+ * @author zzy
+ * @author WuBN
+ */
 public class Student {
 
 	private String id;

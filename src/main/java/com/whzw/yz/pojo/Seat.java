@@ -1,12 +1,24 @@
 package com.whzw.yz.pojo;
 
+/**
+ * 
+ * @author zzy
+ * @author WuBN
+ */
 public class Seat {
 
-	private String id;
+	private String seatId;
 
-	private clroom clroom;
+	private String tableId;
 
-	private Table table;
+	/**
+	 * 位置 数据库里存的是枚举类型A B C D
+	 */
+	private char location;
+
+	private int row;
+
+	private int col;
 
 	private String desc;
 
@@ -14,28 +26,44 @@ public class Seat {
 		super();
 	}
 
-	public String getId() {
-		return id;
+	public String getSeatId() {
+		return seatId;
 	}
 
-	public void setId(String id) {
-		this.id = id;
+	public void setSeatId(String seatId) {
+		this.seatId = seatId;
 	}
 
-	public clroom getClroom() {
-		return clroom;
+	public String getTableId() {
+		return tableId;
 	}
 
-	public void setClroom(clroom clroom) {
-		this.clroom = clroom;
+	public void setTableId(String tableId) {
+		this.tableId = tableId;
 	}
 
-	public Table getTable() {
-		return table;
+	public char getLocation() {
+		return location;
 	}
 
-	public void setTable(Table table) {
-		this.table = table;
+	public void setLocation(char location) {
+		this.location = location;
+	}
+
+	public int getRow() {
+		return row;
+	}
+
+	public void setRow(int row) {
+		this.row = row;
+	}
+
+	public int getCol() {
+		return col;
+	}
+
+	public void setCol(int col) {
+		this.col = col;
 	}
 
 	public String getDesc() {
@@ -48,7 +76,8 @@ public class Seat {
 
 	@Override
 	public String toString() {
-		return "Seat [id=" + id + ", clroom=" + clroom + ", table=" + table + ", desc=" + desc + "]";
+		return "Seat [seatId=" + seatId + ", tableId=" + tableId + ", location=" + location + ", row=" + row + ", col="
+				+ col + ", desc=" + desc + "]";
 	}
 
 }

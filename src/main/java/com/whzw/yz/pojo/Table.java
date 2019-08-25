@@ -2,11 +2,16 @@ package com.whzw.yz.pojo;
 
 import java.util.List;
 
+/**
+ * 
+ * @author zheng
+ * @author WuBN
+ */
 public class Table {
 
-	private String id;
+	private String tableId;
 
-	private clroom clroom;
+	private String clroomId;
 
 	private int row;
 
@@ -18,20 +23,20 @@ public class Table {
 		super();
 	}
 
-	public String getId() {
-		return id;
+	public String getTableId() {
+		return tableId;
 	}
 
-	public void setId(String id) {
-		this.id = id;
+	public void setTableId(String tableId) {
+		this.tableId = tableId;
 	}
 
-	public clroom getClroom() {
-		return clroom;
+	public String getClroomId() {
+		return clroomId;
 	}
 
-	public void setClroom(clroom clroom) {
-		this.clroom = clroom;
+	public void setClroomId(String clroomId) {
+		this.clroomId = clroomId;
 	}
 
 	public int getRow() {
@@ -60,7 +65,8 @@ public class Table {
 
 	@Override
 	public String toString() {
-		return "Table [id=" + id + ", clroom=" + clroom + ", row=" + row + ", col=" + col + ", seats=" + seats + "]";
+		return "Table [tableId=" + tableId + ", clroomId=" + clroomId + ", row=" + row + ", col=" + col + ", seats="
+				+ seats + "]";
 	}
 
 }

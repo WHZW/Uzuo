@@ -6,6 +6,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.whzw.yz.result.CodeMsg;
 import com.whzw.yz.result.Result;
 
+/**
+ * 
+ * @author zzy
+ * @author WuBN
+ */
 @Controller
 @ResponseBody
 public class GlobalExceptionHandler {

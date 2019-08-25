@@ -5,12 +5,17 @@ import com.whzw.yz.result.CodeMsg;
 /**
  * 全局异常
  * 
- * @author zheng
+ * @author zzy
  * @author WuBN
  *
  */
 public class GlobalException extends RuntimeException {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
 	private CodeMsg codeMsg;
 
 	public GlobalException(CodeMsg codeMsg) {
