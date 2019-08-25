@@ -9,10 +9,14 @@ import java.util.Date;
 public class OrderLog {
 
 	private String id;
+	
+	private String orderId;
 
-	private Student student;
+	private String studentId;
 
-	private Seat seat;
+	private String seatId;
+	
+	private Date orderTime;
 
 	private Date startTime;
 
@@ -20,7 +24,7 @@ public class OrderLog {
 
 	private int last;
 
-	private boolean timeOut;
+	private String status;
 
 	public OrderLog() {
 		super();
@@ -34,20 +38,22 @@ public class OrderLog {
 		this.id = id;
 	}
 
-	public Student getStudent() {
-		return student;
+	
+
+	public String getStudentId() {
+		return studentId;
 	}
 
-	public void setStudent(Student student) {
-		this.student = student;
+	public void setStudentId(String studentId) {
+		this.studentId = studentId;
 	}
 
-	public Seat getSeat() {
-		return seat;
+	public String getSeatId() {
+		return seatId;
 	}
 
-	public void setSeat(Seat seat) {
-		this.seat = seat;
+	public void setSeatId(String seatId) {
+		this.seatId = seatId;
 	}
 
 	public Date getStartTime() {
@@ -74,18 +80,44 @@ public class OrderLog {
 		this.last = last;
 	}
 
-	public boolean isTimeOut() {
-		return timeOut;
+	public String getStatus() {
+		return status;
 	}
 
-	public void setTimeOut(boolean timeOut) {
-		this.timeOut = timeOut;
+	public void setStatus(String status) {
+		this.status = status;
 	}
+
+	public Date getOrderTime() {
+		return orderTime;
+	}
+
+	public void setOrderTime(Date orderTime) {
+		this.orderTime = orderTime;
+	}
+
+	public String getOrderId() {
+		return orderId;
+	}
+
+	public void setOrderId(String orderId) {
+		this.orderId = orderId;
+	}
+	
 
 	@Override
 	public String toString() {
-		return "OrderLog [id=" + id + ", student=" + student + ", seat=" + seat + ", startTime=" + startTime
-				+ ", endTime=" + endTime + ", last=" + last + ", timeOut=" + timeOut + "]";
+		return "OrderLog [id=" + id + ", orderId=" + orderId + ", studentId=" + studentId + ", seatId=" + seatId
+				+ ", orderTime=" + orderTime + ", startTime=" + startTime + ", endTime=" + endTime + ", last=" + last
+				+ ", status=" + status + "]";
 	}
+
+	
+
+	
+
+	
+
+	
 
 }

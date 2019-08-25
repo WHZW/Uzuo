@@ -41,6 +41,7 @@ public class LoginService {
 		HttpSession session = req.getSession();
 		String uuid = UUIDUtil.uuid();
 		session.setAttribute("token", uuid);
+		session.setAttribute("studentId", loginVo.getStudentId());
 		resp.addCookie(new Cookie("token", uuid));
 		return true;
 	}
