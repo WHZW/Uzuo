@@ -3,8 +3,12 @@ package com.whzw.yz.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.whzw.yz.pojo.Clroom;
+import com.whzw.yz.result.Result;
 import com.whzw.yz.service.SeatShowService;
 
 /**
@@ -20,9 +24,11 @@ public class SeatShowController {
 	@Autowired
 	private SeatShowService seatShowService;
 
-	@GetMapping("/clroom")
-	public void showClroomSeats() {
-
+	@GetMapping("/clroom/{clroomId}")
+	@ResponseBody
+	public Result<Clroom> showClroomSeats(@PathVariable("clroomId") String clroomId) {
+		Clroom clroom = seatShowService.showClroomSeats(clroomId);
+		return Result.success(clroom);
 	}
 
 	@GetMapping("/time")
