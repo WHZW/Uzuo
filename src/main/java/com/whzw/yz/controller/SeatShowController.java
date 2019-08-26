@@ -4,7 +4,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.whzw.yz.pojo.Clroom;
+import com.whzw.yz.result.Result;
 import com.whzw.yz.service.SeatShowService;
 
 /**
@@ -21,8 +25,10 @@ public class SeatShowController {
 	private SeatShowService seatShowService;
 
 	@GetMapping("/clroom")
-	public void showClroomSeats() {
-
+	@ResponseBody
+	public Result<Clroom> showClroomSeats(@RequestParam("clroomId") String clroomId) {
+		Clroom clroom = seatShowService.showClroomSeats(clroomId);
+		return Result.success(clroom);
 	}
 
 	@GetMapping("/time")

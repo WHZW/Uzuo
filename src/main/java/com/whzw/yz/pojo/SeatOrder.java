@@ -89,5 +89,4 @@ public class SeatOrder {
 		this.orderCode = orderCode;
 	}
 
-	
 }

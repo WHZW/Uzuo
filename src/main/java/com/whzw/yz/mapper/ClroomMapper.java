@@ -40,4 +40,5 @@ public interface ClroomMapper {
 			@Result(column = "clroom_id", property = "tables", many = @Many(select = "com.whzw.yz.mapper.TableMapper.findAllByClroomId")) })
 	public Clroom findOneById(@Param("id") String clroomId);
 
+	
 }
