@@ -36,4 +36,7 @@ public class TimeController {
 		}
 		return Result.success(map);
 	}
+
+	// 签到
+	// 离开座位
 }
