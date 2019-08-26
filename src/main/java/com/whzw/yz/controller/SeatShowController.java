@@ -24,12 +24,12 @@ public class SeatShowController {
 	@Autowired
 	private SeatShowService seatShowService;
 
-	@GetMapping("/clroom")
-	@ResponseBody
-	public Result<Clroom> showClroomSeats(@RequestParam("clroomId") String clroomId) {
-		Clroom clroom = seatShowService.showClroomSeats(clroomId);
-		return Result.success(clroom);
-	}
+//	@GetMapping("/clroom")
+//	@ResponseBody
+//	public Result<Clroom> showClroomSeats(@RequestParam("clroomId") String clroomId) {
+//		Clroom clroom = seatShowService.showClroomSeats(clroomId);
+//		return Result.success(clroom);
+//	}
 
 	@GetMapping("/time")
 	public void showSeatsByTime() {
