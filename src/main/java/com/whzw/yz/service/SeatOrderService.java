@@ -23,6 +23,7 @@ import com.whzw.yz.pojo.SeatOrder;
 import com.whzw.yz.pojo.TimeQuantum;
 import com.whzw.yz.result.CodeMsg;
 import com.whzw.yz.vo.OrderVo;
+import com.whzw.yz.vo.SeatOrderVo;
 
 /**
  * 座位预约
@@ -46,7 +47,7 @@ public class SeatOrderService {
 	 * @param request
 	 * @return
 	 */
-	public boolean order(OrderVo orderVo, HttpServletRequest request) {
+	public SeatOrderVo order(OrderVo orderVo, HttpServletRequest request) {
 //		Cookie[] cookies = request.getCookies();
 //		String cooikeValue = getCookieValue(cookies);
 //		if(cooikeValue == null) {
@@ -61,12 +62,11 @@ public class SeatOrderService {
 		String studentId = "20164545";//测试用
 		String orderCode = String.valueOf(orderVo.getYear()) + String.valueOf(orderVo.getMonth()) + 
 				String.valueOf(orderVo.getDay()) + String.valueOf(orderVo.getTimeQuantem()) + orderVo.getSeatId();
-		System.out.println(orderCode);
 		if(seatOrderMapper.getOrderCode(orderCode) != null) {
 			throw new GlobalException(CodeMsg.SEAT_ALREDY_ORDERED);
 		}
-		createOrder(orderVo, studentId, orderCode);
-		return true;
+		SeatOrderVo seatOrderVo = createOrder(orderVo, studentId, orderCode);
+		return seatOrderVo;
 	}
 
 	/**
@@ -76,13 +76,13 @@ public class SeatOrderService {
 	 * @param orderCode2 
 	 */
 	@SuppressWarnings("deprecation")
-	private Boolean createOrder(OrderVo orderVo, String studentId, String orderCode) {
+	private SeatOrderVo createOrder(OrderVo orderVo, String studentId, String orderCode) {
+		SeatOrder seatOrder = new SeatOrder();
 		try {
-			Date currentDate = new Date();
-			SeatOrder seatOrder = new SeatOrder();
+			Date currentDate = Calendar.getInstance().getTime();			
 //		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			seatOrder.setOrderTime(currentDate);
-			Date date = new Date(orderVo.getYear() - 1900, orderVo.getMonth() - 1, orderVo.getDay());
+			Date date = new Date(orderVo.getYear() - 1900, orderVo.getMonth(), orderVo.getDay());
 			if (date.before(currentDate)) {
 				throw new GlobalException(CodeMsg.ORDER_TIME_PASS);
 			}
@@ -113,13 +113,12 @@ public class SeatOrderService {
 						22, 00, 00));
 			}
 			orderLogMapper.addLog(orderLog);
-			
+			return new SeatOrderVo(seatOrder);			
 		} catch (Exception e) {
 			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
 			e.printStackTrace();
 			throw e;
 		}		
-		return true;
 	}
 
 	/**
@@ -130,7 +129,7 @@ public class SeatOrderService {
 	 */
 	private Date getTimeoutDate(Date date, char timeQuantem) {
 		Date timeoutDate = null;
-		Date currentDate = new Date();
+		Date currentDate = Calendar.getInstance().getTime();
 		char currentQut = TimeQuantum.M.getInfo();
 		currentQut = getCurrentQut(currentDate);
 		//临时预约
@@ -170,12 +169,12 @@ public class SeatOrderService {
 	private char getCurrentQut(Date currentDate) {
 		char currentQut = 0;
 		//上午时间段终点
-		Date mDate = new Date();
+		Date mDate = Calendar.getInstance().getTime();
 		mDate.setHours(12);
 		mDate.setMinutes(0);
 		mDate.setSeconds(0);
 		//下午时间段终点
-		Date aDate = new Date();
+		Date aDate = Calendar.getInstance().getTime();
 		aDate.setHours(16);
 		aDate.setMinutes(0);
 		aDate.setSeconds(0);		
@@ -209,14 +208,22 @@ public class SeatOrderService {
 	 * @param orderId
 	 */
 	public void cancelOrder(String orderId) {
-		seatOrderMapper.deleteOrder(orderId);
+		try {
+			seatOrderMapper.deleteOrder(orderId);
+			orderMap.remove(orderId);
+			orderLogMapper.updateStatus(orderId, "取消");		
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+			throw e;
+		}
 	}
 	
 
 	public Map<String, Date> getOrderMap() {
 		return orderMap;
 	}
-	
 	
 
 	

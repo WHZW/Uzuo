@@ -1,5 +1,6 @@
 package com.whzw.yz.pojo;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -15,7 +16,7 @@ public class SeatOrder {
 
 	private String seatId;
 
-	private Date OrderTime;
+	private Date orderTime;
 
 	private Date date;
 
@@ -58,11 +59,13 @@ public class SeatOrder {
 	}
 
 	public Date getOrderTime() {
-		return OrderTime;
+//		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-DD HH:mm:ss");
+//		format.format(orderTime);
+		return orderTime;
 	}
 
 	public void setOrderTime(Date orderTime) {
-		OrderTime = orderTime;
+		this.orderTime = orderTime;
 	}
 
 	public Date getDate() {
