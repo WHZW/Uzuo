@@ -22,6 +22,7 @@ public class CodeMsg {
 
 	// 预约模块
 	public static final CodeMsg SEAT_ALREDY_ORDERED = new CodeMsg(6001, "该座位已被预约");
+	public static final CodeMsg ORDER_TIME_PASS = new CodeMsg(6002, "预约时间已过");
 
 	private CodeMsg(int code, String msg) {
 		this.code = code;

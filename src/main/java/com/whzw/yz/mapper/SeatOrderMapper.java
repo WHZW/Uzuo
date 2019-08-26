@@ -18,7 +18,7 @@ import com.whzw.yz.pojo.SeatOrder;
 public interface SeatOrderMapper {
 
 	@Select("select order_code from seat_order where order_code = #{orderCode}")
-	public String getIrderCode(String orderCode);
+	public String getOrderCode(String orderCode);
 
 	@Insert("insert into seat_order(student_id, seat_id, order_time, date, time_quantum, order_code) "
 			+ "values(#{so.studentId}, #{so.seatId}, #{so.orderTime},"
