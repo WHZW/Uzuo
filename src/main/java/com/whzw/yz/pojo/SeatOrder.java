@@ -11,9 +11,9 @@ public class SeatOrder {
 
 	private String id;
 
-	private Student student;
+	private String studentId;
 
-	private Seat seat;
+	private String seatId;
 
 	private Date OrderTime;
 
@@ -41,20 +41,20 @@ public class SeatOrder {
 		this.id = id;
 	}
 
-	public Student getStudent() {
-		return student;
+	public String getStudentId() {
+		return studentId;
 	}
 
-	public void setStudent(Student student) {
-		this.student = student;
+	public void setStudentId(String studentId) {
+		this.studentId = studentId;
 	}
 
-	public Seat getSeat() {
-		return seat;
+	public String getSeatId() {
+		return seatId;
 	}
 
-	public void setSeat(Seat seat) {
-		this.seat = seat;
+	public void setSeatId(String seatId) {
+		this.seatId = seatId;
 	}
 
 	public Date getOrderTime() {
@@ -89,10 +89,5 @@ public class SeatOrder {
 		this.orderCode = orderCode;
 	}
 
-	@Override
-	public String toString() {
-		return "SeatOrder [id=" + id + ", student=" + student + ", OrderTime=" + OrderTime + ", date=" + date
-				+ ", timeQuantun=" + timeQuantun + ", orderCode=" + orderCode + "]";
-	}
-
+	
 }

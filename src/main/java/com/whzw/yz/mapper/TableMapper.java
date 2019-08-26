@@ -32,6 +32,6 @@ public interface TableMapper {
 
 	@Select("select * from `table` where clroom_id=#{cid}")
 	@Results({
-			@Result(column = "table_id", property = "seats", many = @Many(select = "com.whzw.yz.mapper.SeatMapper.fingSeatsByTableId")) })
+			@Result(column = "table_id", property = "seats", many = @Many(select = "com.whzw.yz.mapper.SeatMapper.fingAllByTableId")) })
 	public List<Table> findAllByClroomId(@Param("cid") String clroomId);
 }
