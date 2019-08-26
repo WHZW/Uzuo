@@ -10,6 +10,11 @@ public class SeatStatusVo {
 		super();
 	}
 
+	public SeatStatusVo(String seatId, int status) {
+		this.seatId = seatId;
+		this.status = status;
+	}
+
 	public String getSeatId() {
 		return seatId;
 	}

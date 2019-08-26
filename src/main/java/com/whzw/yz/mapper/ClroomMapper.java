@@ -1,5 +1,7 @@
 package com.whzw.yz.mapper;
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Many;
 import org.apache.ibatis.annotations.Options;
@@ -9,6 +11,7 @@ import org.apache.ibatis.annotations.Results;
 import org.apache.ibatis.annotations.Select;
 
 import com.whzw.yz.pojo.Clroom;
+import com.whzw.yz.vo.seatshow.ClroomInfoVo;
 
 /**
  * 教室Mapper
@@ -40,5 +43,14 @@ public interface ClroomMapper {
 			@Result(column = "clroom_id", property = "tables", many = @Many(select = "com.whzw.yz.mapper.TableMapper.findAllByClroomId")) })
 	public Clroom findOneById(@Param("id") String clroomId);
 
-	
+	/**
+	 * 通过id查找一个教室
+	 * 
+	 * @author zzy
+	 * @param clroomId
+	 * @return
+	 */
+	@Select("select * from `clroom`")
+	public List<ClroomInfoVo> findAllClrooms();
+
 }

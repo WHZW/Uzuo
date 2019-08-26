@@ -19,7 +19,7 @@ import com.whzw.yz.service.ClroomService;
  *
  */
 @Controller
-@RequestMapping("/manage/clroom")
+@RequestMapping("/library/manage/clroom")
 public class ClroomManageController {
 
 	@Autowired

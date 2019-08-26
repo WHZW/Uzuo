@@ -30,5 +30,8 @@ public interface SeatMapper {
 	public void addOne(@Param("s") Seat seat);
 
 	@Select("select * from `seat` where table_id=#{tid}")
-	public List<Seat> fingAllByTableId(@Param("tid") String tableId);
+	public List<Seat> findAllByTableId(@Param("tid") String tableId);
+	
+	@Select("select `seat_id` from `seat` where table_id=#{tid}")
+	public List<String> findAllIdByTableId(@Param("tid") String tableId);
 }

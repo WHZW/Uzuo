@@ -1,7 +1,5 @@
 package com.whzw.yz.mapper;
 
-import java.util.Date;
-
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
@@ -9,7 +7,6 @@ import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
-import com.whzw.yz.pojo.Seat;
 import com.whzw.yz.pojo.SeatOrder;
 
 /**
@@ -27,12 +24,11 @@ public interface SeatOrderMapper {
 			+ "values(#{so.studentId}, #{so.seatId}, #{so.orderTime},"
 			+ " #{so.date}, #{so.timeQuantum}, #{so.orderCode})")
 	@Options(useGeneratedKeys = true, keyProperty = "id")
-	public void addOrder(@Param("so")SeatOrder seatOrder);
-	
+	public void addOrder(@Param("so") SeatOrder seatOrder);
+
 	@Delete("delete from seat_order where id = #{id}")
 	public void deleteOrder(String id);
 
-	@Select("select * from `seat_order` where date=#{date} and seat_id=#{sid} and time_quantum=#{tq}")
-	public Seat findOne(@Param("sid") String seatId, @Param("date") Date date, @Param("tq") char timeQuantum);
+	@Select("select * from `seat_order` where `order_code`=#{oc}")
+	public SeatOrder findOneByCode(@Param("oc") String orderCode);
 }
-

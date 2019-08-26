@@ -1,12 +1,6 @@
-package com.whzw.yz.vo.seatshow;
+package com.whzw.yz.pojo;
 
-/**
- * 查找座位通信临时变量
- * 
- * @author zzy
- *
- */
-public class SeatShowReqVo {
+public class OrderCode {
 
 	private String year;
 
@@ -16,9 +10,18 @@ public class SeatShowReqVo {
 
 	private char timeQuantum;
 
-	private String clroomId;
+	private String seatId;
 
-	public SeatShowReqVo() {
+	public OrderCode(String year, String month, String day, char timeQuantum, String seatId) {
+		super();
+		this.year = year;
+		this.month = month;
+		this.day = day;
+		this.timeQuantum = timeQuantum;
+		this.seatId = seatId;
+	}
+
+	public OrderCode() {
 		super();
 	}
 
@@ -54,18 +57,18 @@ public class SeatShowReqVo {
 		this.timeQuantum = timeQuantum;
 	}
 
-	public String getClroomId() {
-		return clroomId;
+	public String getSeatId() {
+		return seatId;
 	}
 
-	public void setClroomId(String clroomId) {
-		this.clroomId = clroomId;
+	public void setSeatId(String seatId) {
+		this.seatId = seatId;
 	}
 
 	@Override
 	public String toString() {
-		return "SeatShowVo [year=" + year + ", month=" + month + ", day=" + day + ", timeQuantum=" + timeQuantum
-				+ ", clroomId=" + clroomId + "]";
+		return "OrderCode [year=" + year + ", month=" + month + ", day=" + day + ", timeQuantum=" + timeQuantum
+				+ ", seatId=" + seatId + "]";
 	}
 
 }

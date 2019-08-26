@@ -1,18 +1,21 @@
 package com.whzw.yz.service;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.whzw.yz.mapper.ClroomMapper;
+import com.whzw.yz.mapper.SeatMapper;
 import com.whzw.yz.mapper.SeatOrderMapper;
+import com.whzw.yz.mapper.TableMapper;
 import com.whzw.yz.pojo.Clroom;
-import com.whzw.yz.pojo.Seat;
-import com.whzw.yz.pojo.Table;
-import com.whzw.yz.vo.seatshow.ClroomWithSeatstatus;
+import com.whzw.yz.pojo.OrderCode;
+import com.whzw.yz.pojo.SeatOrder;
+import com.whzw.yz.util.OrderCodeUtil;
+import com.whzw.yz.vo.seatshow.ClroomInfoVo;
+import com.whzw.yz.vo.seatshow.DateTimeClroomIdVo;
 import com.whzw.yz.vo.seatshow.SeatStatusVo;
 
 /**
@@ -28,51 +31,112 @@ public class SeatShowService {
 	private ClroomMapper clroomMapper;
 
 	@Autowired
+	private TableMapper tableMapper;
+
+	@Autowired
+	private SeatMapper seatMapper;
+
+	@Autowired
 	private SeatOrderMapper seatOrderMapper;
 
 	/**
-	 * 查找指定ID为clroomId的教室的所有座位
+	 * 获得指定id教室的所有座位状态
 	 * 
+	 * @param datetimeClroomIdVo
 	 * @return
-	 * @author zzy
 	 */
-	public ClroomWithSeatstatus showClroomSeatsWithStatus(String clroomId, Date date, char timeQuantum) {
+	public List<SeatStatusVo> getAllSeatsSatus(DateTimeClroomIdVo datetimeClroomIdVo) {
+		String clroomId = datetimeClroomIdVo.getClroomId();
 
-		ClroomWithSeatstatus clroomWithSeatstatus = new ClroomWithSeatstatus();
-		// 获取教室信息对象（教室--》桌子列表--》座位列表）
-		Clroom clroom = clroomMapper.findOneById(clroomId);
-		clroomWithSeatstatus.setClroom(clroom);
+		// 获取所有座位的id
+		List<String> seatIds = getAllSeatsId(clroomId);
 
+		String orderCode = null;
+		SeatOrder seatOrder = null;
 		SeatStatusVo seatStatusVo = null;
-		String seatId = null;
-
 		List<SeatStatusVo> seatStatusVos = new ArrayList<>();
-		// 遍历该教室所有座位
-		for (Table table : clroom.getTables()) {
-			for (Seat seat : table.getSeats()) {
-				// 获得座位的id
-				seatId = seat.getSeatId();
-
-				// 从数据库查找该座位这一时间段是否有预订信息
-				Seat rightSeat = seatOrderMapper.findOne(seatId, date, timeQuantum);
-
-				// 为座位状态对象设置座位id和其对应的状态 0空闲
-				seatStatusVo = new SeatStatusVo();
-				seatStatusVo.setSeatId(seatId);
-				if (rightSeat == null) {
-					seatStatusVo.setStatus(0);
-				} else {
-					seatStatusVo.setStatus(1);
-				}
-
-				// 加入到座位状态列表中
-				seatStatusVos.add(seatStatusVo);
+		// 生成预订信息编码并添加进列表
+		for (String sid : seatIds) {
+			orderCode = OrderCodeUtil.encode(new OrderCode(datetimeClroomIdVo.getYear(), datetimeClroomIdVo.getMonth(),
+					datetimeClroomIdVo.getDay(), datetimeClroomIdVo.getTimeQuantum(), sid));
+			seatOrder = seatOrderMapper.findOneByCode(orderCode);
+			seatStatusVo = new SeatStatusVo();
+			seatStatusVo.setSeatId(sid);
+			if (seatOrder == null) {
+				seatStatusVo.setStatus(0);
+			} else {
+				seatStatusVo.setStatus(1);
 			}
+			seatStatusVos.add(seatStatusVo);
 		}
 
-		clroomWithSeatstatus.setSeatStatusVos(seatStatusVos);
+		// 获取所有座位的状态并返回
+		return seatStatusVos;
+	}
 
-		return clroomWithSeatstatus;
+	/**
+	 * 获取教室信息对象（教室--》桌子列表--》座位列表）不包含座位状态
+	 * 
+	 * @param clroomId
+	 * @param date
+	 * @param timeQuantum
+	 * @return
+	 */
+	public Clroom getClroomInfo(String clroomId) {
+		return clroomMapper.findOneById(clroomId);
+	}
+
+	/**
+	 * 获取教室所有座位的id
+	 * 
+	 * @param clroomId
+	 * @return
+	 */
+	public List<String> getAllSeatsId(String clroomId) {
+		List<String> tables = tableMapper.findAllTablesId(clroomId);
+		if (tables == null)
+			return null;
+		List<String> seatIds = new ArrayList<>();
+		for (String tid : tables) {
+			// 将查到的seatId全部添加到查询结果集中
+			seatIds.addAll(seatMapper.findAllIdByTableId(tid));
+		}
+		return seatIds;
+	}
+
+	/**
+	 * 获取所有教室信息
+	 * 
+	 * @param datetimeClroomIdVo
+	 * @return
+	 */
+	public List<ClroomInfoVo> getAllClroomInfo(DateTimeClroomIdVo datetimeClroomIdVo) {
+		// 查找所有教室信息
+		List<ClroomInfoVo> clroomInfoVos = clroomMapper.findAllClrooms();
+		if (clroomInfoVos == null) {
+			return null;
+		}
+		// 遍历所有教室
+		for (ClroomInfoVo clroomInfo : clroomInfoVos) {
+			// 为查找座位状态临时类设置教室id
+			datetimeClroomIdVo.setClroomId(clroomInfo.getClroomId());
+			// 查询座位状态
+			List<SeatStatusVo> seatStatus = getAllSeatsSatus(datetimeClroomIdVo);
+			if (seatStatus == null) {
+				return null;
+			}
+			// 设置座位数
+			clroomInfo.setSeatNum(seatStatus.size());
+			int freeNum = 0;
+			// 统计空闲座位数
+			for (SeatStatusVo ssv : seatStatus) {
+				if (ssv.getStatus() == 0)
+					freeNum++;
+			}
+			// 设置空闲座位数
+			clroomInfo.setFreeNum(freeNum);
+		}
+		return clroomInfoVos;
 	}
 
 }
