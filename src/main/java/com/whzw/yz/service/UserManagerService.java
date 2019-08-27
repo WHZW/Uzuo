@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.whzw.yz.mapper.OrderLogMapper;
 import com.whzw.yz.mapper.SeatOrderMapper;
 import com.whzw.yz.mapper.StudentMapper;
+import com.whzw.yz.pojo.OrderLog;
 import com.whzw.yz.pojo.Student;
 import com.whzw.yz.vo.OrderLogVo;
 import com.whzw.yz.vo.SeatOrderVo;
