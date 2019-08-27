@@ -8,6 +8,8 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import com.whzw.yz.exception.GlobalException;
 import com.whzw.yz.mapper.OrderLogMapper;
@@ -46,7 +48,6 @@ public class CheckInService {
 
 		// 获取当前时间
 		Date now = Calendar.getInstance().getTime();
-		String nowStr = new SimpleDateFormat("yyyyMMdd").format(now);
 
 		// 查找预定
 		SeatOrder seatOrder = seatOrderMapper.findOneById(orderId);
@@ -63,17 +64,21 @@ public class CheckInService {
 		String orderTimeStr = seatOrder.getOrderCode().substring(0, 8);
 		char timeQuantumNow = getTimeQuantum(now.getHours());
 
+		// 不在服务时间内
 		if (timeQuantumNow == 'E') {
 			throw new GlobalException(CodeMsg.NOT_IN_TIME);
 		}
 
 		// 不在签到时间
-		if (!(orderTimeStr.equals(nowStr) && timeQuantumNow == seatOrder.getTimeQuantun())) {
+		if (!(orderTimeStr.equals(new SimpleDateFormat("yyyyMMdd").format(now))
+				&& timeQuantumNow == seatOrder.getTimeQuantun())) {
 			throw new GlobalException(CodeMsg.NOT_IN_TIME);
 		}
 
+		// 创建超时时间对象
 		Date timeOut = (Date) now.clone();
 
+		// 设置超时时间
 		switch (timeQuantumNow) {
 		case 'M':
 			timeOut.setHours(12);
@@ -92,58 +97,60 @@ public class CheckInService {
 			break;
 		}
 
-		System.out.println("timeOut " + timeOut);
-		System.out.println("now " + now);
-
-		// 更新内存中 orderMap 的超时时间
-		seatOrderService.getOrderMap().put(orderId, timeOut);
-
 		// 设置数据库预约表中的开始时间
 		orderLogMapper.updateStartTime(orderId, new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(now));
 
+		// 更新内存中 orderMap 的超时时间
+		seatOrderService.getOrderMap().put(orderId, timeOut);
 		return now;
 	}
 
 	@SuppressWarnings("deprecation")
+	@Transactional
 	public void signOut(String orderId, HttpServletRequest req) {
 //		// 检查登录状态
 //		String studentId = LoginUtil.LoginCheck(req);
 
 		String studentId = "20164545";
-		seatOrderService.getOrderMap();
 
-		// 获取当前时间
-		Date now = Calendar.getInstance().getTime();
-		String nowStr = new SimpleDateFormat("yyyyMMdd").format(now);
+		try {
+			// 获取当前时间
+			Date now = Calendar.getInstance().getTime();
 
-		// 查找预约
-		SeatOrder seatOrder = seatOrderMapper.findOneById(orderId);
+			// 查找预约
+			SeatOrder seatOrder = seatOrderMapper.findOneById(orderId);
 
-		// 未查到预约
-		if (seatOrder == null)
-			throw new GlobalException(CodeMsg.NO_VALID_ORDER);
+			// 未查到预约
+			if (seatOrder == null)
+				throw new GlobalException(CodeMsg.NO_VALID_ORDER);
 
-		// 该订单与该用户不匹配
-		if (!seatOrder.getStudentId().equals(studentId))
-			throw new GlobalException(CodeMsg.NO_VALID_ORDER);
-		
-		//格式化结束时间
-		String endTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(now);
-		
-		//获取开始时间
-		Date startTime = orderLogMapper.getStartTime(orderId);
-		
-		//计算持续时间
-		int last = (now.getHours()*60+ now.getMinutes())-(startTime.getHours()*60+startTime.getMinutes());
-		
-		
-		
-		//删除预约表中的这条预约
-		seatOrderMapper.deleteOrder(orderId);
-		
-		//更新预约记录
-		orderLogMapper.updateEndtimeStatusLast(orderId, endTime , last, "完成");
+			// 该订单与该用户不匹配
+			if (!seatOrder.getStudentId().equals(studentId))
+				throw new GlobalException(CodeMsg.NO_VALID_ORDER);
 
+			// 格式化结束时间
+			String endTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(now);
+
+			// 获取开始时间
+			Date startTime = orderLogMapper.getStartTime(orderId);
+
+			// 计算持续时间
+			int last = (now.getHours() * 60 + now.getMinutes()) - (startTime.getHours() * 60 + startTime.getMinutes());
+
+			// 删除预约表中的这条预约
+			seatOrderMapper.deleteOrder(orderId);
+
+			// 更新预约记录
+			orderLogMapper.updateEndtimeStatusLast(orderId, endTime, last, "完成");
+			
+		} catch (RuntimeException e) {
+			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+			e.printStackTrace();
+			throw e;
+		}
+
+		// 移除orderMap中该orderId对应的项
+		seatOrderService.getOrderMap().remove(orderId);
 	}
 
 	/**

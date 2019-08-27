@@ -48,37 +48,41 @@ public class SeatShowService {
 	 * @return
 	 */
 	public List<SeatStatusVo> getAllSeatsSatus(DateTimeClroomIdVo datetimeClroomIdVo) {
-		
+
 		String clroomId = datetimeClroomIdVo.getClroomId();
 
 		// 获取所有座位的id
 		List<String> seatIds = getAllSeatsId(clroomId);
 
-		String orderCode = null;
-		SeatOrder seatOrder = null;
 		SeatStatusVo seatStatusVo = null;
 		List<SeatStatusVo> seatStatusVos = new ArrayList<>();
-		
-		if (seatIds == null || seatIds.size()==0) {
+
+		if (seatIds == null || seatIds.size() == 0) {
 			throw new GlobalException(CodeMsg.NOT_FIND_SEAT);
 		}
 		
-		orderCode = OrderCodeUtil.encode(new OrderCode(datetimeClroomIdVo.getYear(), datetimeClroomIdVo.getMonth(),
-				datetimeClroomIdVo.getDay(), datetimeClroomIdVo.getTimeQuantum(), ""));
+		//拼接模糊查询依据 yyyyMMdd[MAN]
+		String orderCodePart = OrderCodeUtil.encode(new OrderCode(datetimeClroomIdVo.getYear(),
+				datetimeClroomIdVo.getMonth(), datetimeClroomIdVo.getDay(), datetimeClroomIdVo.getTimeQuantum(),""));
 		
+		//查询所有当前预约的座位
+		List<SeatOrder> seatOrders = seatOrderMapper.findManyByCode(orderCodePart);
 		
-		// 生成预订信息编码并添加进列表
+		//初始化座位状态列表
 		for (String sid : seatIds) {
-			orderCode = OrderCodeUtil.encode(new OrderCode(datetimeClroomIdVo.getYear(), datetimeClroomIdVo.getMonth(),
-					datetimeClroomIdVo.getDay(), datetimeClroomIdVo.getTimeQuantum(), sid));
-			seatOrder = seatOrderMapper.findOneByCode(orderCode);
+			
 			seatStatusVo = new SeatStatusVo();
+			//设置座位ID
 			seatStatusVo.setSeatId(sid);
-			if (seatOrder == null) {
-				seatStatusVo.setStatus(0);
-			} else {
-				seatStatusVo.setStatus(1);
+			
+			//查找座位订单表
+			for (SeatOrder so : seatOrders) {
+				if(so.getSeatId().equals(sid)) {//找到相同seatId说明是占用的
+					seatStatusVo.setStatus(1);
+				}
 			}
+			//没找到说明是空闲的
+			seatStatusVo.setStatus(0);
 			seatStatusVos.add(seatStatusVo);
 		}
 

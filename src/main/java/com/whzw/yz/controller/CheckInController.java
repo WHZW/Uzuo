@@ -44,9 +44,12 @@ public class CheckInController {
 
 	/**
 	 * 签退
+	 * @return 
 	 */
-	@GetMapping("signOut")
-	public void signOut(HttpServletRequest req) {
-//		checkInService.signOut(req);
+	@GetMapping("signout")
+	@ResponseBody
+	public Result<Boolean> signOut(@RequestParam("orderId") String orderId, HttpServletRequest req) {
+		checkInService.signOut(orderId, req);
+		return Result.success(true);
 	}
 }
