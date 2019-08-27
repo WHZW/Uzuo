@@ -20,7 +20,6 @@ import com.whzw.yz.pojo.OrderLog;
 import com.whzw.yz.pojo.SeatOrder;
 import com.whzw.yz.pojo.TimeQuantum;
 import com.whzw.yz.result.CodeMsg;
-import com.whzw.yz.util.LoginUtil;
 import com.whzw.yz.vo.OrderVo;
 import com.whzw.yz.vo.SeatOrderVo;
 
@@ -39,7 +38,7 @@ public class SeatOrderService {
 	@Autowired
 	OrderLogMapper orderLogMapper;
 
-	private static Map<String, Date> orderMap = new ConcurrentHashMap<>();
+	private static final Map<String, Date> orderMap = new ConcurrentHashMap<>();
 
 	/**
 	 * 预定座位，判断session中的令牌与cookie中的令牌是否一致
@@ -73,7 +72,6 @@ public class SeatOrderService {
 		SeatOrder seatOrder = new SeatOrder();
 		try {
 			Date currentDate = Calendar.getInstance().getTime();			
-//		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			seatOrder.setOrderTime(currentDate);
 			Date date = new Date(orderVo.getYear() - 1900, orderVo.getMonth(), orderVo.getDay());
 			if (date.before(currentDate)) {
@@ -138,15 +136,15 @@ public class SeatOrderService {
 		else {
 			timeoutDate = date;
 			if (timeQuantem == TimeQuantum.M.getInfo()) {
-				timeoutDate.setHours(12);
+				timeoutDate.setHours(9);
 				timeoutDate.setMinutes(0);
 				timeoutDate.setSeconds(0);
 			} else if (timeQuantem == TimeQuantum.A.getInfo()) {
-				timeoutDate.setHours(18);
+				timeoutDate.setHours(15);
 				timeoutDate.setMinutes(0);
 				timeoutDate.setSeconds(0);
 			} else {
-				timeoutDate.setHours(22);
+				timeoutDate.setHours(20);
 				timeoutDate.setMinutes(0);
 				timeoutDate.setSeconds(0);
 			}
@@ -204,13 +202,14 @@ public class SeatOrderService {
 	 * 取消预定
 	 * 
 	 * @param orderId
+	 * @return 
 	 */
-	public void cancelOrder(String orderId) {
+	public boolean cancelOrder(String orderId) {
 		try {
 			seatOrderMapper.deleteOrder(orderId);
 			orderMap.remove(orderId);
-			orderLogMapper.updateStatus(orderId, "取消");		
-			
+			orderLogMapper.updateStatus(orderId, "取消");
+			return true;			
 		} catch (Exception e) {
 			e.printStackTrace();
 			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();

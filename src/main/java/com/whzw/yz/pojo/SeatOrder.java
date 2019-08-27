@@ -1,6 +1,5 @@
 package com.whzw.yz.pojo;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -10,7 +9,7 @@ import java.util.Date;
  */
 public class SeatOrder {
 
-	private String id;
+	private String orderId;
 
 	private String studentId;
 
@@ -35,11 +34,11 @@ public class SeatOrder {
 	}
 
 	public String getId() {
-		return id;
+		return orderId;
 	}
 
 	public void setId(String id) {
-		this.id = id;
+		this.orderId = id;
 	}
 
 	public String getStudentId() {

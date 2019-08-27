@@ -6,7 +6,7 @@ package com.whzw.yz.pojo;
  */
 public class Student {
 
-	private String id;
+	private String studentId;
 
 	private String name;
 
@@ -23,11 +23,11 @@ public class Student {
 	}
 
 	public String getId() {
-		return id;
+		return studentId;
 	}
 
 	public void setId(String id) {
-		this.id = id;
+		this.studentId = id;
 	}
 
 	public String getName() {
@@ -72,7 +72,7 @@ public class Student {
 
 	@Override
 	public String toString() {
-		return "Student [id=" + id + ", name=" + name + ", gender=" + gender + ", college=" + college + ", subject="
+		return "Student [id=" + studentId + ", name=" + name + ", gender=" + gender + ", college=" + college + ", subject="
 				+ subject + ", phone=" + phone + "]";
 	}
 

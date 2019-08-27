@@ -42,7 +42,7 @@ public class SeatOrderController {
 	@ResponseBody
 	public Result<Boolean> cencle(@RequestBody Map<String, String> map){
 		seatOrderService.cancelOrder(map.get("orderId"));
-		return null;
+		return Result.success(true);
 	}
 
 }

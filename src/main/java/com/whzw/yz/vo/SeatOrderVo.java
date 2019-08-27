@@ -4,6 +4,11 @@ import java.text.SimpleDateFormat;
 
 import com.whzw.yz.pojo.SeatOrder;
 
+/**
+ * 预约信息
+ * @author wubn
+ *
+ */
 public class SeatOrderVo{
 	
 	private String orderId;
@@ -16,6 +21,8 @@ public class SeatOrderVo{
 
 	private String date;
 	
+	public SeatOrderVo() {}
+	
 	public SeatOrderVo(SeatOrder seatOrder) {
 		this.orderId = seatOrder.getId();
 		this.seatId = seatOrder.getSeatId();
@@ -24,6 +31,16 @@ public class SeatOrderVo{
 		this.orderTime = format.format(seatOrder.getOrderTime());
 		format.applyPattern("yyyy-MM-dd");
 		this.date = format.format(seatOrder.getDate());
+	}
+	
+
+	public SeatOrderVo(String orderId, String studentId, String seatId, String orderTime, String date) {
+		super();
+		this.orderId = orderId;
+		this.studentId = studentId;
+		this.seatId = seatId;
+		this.orderTime = orderTime;
+		this.date = date;
 	}
 
 	public String getId() {
@@ -65,6 +82,13 @@ public class SeatOrderVo{
 	public void setDate(String date) {
 		this.date = date;
 	}
+
+	@Override
+	public String toString() {
+		return "SeatOrderVo [orderId=" + orderId + ", studentId=" + studentId + ", seatId=" + seatId + ", orderTime="
+				+ orderTime + ", date=" + date + "]";
+	}
+	
 	
 	
 }
