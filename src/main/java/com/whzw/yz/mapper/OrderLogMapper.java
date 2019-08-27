@@ -19,9 +19,9 @@ import com.whzw.yz.vo.OrderLogVo;
 public interface OrderLogMapper {
 
 
-	@Insert("insert into order_log(order_id, student_id, seat_id, order_time, end_time) "
+	@Insert("insert into order_log(order_id, student_id, seat_id, order_time, date, time_quantum, end_time) "
 			+ "values(#{orderLog.orderId}, #{orderLog.studentId}, #{orderLog.seatId}, #{orderLog.orderTime}, "
-			+ "#{orderLog.endTime})")
+			+ "#{orderLog.date}, #{orderLog.timeQuantum},  #{orderLog.endTime})")
 	public void addLog(@Param("orderLog")OrderLog orderLog);
 
 	@Update("update order_log set status = #{status} where id = #{id}")
@@ -36,7 +36,7 @@ public interface OrderLogMapper {
 	@Select("select `start_time` from `order_log` where order_id=#{oid}")
 	public Date getStartTime(@Param("oid") String orderId);
 	
-	@Select("select order_id, student_id, seat_id, order_time, start_time, end_time, last, status "
+	@Select("select order_id, student_id, seat_id, order_time, date, time_quantum, start_time, end_time, last, status "
 			+ "from order_log "
 			+ "where student_id = #{studetnId} and status <> '未完成'")
 	public List<OrderLogVo> getHistory(String studentId);

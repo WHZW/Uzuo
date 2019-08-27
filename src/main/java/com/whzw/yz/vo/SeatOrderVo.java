@@ -21,6 +21,8 @@ public class SeatOrderVo{
 
 	private String date;
 	
+	private char timeQuantum;
+	
 	public SeatOrderVo() {}
 	
 	public SeatOrderVo(SeatOrder seatOrder) {
@@ -31,6 +33,7 @@ public class SeatOrderVo{
 		this.orderTime = format.format(seatOrder.getOrderTime());
 		format.applyPattern("yyyy-MM-dd");
 		this.date = format.format(seatOrder.getDate());
+		this.timeQuantum = seatOrder.getTimeQuantun();
 	}
 	
 
@@ -83,11 +86,21 @@ public class SeatOrderVo{
 		this.date = date;
 	}
 
+	public char getTimeQuantum() {
+		return timeQuantum;
+	}
+
+	public void setTimeQuantum(char timeQuantum) {
+		this.timeQuantum = timeQuantum;
+	}
+
 	@Override
 	public String toString() {
 		return "SeatOrderVo [orderId=" + orderId + ", studentId=" + studentId + ", seatId=" + seatId + ", orderTime="
-				+ orderTime + ", date=" + date + "]";
+				+ orderTime + ", date=" + date + ", timeQuantum=" + timeQuantum + "]";
 	}
+	
+	
 	
 	
 	

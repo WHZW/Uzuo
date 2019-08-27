@@ -1,6 +1,7 @@
 package com.whzw.yz.vo;
 
 import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import com.whzw.yz.pojo.OrderLog;
 
@@ -13,6 +14,10 @@ public class OrderLogVo {
 	private String seatId;
 	
 	private String orderTime;
+	
+	private String date;
+	
+	private char timeQuantum;
 
 	private String startTime;
 
@@ -33,6 +38,8 @@ public class OrderLogVo {
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		this.orderTime = format.format(orderLog.getOrderTime());
 		format.applyPattern("yyyy-MM-dd");
+		this.date = format.format(orderLog.getDate());
+		this.timeQuantum = orderLog.getTimeQuantum();
 		this.startTime = format.format(orderLog.getStartTime());
 		this.endTime = format.format(orderLog.getEndTime());
 		this.last = orderLog.getLast();
@@ -102,6 +109,22 @@ public class OrderLogVo {
 
 	public void setStatus(String status) {
 		this.status = status;
+	}
+
+	public String getDate() {
+		return date;
+	}
+
+	public void setDate(String date) {
+		this.date = date;
+	}
+
+	public char getTimeQuantum() {
+		return timeQuantum;
+	}
+
+	public void setTimeQuantum(char timeQuantum) {
+		this.timeQuantum = timeQuantum;
 	}
 
 	@Override

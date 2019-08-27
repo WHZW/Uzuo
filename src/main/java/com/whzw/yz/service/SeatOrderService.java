@@ -86,15 +86,14 @@ public class SeatOrderService {
 			seatOrder.setOrderCode(orderCode);
 			// 写入预定记录
 			seatOrderMapper.addOrder(seatOrder);
-			// 记录超时时间
-			Date timeoutDate = getTimeoutDate(date, orderVo.getTimeQuantem());
-			orderMap.put(seatOrder.getId(), timeoutDate);
 			// 写入日志
 			OrderLog orderLog = new OrderLog();
 			orderLog.setSeatId(orderVo.getSeatId());
 			orderLog.setStudentId(studentId);
 			orderLog.setOrderId(seatOrder.getId());
 			orderLog.setOrderTime(currentDate);
+			orderLog.setDate(seatOrder.getDate());
+			orderLog.setTimeQuantum(seatOrder.getTimeQuantun());
 			if (orderVo.getTimeQuantem() == TimeQuantum.M.getInfo()) {
 				orderLog.setEndTime(
 						new Date(orderVo.getYear() - 1900, orderVo.getMonth(), orderVo.getDay(), 12, 00, 00));
@@ -106,6 +105,9 @@ public class SeatOrderService {
 						new Date(orderVo.getYear() - 1900, orderVo.getMonth(), orderVo.getDay(), 22, 00, 00));
 			}
 			orderLogMapper.addLog(orderLog);
+			// 记录超时时间
+			Date timeoutDate = getTimeoutDate(date, orderVo.getTimeQuantem());
+			orderMap.put(seatOrder.getId(), timeoutDate);
 			return new SeatOrderVo(seatOrder);			
 		} catch (Exception e) {
 			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();

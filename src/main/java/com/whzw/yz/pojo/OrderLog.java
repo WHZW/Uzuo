@@ -17,6 +17,10 @@ public class OrderLog {
 	private String seatId;
 	
 	private Date orderTime;
+	
+	private Date date;
+	
+	private char timeQuantum;
 
 	private Date startTime;
 
@@ -102,22 +106,29 @@ public class OrderLog {
 
 	public void setOrderId(String orderId) {
 		this.orderId = orderId;
+	}	
+
+	public Date getDate() {
+		return date;
 	}
-	
+
+	public void setDate(Date date) {
+		this.date = date;
+	}
+
+	public char getTimeQuantum() {
+		return timeQuantum;
+	}
+
+	public void setTimeQuantum(char timeQuantum) {
+		this.timeQuantum = timeQuantum;
+	}
 
 	@Override
 	public String toString() {
 		return "OrderLog [id=" + id + ", orderId=" + orderId + ", studentId=" + studentId + ", seatId=" + seatId
-				+ ", orderTime=" + orderTime + ", startTime=" + startTime + ", endTime=" + endTime + ", last=" + last
-				+ ", status=" + status + "]";
+				+ ", orderTime=" + orderTime + ", date=" + date + ", timeQuantum=" + timeQuantum + ", startTime="
+				+ startTime + ", endTime=" + endTime + ", last=" + last + ", status=" + status + "]";
 	}
-
-	
-
-	
-
-	
-
-	
 
 }
