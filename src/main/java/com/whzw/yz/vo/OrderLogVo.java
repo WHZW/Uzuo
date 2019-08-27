@@ -1,6 +1,8 @@
 package com.whzw.yz.vo;
 
-import java.util.Date;
+import java.text.SimpleDateFormat;
+
+import com.whzw.yz.pojo.OrderLog;
 
 public class OrderLogVo {
 	
@@ -10,15 +12,33 @@ public class OrderLogVo {
 
 	private String seatId;
 	
-	private Date orderTime;
+	private String orderTime;
 
-	private Date startTime;
+	private String startTime;
 
-	private Date endTime;
+	private String endTime;
 
 	private int last;
 
 	private String status;
+	
+	public OrderLogVo() {
+		super();
+	}
+
+	public OrderLogVo(OrderLog orderLog) {
+		this.orderId = orderLog.getId();
+		this.seatId = orderLog.getSeatId();
+		this.studentId = orderLog.getStudentId();
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		this.orderTime = format.format(orderLog.getOrderTime());
+		format.applyPattern("yyyy-MM-dd");
+		this.startTime = format.format(orderLog.getStartTime());
+		this.endTime = format.format(orderLog.getEndTime());
+		this.last = orderLog.getLast();
+		this.status = orderLog.getStatus();
+		
+	}
 
 	public String getOrderId() {
 		return orderId;
@@ -44,27 +64,27 @@ public class OrderLogVo {
 		this.seatId = seatId;
 	}
 
-	public Date getOrderTime() {
+	public String getOrderTime() {
 		return orderTime;
 	}
 
-	public void setOrderTime(Date orderTime) {
+	public void setOrderTime(String orderTime) {
 		this.orderTime = orderTime;
 	}
 
-	public Date getStartTime() {
+	public String getStartTime() {
 		return startTime;
 	}
 
-	public void setStartTime(Date startTime) {
+	public void setStartTime(String startTime) {
 		this.startTime = startTime;
 	}
 
-	public Date getEndTime() {
+	public String getEndTime() {
 		return endTime;
 	}
 
-	public void setEndTime(Date endTime) {
+	public void setEndTime(String endTime) {
 		this.endTime = endTime;
 	}
 
@@ -93,4 +113,5 @@ public class OrderLogVo {
 	
 	
 
+	
 }

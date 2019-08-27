@@ -95,13 +95,13 @@ public class SeatOrderService {
 			orderLog.setOrderTime(currentDate);
 			if (orderVo.getTimeQuantem() == TimeQuantum.M.getInfo()) {
 				orderLog.setEndTime(
-						new Date(orderVo.getYear() - 1900, orderVo.getMonth() - 1, orderVo.getDay(), 12, 00, 00));
+						new Date(orderVo.getYear() - 1900, orderVo.getMonth(), orderVo.getDay(), 12, 00, 00));
 			} else if (orderVo.getTimeQuantem() == TimeQuantum.A.getInfo()) {
 				orderLog.setEndTime(
-						new Date(orderVo.getYear() - 1900, orderVo.getMonth() - 1, orderVo.getDay(), 18, 00, 00));
+						new Date(orderVo.getYear() - 1900, orderVo.getMonth(), orderVo.getDay(), 18, 00, 00));
 			} else if (orderVo.getTimeQuantem() == TimeQuantum.N.getInfo()) {
 				orderLog.setEndTime(
-						new Date(orderVo.getYear() - 1900, orderVo.getMonth() - 1, orderVo.getDay(), 22, 00, 00));
+						new Date(orderVo.getYear() - 1900, orderVo.getMonth(), orderVo.getDay(), 22, 00, 00));
 			}
 			orderLogMapper.addLog(orderLog);
 			return new SeatOrderVo(seatOrder);			
