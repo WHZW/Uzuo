@@ -9,13 +9,13 @@ import java.util.Date;
  */
 public class SeatOrder {
 
-	private String id;
+	private String orderId;
 
 	private String studentId;
 
 	private String seatId;
 
-	private Date OrderTime;
+	private Date orderTime;
 
 	private Date date;
 
@@ -34,11 +34,11 @@ public class SeatOrder {
 	}
 
 	public String getId() {
-		return id;
+		return orderId;
 	}
 
 	public void setId(String id) {
-		this.id = id;
+		this.orderId = id;
 	}
 
 	public String getStudentId() {
@@ -58,11 +58,13 @@ public class SeatOrder {
 	}
 
 	public Date getOrderTime() {
-		return OrderTime;
+//		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-DD HH:mm:ss");
+//		format.format(orderTime);
+		return orderTime;
 	}
 
 	public void setOrderTime(Date orderTime) {
-		OrderTime = orderTime;
+		this.orderTime = orderTime;
 	}
 
 	public Date getDate() {

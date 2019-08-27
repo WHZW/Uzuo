@@ -10,6 +10,7 @@ import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
 import com.whzw.yz.pojo.SeatOrder;
+import com.whzw.yz.vo.SeatOrderVo;
 
 /**
  * @author WuBN
@@ -42,4 +43,8 @@ public interface SeatOrderMapper {
 
 	@Select("select * from `seat_order` where `id`=#{oid}")
 	public SeatOrder findOneById(@Param("oid") String orderId);
+	
+	@Select("select order_id, student_id, seat_id, order_time, date, time_quantum from seat_order "
+			+ "where student_id = #{studentId}")
+	public List<SeatOrderVo> getOrderInfoByStudentId(String studentId);
 }
