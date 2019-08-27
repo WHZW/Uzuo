@@ -21,6 +21,7 @@ import com.whzw.yz.pojo.SeatOrder;
 import com.whzw.yz.pojo.TimeQuantum;
 import com.whzw.yz.result.CodeMsg;
 import com.whzw.yz.util.LoginUtil;
+import com.whzw.yz.util.OrderCodeUtil;
 import com.whzw.yz.vo.OrderVo;
 
 /**
@@ -52,6 +53,8 @@ public class SeatOrderService {
 //		String studentId = LoginUtil.LoginCheck(request);
 
 		String studentId = "20164545";// 测试用
+		//这里你的OrderVo和我的OrderCode是完全相同对象
+		//可以替换成String oc = OrderCodeUtil.encode(orderCode);
 		String orderCode = String.valueOf(orderVo.getYear()) + String.valueOf(orderVo.getMonth())
 				+ String.valueOf(orderVo.getDay()) + String.valueOf(orderVo.getTimeQuantem()) + orderVo.getSeatId();
 		System.out.println(orderCode);

@@ -14,7 +14,7 @@ import com.whzw.yz.pojo.Seat;
 import com.whzw.yz.pojo.Table;
 
 @Service
-public class ClroomService {
+public class ClroomManageService {
 
 	@Autowired
 	private ClroomMapper clroomMapper;

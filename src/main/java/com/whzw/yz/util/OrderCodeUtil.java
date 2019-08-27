@@ -7,14 +7,14 @@ import com.whzw.yz.pojo.OrderCode;
 
 public class OrderCodeUtil {
 
+	@SuppressWarnings("deprecation")
 	public static String encode(OrderCode orderCode) {
 		int year = Integer.parseInt(orderCode.getYear());
 		int month = Integer.parseInt(orderCode.getMonth());
 		int day = Integer.parseInt(orderCode.getDay());
-		@SuppressWarnings("deprecation")
-		Date date = new Date(year - 1900, month - 1, day);
 		SimpleDateFormat sdFormat = new SimpleDateFormat("yyyyMMdd");
-		return sdFormat.format(date) + orderCode.getTimeQuantum() + orderCode.getSeatId();
+		return sdFormat.format(new Date(year - 1900, month - 1, day)) + orderCode.getTimeQuantum()
+				+ orderCode.getSeatId();
 	}
 
 	public static OrderCode decode(String code) {

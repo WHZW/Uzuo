@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.whzw.yz.exception.GlobalException;
 import com.whzw.yz.mapper.ClroomMapper;
 import com.whzw.yz.mapper.SeatMapper;
 import com.whzw.yz.mapper.SeatOrderMapper;
@@ -13,6 +14,7 @@ import com.whzw.yz.mapper.TableMapper;
 import com.whzw.yz.pojo.Clroom;
 import com.whzw.yz.pojo.OrderCode;
 import com.whzw.yz.pojo.SeatOrder;
+import com.whzw.yz.result.CodeMsg;
 import com.whzw.yz.util.OrderCodeUtil;
 import com.whzw.yz.vo.seatshow.ClroomInfoVo;
 import com.whzw.yz.vo.seatshow.DateTimeClroomIdVo;
@@ -46,6 +48,7 @@ public class SeatShowService {
 	 * @return
 	 */
 	public List<SeatStatusVo> getAllSeatsSatus(DateTimeClroomIdVo datetimeClroomIdVo) {
+		
 		String clroomId = datetimeClroomIdVo.getClroomId();
 
 		// 获取所有座位的id
@@ -55,6 +58,15 @@ public class SeatShowService {
 		SeatOrder seatOrder = null;
 		SeatStatusVo seatStatusVo = null;
 		List<SeatStatusVo> seatStatusVos = new ArrayList<>();
+		
+		if (seatIds == null || seatIds.size()==0) {
+			throw new GlobalException(CodeMsg.NOT_FIND_SEAT);
+		}
+		
+		orderCode = OrderCodeUtil.encode(new OrderCode(datetimeClroomIdVo.getYear(), datetimeClroomIdVo.getMonth(),
+				datetimeClroomIdVo.getDay(), datetimeClroomIdVo.getTimeQuantum(), ""));
+		
+		
 		// 生成预订信息编码并添加进列表
 		for (String sid : seatIds) {
 			orderCode = OrderCodeUtil.encode(new OrderCode(datetimeClroomIdVo.getYear(), datetimeClroomIdVo.getMonth(),
@@ -95,7 +107,7 @@ public class SeatShowService {
 	public List<String> getAllSeatsId(String clroomId) {
 		List<String> tables = tableMapper.findAllTablesId(clroomId);
 		if (tables == null)
-			return null;
+			throw new GlobalException(CodeMsg.NOT_FIND_SEAT);
 		List<String> seatIds = new ArrayList<>();
 		for (String tid : tables) {
 			// 将查到的seatId全部添加到查询结果集中
