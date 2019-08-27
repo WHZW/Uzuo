@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.whzw.yz.pojo.Clroom;
 import com.whzw.yz.result.CodeMsg;
 import com.whzw.yz.result.Result;
-import com.whzw.yz.service.ClroomService;
+import com.whzw.yz.service.ClroomManageService;
 
 /**
  * 教室管理控制器
@@ -23,7 +23,7 @@ import com.whzw.yz.service.ClroomService;
 public class ClroomManageController {
 
 	@Autowired
-	private ClroomService clroomService;
+	private ClroomManageService clroomService;
 
 	/**
 	 * 添加一间教室

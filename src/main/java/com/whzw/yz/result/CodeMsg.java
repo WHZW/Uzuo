@@ -23,6 +23,11 @@ public class CodeMsg {
 	// 预约模块
 	public static final CodeMsg SEAT_ALREDY_ORDERED = new CodeMsg(6001, "该座位已被预约");
 	public static final CodeMsg ORDER_TIME_PASS = new CodeMsg(6002, "预约时间已过");
+	public static final CodeMsg NO_VALID_ORDER = new CodeMsg(6003, "无有效预约");
+	public static final CodeMsg NOT_IN_TIME = new CodeMsg(6004, "未到时间");
+
+	// 教室及座位信息查看相关
+	public static final CodeMsg NOT_FIND_SEAT = new CodeMsg(7001, "没找到座位");
 
 	private CodeMsg(int code, String msg) {
 		this.code = code;

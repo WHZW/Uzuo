@@ -26,17 +26,27 @@ public class CheckTimeoutSchedule {
 	@Autowired
 	OrderLogMapper orderLogMappper;
 
+	@SuppressWarnings("deprecation")
 	@Scheduled(fixedRate = 5000)
 	@Transactional
 	public void checkTimeout() {
 		Map<String, Date> orderMap = seatOrderService.getOrderMap();
 		Date currentDate = new Date();
+		Date timeOut = null;
 		for(String key : orderMap.keySet()) {
-			if(orderMap.get(key).before(currentDate)) {
+			timeOut = orderMap.get(key);
+			if(timeOut.before(currentDate)) {
 				try {
-					seatOrderService.cancelOrder(key);
-					System.out.println("订单：" + key + "已超时");
-					orderLogMappper.updateStatus(key, "超时");
+					if(timeOut.getHours()==12 || timeOut.getHours()==18 || timeOut.getHours()==22) {
+						orderLogMappper.updateStatus(key, "完成");
+						seatOrderService.cancelOrder(key);
+					}else {
+						seatOrderService.cancelOrder(key);
+						System.out.println("订单：" + key + "已超时");
+						orderLogMappper.updateStatus(key, "超时");
+					}
+					
+					
 					//TODO 扣减信用积分	
 					
 				}catch (Exception e) {

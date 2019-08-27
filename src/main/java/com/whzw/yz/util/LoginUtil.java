@@ -10,7 +10,7 @@ import com.whzw.yz.result.CodeMsg;
 public class LoginUtil {
 
 	/**
-	 * 判断用户是否登录
+	 * 如果用户在线则返回用户id 如果用户不在线则抛出session_error异常
 	 * 
 	 * @param req
 	 * @return
