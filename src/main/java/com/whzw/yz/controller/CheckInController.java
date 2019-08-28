@@ -1,5 +1,6 @@
 package com.whzw.yz.controller;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
@@ -35,11 +36,12 @@ public class CheckInController {
 	 */
 	@GetMapping("/signin")
 	@ResponseBody
-	public Result<Date> signIn(@RequestParam("orderId") String orderId, @RequestParam("qrCode") String qrCode,
+	public Result<String> signIn(@RequestParam("orderId") String orderId, @RequestParam("qrCode") String qrCode,
 			HttpServletRequest req) {
 		Date startTime = checkInService.signIn(orderId, qrCode, req);
-
-		return Result.success(startTime);
+		String startTimeStr = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(startTime);
+		
+		return Result.success(startTimeStr);
 	}
 
 	/**

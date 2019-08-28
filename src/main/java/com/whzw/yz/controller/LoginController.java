@@ -29,11 +29,6 @@ public class LoginController {
 	@Autowired
 	private LoginService loginService;
 
-	@GetMapping("/")
-	public String getLoginPage() {
-		return "login.html";
-	}
-
 	@PostMapping("/do_login")
 	@ResponseBody
 	public Result<Boolean> login(@RequestBody LoginVo loginVo, HttpServletRequest req, HttpServletResponse resp) {
