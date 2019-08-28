@@ -17,6 +17,8 @@ public class Student {
 	private String subject;
 
 	private String phone;
+	
+	private int integral;
 
 	public Student() {
 		super();
@@ -68,6 +70,24 @@ public class Student {
 
 	public void setPhone(String phone) {
 		this.phone = phone;
+	}
+	
+	
+
+	public String getStudentId() {
+		return studentId;
+	}
+
+	public void setStudentId(String studentId) {
+		this.studentId = studentId;
+	}
+
+	public int getIntegral() {
+		return integral;
+	}
+
+	public void setIntegral(int integral) {
+		this.integral = integral;
 	}
 
 	@Override
