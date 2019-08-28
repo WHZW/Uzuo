@@ -12,6 +12,7 @@ import com.whzw.yz.mapper.SeatOrderMapper;
 import com.whzw.yz.mapper.StudentMapper;
 import com.whzw.yz.pojo.OrderLog;
 import com.whzw.yz.pojo.Student;
+import com.whzw.yz.util.LoginUtil;
 import com.whzw.yz.vo.OrderLogVo;
 import com.whzw.yz.vo.SeatOrderVo;
 
@@ -37,8 +38,8 @@ public class UserManagerService {
 	 * @return 
 	 */
 	public Student getUserInfo(HttpServletRequest req) {
-//		String studentId = LoginUtil.LoginCheck(req);
-		String studentId = "20164545";
+		String studentId = LoginUtil.LoginCheck(req);
+//		String studentId = "20164545";
 		Student student = studentMapper.getStudentInfo(studentId);
 		return student;
 	}
@@ -49,8 +50,8 @@ public class UserManagerService {
 	 * @return
 	 */
 	public List<SeatOrderVo> getSeatOrders(HttpServletRequest request) {
-//		String studentId = LoginUtil.LoginCheck(request);
-		String studentId = "20164545";
+		String studentId = LoginUtil.LoginCheck(request);
+//		String studentId = "20164545";
 		List<SeatOrderVo> orders = seatOrderMapper.getOrderInfoByStudentId(studentId);
 		return orders;
 	}
@@ -61,8 +62,8 @@ public class UserManagerService {
 	 * @return
 	 */
 	public List<OrderLogVo> getHistory(HttpServletRequest request){
-//		String studentId = LoginUtil.LoginCheck(request);
-		String studentId = "20164545";
+		String studentId = LoginUtil.LoginCheck(request);
+//		String studentId = "20164545";
 		List<OrderLogVo> logs = orderLogMapper.getHistory(studentId);
 		return logs;
 	}

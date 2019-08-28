@@ -16,6 +16,7 @@ import com.whzw.yz.mapper.OrderLogMapper;
 import com.whzw.yz.mapper.SeatOrderMapper;
 import com.whzw.yz.pojo.SeatOrder;
 import com.whzw.yz.result.CodeMsg;
+import com.whzw.yz.util.LoginUtil;
 
 @Service
 public class CheckInService {
@@ -42,9 +43,9 @@ public class CheckInService {
 		// TODO 二维码与座位id的映射
 
 //		// 检查登录状态
-//		String studentId = LoginUtil.LoginCheck(req);
+		String studentId = LoginUtil.LoginCheck(req);
 
-		String studentId = "20164545";
+//		String studentId = "20164545";
 
 		// 获取当前时间
 		Date now = Calendar.getInstance().getTime();
@@ -109,9 +110,9 @@ public class CheckInService {
 	@Transactional
 	public void signOut(String orderId, HttpServletRequest req) {
 //		// 检查登录状态
-//		String studentId = LoginUtil.LoginCheck(req);
+		String studentId = LoginUtil.LoginCheck(req);
 
-		String studentId = "20164545";
+//		String studentId = "20164545";
 
 		try {
 			// 获取当前时间
