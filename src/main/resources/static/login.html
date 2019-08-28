@@ -100,7 +100,7 @@
 
                                         <div class="row">
                                             <div class="col-lg-12 text-center">
-                                                <!-- <p style="color: red">密码错误！</p> -->
+                                                <p style="color: red">{{errMessage}}</p>
                                             </div>
                                         </div>
                                         <div class="row my-3">
@@ -214,6 +214,7 @@
                 isInLogin: true,
                 studentId:'',
                 password:'',
+                errMessage:'',
 
             },
             methods: {
@@ -227,11 +228,28 @@
                 },
                 // 登录
                 login:function(){
-                    console.log(this.password);
-                    this.password=this.MD5change(this.password);
-                    console.log(this.password);
-                    console.log(this.password.length);
+                    let MD5password=this.MD5change(this.password);
+                    console.log(this.studentId);
+                    console.log(MD5password);
                     
+                    axios.post(
+                        'login/do_login',
+                        {
+                            studentId:this.studentId,
+                            password:MD5password
+                        })
+                    .then(res => {
+                        console.log(res)
+                        if(res.data.code==0){
+                            // TODO 跳转到首页
+                            window.location.href='home.html';
+                        }else{
+                            this.errMessage=res.data.msg+'!';
+                        }
+                    })
+                    .catch(err => {
+                        console.error(err); 
+                    })
                     
                 },
                 //注册
@@ -240,7 +258,7 @@
                 },
                 //MD5转换
                 MD5change:function(value){
-                    return md5("value");
+                    return md5(value);
                 },
 
 

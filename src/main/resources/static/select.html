@@ -1,0 +1,281 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <title>Title</title>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- <script src="https://cdn.jsdelivr.net/npm/vue"></script> -->
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <!-- axios Http客户端 用来进行Ajex操作 -->
+	<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+
+  <style>
+    .seatCharts-row {
+      height: 35px;
+    }
+
+    .a {
+      padding: 0%;
+      width: 1px;
+      height: 30%;
+    }
+
+    .door {
+      width: 30px;
+      color: black;
+      border-style: solid;
+      border-width: 5px;
+      border-color: black;
+    }
+
+    .seatCharts-cell {
+      color: #182C4E;
+      height: 25px;
+      width: 25px;
+      line-height: 25px;
+      margin: 3px;
+      float: left;
+      text-align: center;
+      outline: none;
+      font-size: 13px;
+    }
+
+    .set {
+      color: black;
+      background-color: darkseagreen;
+    }
+
+    .container1 {
+      width: 1600px;
+      /* height: 400px; */
+      background-color: white;
+      margin: 0,10,0,10;
+    }
+
+    .row1{
+      padding: 1em 3em;
+    }
+  </style>
+</head>
+
+<body style="background: rgb(255, 229, 182)">
+  <div id="app">
+    <!-- 菜单栏 -->
+    <nav class="navbar navbar-expand-sm navbar-light" style="background-color: rgb(250, 162, 0);">
+
+      <!-- 平台标志，定向到主页 -->
+      <a class="navbar-brand" href="#">Uzuo</a>
+      <button class="navbar-toggler d-lg-none" type="button" data-toggle="collapse" data-target="#collapsibleNavId"
+        aria-controls="collapsibleNavId" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <!-- 菜单 -->
+      <div class="collapse navbar-collapse" id="collapsibleNavId">
+        <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+          <li class="nav-item active">
+            <a class="nav-link" href="#">我的预约 <span class="sr-only">(current)</span></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Link</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/userinfo">个人信息</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    <div class="jumbotron" style="background-color:rgb(255, 229, 182);padding: 0em 2em;">
+      <h1 style="margin: 1em 4em" class="display-4">座位预约</h1>
+      <hr class="my-4">
+    </div>
+
+    <!-- 座位图 -->
+    <!-- <div class="card"> -->
+    <div class="container container1">
+      <div class="row">
+        <div class="col-lg-3">
+          <div class="container">
+            <div class="row row1">
+              <h3 class="center-block">更改时间</h3>
+            </div>
+            <hr class="my-2">
+            
+            <div class="row row1">
+                <div class="">
+                    <div class="form-group">
+                        <select class="form-control form-control-lg" v-model="selectDate"
+                            name="" id="">
+                            <option v-for="(item, index) in date">{{item}}</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <hr class="my-2">
+            <div class="row row1">
+                <div class="text-center">
+                    <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                        <label class="btn btn-warning btn-lg active" style="width: 140px">
+                            <input type="radio" name="options" id="option1"
+                                autocomplete="off" checked> 上午
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <hr class="my-2">
+            <div class="row row1">
+                <div class="text-center">
+                    <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                        <label class="btn btn-warning btn-lg" style="width: 140px">
+                            <input type="radio" name="options" id="option2"
+                                autocomplete="off"> 下午
+                        </label>
+                    </div>
+                </div>
+
+            </div>
+            <hr class="my-2">
+            <div class="row row1">
+                <div class="text-center">
+                    <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                        <label class="btn btn-warning btn-lg" style="width: 140px">
+                            <input type="radio" name="options" id="option3"
+                                autocomplete="off"> 晚上
+                        </label>
+                    </div>
+                </div>
+            </div>
+          </div>
+        </div>
+        <div style='width:1px;border:1px solid black;float:left;'><!--这个div模拟一条红色的垂直分割线--></div>
+        <div class="col-lg-8">
+          <div class="container">
+            <div class="row">
+              <div class="btn"></div>
+            </div>
+            <div class="row" v-for="(i, index) in list" :key="index">
+              <div class="btn"></div>
+              <div class="a col-lg-1" v-for="(j, ind in list[index]" :key="ind">
+
+                <!-- ************************************ -->
+                <form action="/Users/wuqiyou/Desktop/java学习/项目展示/subscribe.html" method="post">
+                  <button name="set" type="submit" class="btn set" v-if="list[index][ind] === 'b'" class="button"
+                    role="checkbox" aria-checked="false" focusable="true" tabindex="-1">{{ind}}</button>
+                  <div v-if="list[index][ind] === 'c'"></div>
+                  <div v-else class="btn"> </div>
+                </form>
+
+
+
+              </div>
+            </div>
+            
+          </div>
+          
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- </div> -->
+
+  </div>
+  </div>
+
+  </div>
+  <!-- Optional JavaScript -->
+  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+    crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+    integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+    crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+    crossorigin="anonymous"></script>
+</body>
+
+<script>
+  let vue = new Vue({
+    el: '#app',
+    data: {
+      date: ['2019-8-26', '2019-8-27', '2019-8-28'],
+      set:[],
+      list: [
+        ['b', 'b', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'b', 'b'],
+        ['b', 'b', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'b', 'b'],
+        ['a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a'],
+        ['b', 'b', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'b', 'b'],
+        ['b', 'b', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'b', 'b'],
+        ['a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a'],
+        ['b', 'b', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'b', 'b'],
+        ['b', 'b', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'b', 'b'],
+        ['a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a'],
+        ['b', 'b', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'b', 'b'],
+        ['b', 'b', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'b', 'b'],
+        ['a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a'],
+        ['a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'b', 'b'],
+        ['a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'b', 'b'],
+        ['a', 'b', 'b', 'b', 'b', 'b', 'b', 'a', 'a', 'a', 'a'],
+        ['a', 'b', 'b', 'b', 'b', 'b', 'b', 'a', 'a', 'a', 'a'],
+        ['a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a'],
+        ['a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'c', 'a', 'a']]
+    },
+    // mounted() {
+    //   axios.get(url)
+    //   .then(res => {
+    //     console.log(res)
+    //   })
+    //   .catch(err => {
+    //     console.error(err); 
+    //   })
+    // },
+
+  })
+</script>
+
+<!-- <script>
+  function BookRack(rack) {
+    var obj = document.getElementById(rack);
+    obj.bgColor = 'yellow';
+  }
+
+
+  /**
+    *obj: 要改变颜色的对象
+    *color: 要改变成的颜色
+  */
+  function changeColor(obj, color) {
+    if (obj != undefined) {
+      obj.bgColor = color;
+    };
+  }
+  window.onload = function () {  //动态的绑定事件
+    //取出tr元素对象 
+    var trObj = document.getElementsByName('set');   //只能给一个tr绑定事件，因为id是唯一的
+
+    //绑定鼠标进入事件
+    trObj.addEventListener('mouseover', function () {
+      changeColor(this, 'red');
+    }, false);
+
+    //绑定鼠标离开事件
+    trObj.addEventListener('mouseout', function () {
+      changeColor(this, 'F2F2F2');
+    }, false);
+  }
+</script> -->
+
+</html>
