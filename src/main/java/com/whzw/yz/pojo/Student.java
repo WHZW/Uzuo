@@ -24,14 +24,6 @@ public class Student {
 		super();
 	}
 
-	public String getId() {
-		return studentId;
-	}
-
-	public void setId(String id) {
-		this.studentId = id;
-	}
-
 	public String getName() {
 		return name;
 	}

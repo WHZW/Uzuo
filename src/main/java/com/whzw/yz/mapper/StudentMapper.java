@@ -1,6 +1,8 @@
 package com.whzw.yz.mapper;
 
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
@@ -22,5 +24,12 @@ public interface StudentMapper {
 
 	@Select("select integral from student where student_id = #{studentId}")
 	public int getIntegralByStudentId(String studentId);
+
+	@Select("select student_id from student where student_id = #{studentId}")
+	public String getStudentIdById(String studentId);
+
+	@Insert("insert into student(student_id, name, gender, college, subject, phone) "
+			+ "values(#{s.studentId}, #{s.name}, #{s.gender}, #{s.college}, #{s.subject}, #{s.phone})")
+	public void addStudent(@Param("s")Student student);
 
 }
