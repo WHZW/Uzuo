@@ -40,12 +40,12 @@ public class OrderVo {
 		this.day = day;
 	}
 
-	public char getTimeQuantem() {
+	public char getTimeQuantum() {
 		return timeQuantum;
 	}
 
-	public void setTimeQuantem(char timeQuantem) {
-		this.timeQuantum = timeQuantem;
+	public void setTimeQuantum(char timeQuantum) {
+		this.timeQuantum = timeQuantum;
 	}
 
 	public String getSeatId() {
@@ -58,7 +58,7 @@ public class OrderVo {
 
 	@Override
 	public String toString() {
-		return "OrderVo [year=" + year + ", month=" + month + ", day=" + day + ", timeQuantem=" + timeQuantum
+		return "OrderVo [year=" + year + ", month=" + month + ", day=" + day + ", timeQuantum=" + timeQuantum
 				+ ", seatId=" + seatId + "]";
 	}
 	
