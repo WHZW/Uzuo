@@ -51,7 +51,10 @@ public class LoginService {
 		String uuid = UUIDUtil.uuid();
 		session.setAttribute("token", uuid);
 		session.setAttribute("studentId", loginVo.getStudentId());
-		resp.addCookie(new Cookie("token", uuid));
+		Cookie cookie = new Cookie("token", uuid);
+		cookie.setPath("/");
+		cookie.setMaxAge(300);
+		resp.addCookie(cookie);
 		return true;
 	}
 
