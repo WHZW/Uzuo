@@ -20,4 +20,7 @@ public interface StudentMapper {
 	@Update("update student set integral = integral - 10 where student_id = #{studentId}")
 	public void duduct(String studentId);
 
+	@Select("select integral from student where student_id = #{studentId}")
+	public int getIntegralByStudentId(String studentId);
+
 }

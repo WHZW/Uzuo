@@ -16,6 +16,7 @@ import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import com.whzw.yz.exception.GlobalException;
 import com.whzw.yz.mapper.OrderLogMapper;
 import com.whzw.yz.mapper.SeatOrderMapper;
+import com.whzw.yz.mapper.StudentMapper;
 import com.whzw.yz.pojo.OrderLog;
 import com.whzw.yz.pojo.SeatOrder;
 import com.whzw.yz.pojo.TimeQuantum;
@@ -38,6 +39,9 @@ public class SeatOrderService {
 	SeatOrderMapper seatOrderMapper;
 	@Autowired
 	OrderLogMapper orderLogMapper;
+	
+	@Autowired
+	StudentMapper studentMapper;
 
 	private static final Map<String, Date> orderMap = new ConcurrentHashMap<>();
 
@@ -51,6 +55,12 @@ public class SeatOrderService {
 	public SeatOrderVo order(OrderVo orderVo, HttpServletRequest request) {
 		String studentId = LoginUtil.LoginCheck(request);
 //		String studentId = "20164545";// 测试用
+		//检查信用积分
+		int integral = studentMapper.getIntegralByStudentId(studentId);
+		if(integral < 60) {
+			throw new GlobalException(CodeMsg.INTEGRAL_NOT_ENOUGH);
+		}
+		
 		//这里你的OrderVo和我的OrderCode是完全相同对象
 		//可以替换成String oc = OrderCodeUtil.encode(orderCode);
 		String orderCode = String.valueOf(orderVo.getYear()) + String.valueOf(orderVo.getMonth())
