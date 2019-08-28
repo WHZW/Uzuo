@@ -29,10 +29,6 @@ public class LoginService {
 	
 	public boolean doLogin(LoginVo loginVo, HttpServletRequest req, HttpServletResponse resp) {
 		
-		if(LoginUtil.LoginCheck(req)!=null) {
-//			throw new GlobalException(CodeMsg.REPEAT_LOGIN)
-		}
-		
 		String id = loginVo.getStudentId();
 		String password = loginVo.getPassword();
 		LoginVo loginVoDb = loginMapper.getStudent(id);
