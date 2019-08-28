@@ -31,6 +31,9 @@ public class CodeMsg {
 
 	// 教室及座位信息查看相关
 	public static final CodeMsg NOT_FIND_SEAT = new CodeMsg(7001, "没找到座位");
+	
+	//注册模块
+	public static final CodeMsg STUDENT_EXIST = new CodeMsg(8001, "用户已存在");
 
 	private CodeMsg(int code, String msg) {
 		this.code = code;
