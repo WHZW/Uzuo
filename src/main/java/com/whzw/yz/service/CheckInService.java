@@ -122,7 +122,7 @@ public class CheckInService {
 
 			// 未查到预约
 			if (seatOrder == null)
-				throw new GlobalException(CodeMsg.NO_VALID_ORDER);
+				throw new GlobalException(CodeMsg.ORDER_NOT_EXIST);
 
 			// 该订单与该用户不匹配
 			if (!seatOrder.getStudentId().equals(studentId))

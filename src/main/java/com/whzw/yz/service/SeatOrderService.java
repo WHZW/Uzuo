@@ -160,7 +160,6 @@ public class SeatOrderService {
 	 * 获取当前时间段
 	 * 
 	 * @param currentDate
-	 * @param currentQut
 	 * @return
 	 */
 	private char getCurrentQut(Date currentDate) {
@@ -172,7 +171,7 @@ public class SeatOrderService {
 		mDate.setSeconds(0);
 		//下午时间段终点
 		Date aDate = Calendar.getInstance().getTime();
-		aDate.setHours(16);
+		aDate.setHours(18);
 		aDate.setMinutes(0);
 		aDate.setSeconds(0);
 
@@ -210,9 +209,14 @@ public class SeatOrderService {
 	 */
 	public boolean cancelOrder(String orderId) {
 		try {
-			seatOrderMapper.deleteOrder(orderId);
-			orderMap.remove(orderId);
-			orderLogMapper.updateStatus(orderId, "取消");
+			//查看数据库中是否有这条预约
+			String dbOrderId = seatOrderMapper.getOrderIdByOrderId(orderId);
+			if(dbOrderId == null) {
+				throw new GlobalException(CodeMsg.ORDER_NOT_EXIST);
+			}
+			seatOrderMapper.deleteOrder(dbOrderId);
+			orderLogMapper.updateStatus(dbOrderId, "取消");
+			orderMap.remove(dbOrderId);
 			return true;			
 		} catch (Exception e) {
 			e.printStackTrace();

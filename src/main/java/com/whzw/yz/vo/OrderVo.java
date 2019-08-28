@@ -8,7 +8,7 @@ public class OrderVo {
 	
 	private int day;
 	
-	private char timeQuantem;
+	private char timeQuantum;
 	
 	private String seatId;
 	
@@ -41,11 +41,11 @@ public class OrderVo {
 	}
 
 	public char getTimeQuantem() {
-		return timeQuantem;
+		return timeQuantum;
 	}
 
 	public void setTimeQuantem(char timeQuantem) {
-		this.timeQuantem = timeQuantem;
+		this.timeQuantum = timeQuantem;
 	}
 
 	public String getSeatId() {
@@ -58,7 +58,7 @@ public class OrderVo {
 
 	@Override
 	public String toString() {
-		return "OrderVo [year=" + year + ", month=" + month + ", day=" + day + ", timeQuantem=" + timeQuantem
+		return "OrderVo [year=" + year + ", month=" + month + ", day=" + day + ", timeQuantem=" + timeQuantum
 				+ ", seatId=" + seatId + "]";
 	}
 	

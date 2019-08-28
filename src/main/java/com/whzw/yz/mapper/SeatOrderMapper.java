@@ -47,4 +47,7 @@ public interface SeatOrderMapper {
 	@Select("select order_id, student_id, seat_id, order_time, date, time_quantum from seat_order "
 			+ "where student_id = #{studentId}")
 	public List<SeatOrderVo> getOrderInfoByStudentId(String studentId);
+
+	@Select("select order_id from seat_order where order_id = #{orderId}")
+	public String getOrderIdByOrderId(String orderId);
 }

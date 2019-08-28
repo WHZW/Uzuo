@@ -22,7 +22,7 @@ import com.whzw.yz.vo.SeatOrderVo;
  *
  */
 @Controller
-@RequestMapping("/UserManager")
+@RequestMapping("/userManager")
 public class UserManageController {
 	
 	@Autowired

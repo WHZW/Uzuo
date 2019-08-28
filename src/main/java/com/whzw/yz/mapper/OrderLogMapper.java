@@ -41,4 +41,7 @@ public interface OrderLogMapper {
 			+ "where student_id = #{studetnId} and status <> '未完成'")
 	public List<OrderLogVo> getHistory(String studentId);
 
+	@Select("select student_id from order_log where order_id = #{key}")
+	public String getStudentIdByOrderId(String key);
+
 }
