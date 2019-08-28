@@ -54,8 +54,8 @@ public class SeatOrderService {
 	 * @return
 	 */
 	public SeatOrderVo order(OrderVo orderVo, HttpServletRequest request) {
-//		String studentId = LoginUtil.LoginCheck(request);
-		String studentId = "20164545";// 测试用
+		String studentId = LoginUtil.LoginCheck(request);
+//		String studentId = "20164545";// 测试用
 		//检查信用积分
 		int integral = studentMapper.getIntegralByStudentId(studentId);
 		if(integral < 60) {
