@@ -19,7 +19,7 @@ public class LoginUtil {
 
 		Cookie[] cookies = req.getCookies();
 		String cookieToken = null;
-
+		
 		for (Cookie cookie : cookies) {
 			if (cookie.getName().equals("token")) {
 				cookieToken = cookie.getValue();

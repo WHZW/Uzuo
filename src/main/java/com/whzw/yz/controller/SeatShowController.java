@@ -44,7 +44,7 @@ public class SeatShowController {
 
 	@GetMapping("/status")
 	@ResponseBody
-	public Result<List<SeatStatusVo>> showSeatsByTime(@RequestBody DateTimeClroomIdVo datetimeClroomIdVo) {
+	public Result<List<SeatStatusVo>> showSeatsByTime(DateTimeClroomIdVo datetimeClroomIdVo) {
 		return Result.success(seatShowService.getAllSeatsSatus(datetimeClroomIdVo));
 
 	}
