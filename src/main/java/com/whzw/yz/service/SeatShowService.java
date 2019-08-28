@@ -60,29 +60,32 @@ public class SeatShowService {
 		if (seatIds == null || seatIds.size() == 0) {
 			throw new GlobalException(CodeMsg.NOT_FIND_SEAT);
 		}
-		
-		//拼接模糊查询依据 yyyyMMdd[MAN]
+
+		// 拼接模糊查询依据 yyyyMMdd[MAN]
 		String orderCodePart = OrderCodeUtil.encode(new OrderCode(datetimeClroomIdVo.getYear(),
-				datetimeClroomIdVo.getMonth(), datetimeClroomIdVo.getDay(), datetimeClroomIdVo.getTimeQuantum(),""));
-		
-		//查询所有当前预约的座位
+				datetimeClroomIdVo.getMonth(), datetimeClroomIdVo.getDay(), datetimeClroomIdVo.getTimeQuantum(), ""))
+				+ "%";
+
+		// 查询所有当前预约的座位
 		List<SeatOrder> seatOrders = seatOrderMapper.findManyByCode(orderCodePart);
-		
-		//初始化座位状态列表
+
+		// 初始化座位状态列表
 		for (String sid : seatIds) {
-			
 			seatStatusVo = new SeatStatusVo();
-			//设置座位ID
+			// 设置座位ID
 			seatStatusVo.setSeatId(sid);
-			
-			//查找座位订单表
+
+			// 初始化所有座位状态
+			seatStatusVo.setStatus(0);
+
+			// 查找座位订单表
 			for (SeatOrder so : seatOrders) {
-				if(so.getSeatId().equals(sid)) {//找到相同seatId说明是占用的
+				if (so.getSeatId().equals(sid)) {// 找到相同seatId说明是占用的
 					seatStatusVo.setStatus(1);
+					break;
 				}
 			}
-			//没找到说明是空闲的
-			seatStatusVo.setStatus(0);
+
 			seatStatusVos.add(seatStatusVo);
 		}
 

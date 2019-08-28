@@ -38,7 +38,7 @@ public interface SeatOrderMapper {
 	@Select("select * from `seat_order` where `student_id`=#{sid} and `order_code`=#{oc}")
 	public SeatOrder findOneByCodeStudentId(@Param("sid") String studentId, @Param("oc") String orderCode);
 
-	@Select("selct * from `seat_order` where `order_code` like #{ocp}")
+	@Select("select * from `seat_order` where `order_code` like #{ocp}")
 	public List<SeatOrder> findManyByCode(@Param("ocp") String orderCodePart);
 
 	@Select("select * from `seat_order` where `id`=#{oid}")

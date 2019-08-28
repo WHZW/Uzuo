@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.whzw.yz.result.Result;
 import com.whzw.yz.service.LoginService;
+import com.whzw.yz.util.LoginUtil;
 import com.whzw.yz.vo.LoginVo;
 
 /**
@@ -40,4 +41,8 @@ public class LoginController {
 		return Result.success(isSucceed);
 	}
 
+	@GetMapping("/islogin")
+	public Result<String> isLogin(HttpServletRequest req) {
+		return Result.success(LoginUtil.LoginCheck(req));
+	}
 }

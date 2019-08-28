@@ -1,22 +1,21 @@
 package com.whzw.yz.vo;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import com.whzw.yz.pojo.OrderLog;
 
 public class OrderLogVo {
-	
+
 	private String orderId;
 
 	private String studentId;
 
 	private String seatId;
-	
+
 	private String orderTime;
-	
+
 	private String date;
-	
+
 	private char timeQuantum;
 
 	private String startTime;
@@ -26,7 +25,7 @@ public class OrderLogVo {
 	private int last;
 
 	private String status;
-	
+
 	public OrderLogVo() {
 		super();
 	}
@@ -44,7 +43,7 @@ public class OrderLogVo {
 		this.endTime = format.format(orderLog.getEndTime());
 		this.last = orderLog.getLast();
 		this.status = orderLog.getStatus();
-		
+
 	}
 
 	public String getOrderId() {
@@ -133,8 +132,5 @@ public class OrderLogVo {
 				+ orderTime + ", startTime=" + startTime + ", endTime=" + endTime + ", last=" + last + ", status="
 				+ status + "]";
 	}
-	
-	
 
-	
 }

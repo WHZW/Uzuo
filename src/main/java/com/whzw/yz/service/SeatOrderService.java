@@ -5,7 +5,6 @@ import java.util.Date;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,7 +38,7 @@ public class SeatOrderService {
 	SeatOrderMapper seatOrderMapper;
 	@Autowired
 	OrderLogMapper orderLogMapper;
-	
+
 	@Autowired
 	StudentMapper studentMapper;
 
@@ -55,14 +54,14 @@ public class SeatOrderService {
 	public SeatOrderVo order(OrderVo orderVo, HttpServletRequest request) {
 		String studentId = LoginUtil.LoginCheck(request);
 //		String studentId = "20164545";// 测试用
-		//检查信用积分
+		// 检查信用积分
 		int integral = studentMapper.getIntegralByStudentId(studentId);
-		if(integral < 60) {
+		if (integral < 60) {
 			throw new GlobalException(CodeMsg.INTEGRAL_NOT_ENOUGH);
 		}
-		
-		//这里你的OrderVo和我的OrderCode是完全相同对象
-		//可以替换成String oc = OrderCodeUtil.encode(orderCode);
+
+		// 这里你的OrderVo和我的OrderCode是完全相同对象
+		// 可以替换成String oc = OrderCodeUtil.encode(orderCode);
 		String orderCode = String.valueOf(orderVo.getYear()) + String.valueOf(orderVo.getMonth())
 				+ String.valueOf(orderVo.getDay()) + String.valueOf(orderVo.getTimeQuantem()) + orderVo.getSeatId();
 		System.out.println(orderCode);
@@ -84,7 +83,7 @@ public class SeatOrderService {
 	private SeatOrderVo createOrder(OrderVo orderVo, String studentId, String orderCode) {
 		SeatOrder seatOrder = new SeatOrder();
 		try {
-			Date currentDate = Calendar.getInstance().getTime();			
+			Date currentDate = Calendar.getInstance().getTime();
 			seatOrder.setOrderTime(currentDate);
 			Date date = new Date(orderVo.getYear() - 1900, orderVo.getMonth(), orderVo.getDay());
 			if (date.before(currentDate)) {
@@ -119,7 +118,7 @@ public class SeatOrderService {
 			// 记录超时时间
 			Date timeoutDate = getTimeoutDate(date, orderVo.getTimeQuantem());
 			orderMap.put(seatOrder.getId(), timeoutDate);
-			return new SeatOrderVo(seatOrder);			
+			return new SeatOrderVo(seatOrder);
 		} catch (Exception e) {
 			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
 			e.printStackTrace();
@@ -134,6 +133,7 @@ public class SeatOrderService {
 	 * @param timeQuantem
 	 * @return
 	 */
+	@SuppressWarnings("deprecation")
 	private Date getTimeoutDate(Date date, char timeQuantem) {
 		Date timeoutDate = null;
 		Date currentDate = Calendar.getInstance().getTime();
@@ -144,7 +144,7 @@ public class SeatOrderService {
 				&& date.getDay() == currentDate.getDay() && currentQut == timeQuantem) {
 			Calendar calendar = Calendar.getInstance();
 			calendar.setTime(currentDate);
-			calendar.add(calendar.MINUTE, 30);
+			calendar.add(Calendar.MINUTE, 30);
 			timeoutDate = calendar.getTime();
 		}
 		// 非临时预约
@@ -173,14 +173,15 @@ public class SeatOrderService {
 	 * @param currentDate
 	 * @return
 	 */
+	@SuppressWarnings("deprecation")
 	private char getCurrentQut(Date currentDate) {
 		char currentQut = 0;
-		//上午时间段终点
+		// 上午时间段终点
 		Date mDate = Calendar.getInstance().getTime();
 		mDate.setHours(12);
 		mDate.setMinutes(0);
 		mDate.setSeconds(0);
-		//下午时间段终点
+		// 下午时间段终点
 		Date aDate = Calendar.getInstance().getTime();
 		aDate.setHours(18);
 		aDate.setMinutes(0);
@@ -198,37 +199,22 @@ public class SeatOrderService {
 	}
 
 	/**
-	 * 获取cookie
-	 * 
-	 * @param cookies
-	 * @return
-	 */
-	private String getCookieValue(Cookie[] cookies) {
-		for (Cookie cookie : cookies) {
-			if (cookie.getName() == "token") {
-				return cookie.getValue();
-			}
-		}
-		return null;
-	}
-
-	/**
 	 * 取消预定
 	 * 
 	 * @param orderId
-	 * @return 
+	 * @return
 	 */
 	public boolean cancelOrder(String orderId) {
 		try {
-			//查看数据库中是否有这条预约
+			// 查看数据库中是否有这条预约
 			String dbOrderId = seatOrderMapper.getOrderIdByOrderId(orderId);
-			if(dbOrderId == null) {
+			if (dbOrderId == null) {
 				throw new GlobalException(CodeMsg.ORDER_NOT_EXIST);
 			}
 			seatOrderMapper.deleteOrder(dbOrderId);
 			orderLogMapper.updateStatus(dbOrderId, "取消");
 			orderMap.remove(dbOrderId);
-			return true;			
+			return true;
 		} catch (Exception e) {
 			e.printStackTrace();
 			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
