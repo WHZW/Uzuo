@@ -21,6 +21,7 @@ import com.whzw.yz.pojo.SeatOrder;
 import com.whzw.yz.pojo.TimeQuantum;
 import com.whzw.yz.result.CodeMsg;
 import com.whzw.yz.util.LoginUtil;
+import com.whzw.yz.util.OrderCodeUtil;
 import com.whzw.yz.vo.OrderVo;
 import com.whzw.yz.vo.SeatOrderVo;
 
@@ -59,11 +60,8 @@ public class SeatOrderService {
 		if (integral < 60) {
 			throw new GlobalException(CodeMsg.INTEGRAL_NOT_ENOUGH);
 		}
-
-		// 这里你的OrderVo和我的OrderCode是完全相同对象
-		// 可以替换成String oc = OrderCodeUtil.encode(orderCode);
-		String orderCode = String.valueOf(orderVo.getYear()) + String.valueOf(orderVo.getMonth())
-				+ String.valueOf(orderVo.getDay()) + String.valueOf(orderVo.getTimeQuantem()) + orderVo.getSeatId();
+		
+		String orderCode = OrderCodeUtil.encode(orderVo);
 		System.out.println(orderCode);
 		if (seatOrderMapper.getOrderCode(orderCode) != null) {
 			throw new GlobalException(CodeMsg.SEAT_ALREDY_ORDERED);
@@ -92,7 +90,7 @@ public class SeatOrderService {
 			seatOrder.setDate(date);
 			seatOrder.setStudentId(studentId);
 			seatOrder.setSeatId(orderVo.getSeatId());
-			seatOrder.setTimeQuantun(orderVo.getTimeQuantem());
+			seatOrder.setTimeQuantun(orderVo.getTimeQuantum());
 			seatOrder.setOrderCode(orderCode);
 			// 写入预定记录
 			seatOrderMapper.addOrder(seatOrder);
@@ -104,19 +102,19 @@ public class SeatOrderService {
 			orderLog.setOrderTime(currentDate);
 			orderLog.setDate(seatOrder.getDate());
 			orderLog.setTimeQuantum(seatOrder.getTimeQuantun());
-			if (orderVo.getTimeQuantem() == TimeQuantum.M.getInfo()) {
+			if (orderVo.getTimeQuantum() == TimeQuantum.M.getInfo()) {
 				orderLog.setEndTime(
 						new Date(orderVo.getYear() - 1900, orderVo.getMonth(), orderVo.getDay(), 12, 00, 00));
-			} else if (orderVo.getTimeQuantem() == TimeQuantum.A.getInfo()) {
+			} else if (orderVo.getTimeQuantum() == TimeQuantum.A.getInfo()) {
 				orderLog.setEndTime(
 						new Date(orderVo.getYear() - 1900, orderVo.getMonth(), orderVo.getDay(), 18, 00, 00));
-			} else if (orderVo.getTimeQuantem() == TimeQuantum.N.getInfo()) {
+			} else if (orderVo.getTimeQuantum() == TimeQuantum.N.getInfo()) {
 				orderLog.setEndTime(
 						new Date(orderVo.getYear() - 1900, orderVo.getMonth(), orderVo.getDay(), 22, 00, 00));
 			}
 			orderLogMapper.addLog(orderLog);
 			// 记录超时时间
-			Date timeoutDate = getTimeoutDate(date, orderVo.getTimeQuantem());
+			Date timeoutDate = getTimeoutDate(date, orderVo.getTimeQuantum());
 			orderMap.put(seatOrder.getId(), timeoutDate);
 			return new SeatOrderVo(seatOrder);
 		} catch (Exception e) {
