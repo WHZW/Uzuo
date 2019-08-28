@@ -28,11 +28,6 @@ public class LoginService {
 	private LoginMapper loginMapper;
 	
 	public boolean doLogin(LoginVo loginVo, HttpServletRequest req, HttpServletResponse resp) {
-		String s = LoginUtil.LoginCheck(req);
-		if(s!=null) {
-			System.out.println(s);
-			throw new GlobalException(CodeMsg.REPEAT_LOGIN);
-		}
 		
 		String id = loginVo.getStudentId();
 		String password = loginVo.getPassword();
