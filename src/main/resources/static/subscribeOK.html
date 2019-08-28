@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="zh">
+
+<head>
+    <title>座位预约</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <!-- Vue -->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+    <!-- axios HTTP -->
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+    <style>
+        .container1 {
+            width: 1000px;
+            /* height: 400px; */
+            background-color: white;
+            margin: 10 auto;
+        }
+    </style>
+</head>
+
+<body style="background: rgb(255, 229, 182)">
+    <!-- 网页主体 -->
+    <div id="app">
+        <!-- 菜单栏 -->
+        <nav class="navbar navbar-expand-sm navbar-light" style="background-color: rgb(250, 162, 0);">
+
+            <!-- 平台标志，定向到主页 -->
+            <a class="navbar-brand" href="#">主页</a>
+            <button class="navbar-toggler d-lg-none" type="button" data-toggle="collapse"
+                data-target="#collapsibleNavId" aria-controls="collapsibleNavId" aria-expanded="false"
+                aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <!-- 菜单 -->
+            <div class="collapse navbar-collapse" id="collapsibleNavId">
+                <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Link</a>
+                    </li>
+                    <!-- <li class="nav-item dropdown">
+                          <a class="nav-link dropdown-toggle" href="#" id="dropdownId" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Dropdown</a>
+                          <div class="dropdown-menu" aria-labelledby="dropdownId">
+                              <a class="dropdown-item" href="#">Action 1</a>
+                              <a class="dropdown-item" href="#">Action 2</a>
+                          </div>
+                      </li> -->
+                </ul>
+            </div>
+        </nav>
+
+        <div class="container container1">
+            <div class="row">
+                <div class="col-lg-5">
+                    <img style="margin-top: 60px; margin-left: 100px" src="pic/study.jpg" width="60%" alt="">
+                </div>
+                <div class="col-lg-7">
+                    <div class="container">
+                        <div class="row" style="margin-top: 30px">
+                            <div class="col-lg-3" style="margin-top: 40px">
+                                <h1>约</h1>
+                            </div>
+                            <div class="col-lg-3" style="margin-top: 60px">
+                                <h3>不</h3>
+                            </div>
+                            <div class="col-lg-3"style="margin-top: 40px">
+                                <h2>yue</h2>
+                            </div>
+                            <div class="col-lg-3"style="margin-top: 60px">
+                                <h1>?</h1>
+                            </div>
+                        </div>
+                        <div class="row" style="margin-top: 100px">
+                           <div class="col-lg-6">
+                               <button type="button" class="btn btn-primary">约他妈的！</button>
+                           </div>
+                           <div class="col-lg-6">
+                               <button type="button" class="btn btn-primary">滚！不约！</button>
+                           </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row" style="margin: 40px 0 40px 0">
+                    <HR style="FILTER: alpha(opacity=100,finishopacity=0,style=3)" width="80%" color=#987cb9 SIZE=3>
+            </div>
+            <div class="row">
+                <div class="col-lg-1">
+                    
+                </div>
+                <div class="col-lg-10">
+                    <p>中南林业科技大学（Central South University of Forestry and Technology），简称“林科大”或“中南林”，坐落于湖南省长沙市，是国家林业和草原局与湖南省人民政府共建的省部共建大学、省属重点大学、中西部高校基础能力建设工程、卓越农林人才教育培养计划、国家特色重点学科项目、湖南省2011计划建设高校，建有湖南北罗霄国家森林公园、湖南绿色发展研究院。学校是湖南省属具有研究生推免资格的六所高校之一，亦是湖南省第一个拥有研究生院的省属高校，涵盖理、工、农、文、经、法、管、教、艺等九大学科门类，是具有博士后科研流动站、博士学位授予权和研究生推免权、以林业科学为特色的综合型大学。</p>
+                </div>
+                <div class="col-lg-1">
+                    </div>
+            </div>
+        </div>
+
+
+    </div>
+
+
+
+
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+
+            },
+            methods: {
+
+            },
+            computed: {
+
+            },
+            mounted() {
+
+            },
+        })
+
+    </script>
+
+
+
+
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>

@@ -19,7 +19,7 @@ public class CodeMsg {
 	public static final CodeMsg SESSION_ERROR = new CodeMsg(5002, "Session失效或不存在");
 	public static final CodeMsg STUDENT_NOT_EXIST = new CodeMsg(5003, "用户不存在");
 	public static final CodeMsg PASSWORD_ERROR = new CodeMsg(5004, "用户密码错误");
-//	public static final CodeMsg PASSWORD_ERROR = new CodeMsg(5005, "重复登录");
+	public static final CodeMsg REPEAT_LOGIN = new CodeMsg(5005, "重复登录");
 
 	// 预约模块
 	public static final CodeMsg SEAT_ALREDY_ORDERED = new CodeMsg(6001, "该座位已被预约");
