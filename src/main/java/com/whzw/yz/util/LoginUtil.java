@@ -7,6 +7,12 @@ import javax.servlet.http.HttpSession;
 import com.whzw.yz.exception.GlobalException;
 import com.whzw.yz.result.CodeMsg;
 
+/**
+ * 是否登录检查
+ * @author wubn
+ * @author zzy
+ *
+ */
 public class LoginUtil {
 
 	/**
@@ -18,6 +24,9 @@ public class LoginUtil {
 	public static String LoginCheck(HttpServletRequest req) {
 
 		Cookie[] cookies = req.getCookies();
+		if(cookies == null) {
+			throw new GlobalException(CodeMsg.SESSION_ERROR);
+		}
 		String cookieToken = null;
 
 		for (Cookie cookie : cookies) {
