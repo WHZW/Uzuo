@@ -4,7 +4,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import com.whzw.yz.pojo.OrderCode;
-import com.whzw.yz.vo.LoginVo;
 import com.whzw.yz.vo.OrderVo;
 
 public class OrderCodeUtil {
@@ -19,13 +18,13 @@ public class OrderCodeUtil {
 				+ orderCode.getSeatId();
 	}
 
+	@SuppressWarnings("deprecation")
 	public static String encode(OrderVo orderVo) {
 		int year = orderVo.getYear();
 		int month = orderVo.getMonth();
 		int day = orderVo.getDay();
 		SimpleDateFormat sdFormat = new SimpleDateFormat("yyyyMMdd");
-		return sdFormat.format(new Date(year - 1900, month - 1, day)) + orderVo.getTimeQuantum() 
-				+ orderVo.getSeatId();
+		return sdFormat.format(new Date(year - 1900, month - 1, day)) + orderVo.getTimeQuantum() + orderVo.getSeatId();
 	}
 
 	public static OrderCode decode(String code) {

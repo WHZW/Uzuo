@@ -11,28 +11,28 @@ import com.whzw.yz.mapper.StudentMapper;
 import com.whzw.yz.pojo.Student;
 import com.whzw.yz.pojo.StudentLogin;
 import com.whzw.yz.result.CodeMsg;
-import com.whzw.yz.result.Result;
 import com.whzw.yz.vo.RegisteVo;
 
 /**
  * 注册
+ * 
  * @author wubn
  *
  */
 @Service
 @Transactional
 public class RegisteService {
-	
+
 	@Autowired
 	StudentMapper studentMapper;
-	
+
 	@Autowired
 	LoginMapper loginMapper;
-	
+
 	public Boolean do_Registe(RegisteVo registeVo) {
 		try {
 			String studetnId = studentMapper.getStudentIdById(registeVo.getStudentId());
-			if(studetnId != null) {
+			if (studetnId != null) {
 				throw new GlobalException(CodeMsg.STUDENT_EXIST);
 			}
 			Student student = new Student();
@@ -43,12 +43,12 @@ public class RegisteService {
 			student.setPhone(registeVo.getPhone());
 			student.setSubject(registeVo.getSubject());
 			studentMapper.addStudent(student);
-			
+
 			StudentLogin studentLogin = new StudentLogin();
 			studentLogin.setStudentId(registeVo.getStudentId());
 			studentLogin.setPassword(registeVo.getPassword());
-			loginMapper.addStudent(studentLogin);			
-			return true;			
+			loginMapper.addStudent(studentLogin);
+			return true;
 		} catch (Exception e) {
 			e.printStackTrace();
 			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();

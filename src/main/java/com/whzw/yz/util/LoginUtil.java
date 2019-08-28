@@ -28,7 +28,7 @@ public class LoginUtil {
 			throw new GlobalException(CodeMsg.SESSION_ERROR);
 		}
 		String cookieToken = null;
-
+		
 		for (Cookie cookie : cookies) {
 			if (cookie.getName().equals("token")) {
 				cookieToken = cookie.getValue();
