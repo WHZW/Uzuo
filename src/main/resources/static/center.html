@@ -103,9 +103,9 @@
                         <img src="pic/timg.jpeg" class="img-circle" width="40%" alt="">
                     </div>
                     <div class="col-lg-8">
-                        <h1 class="display-5">{{user.username}}</h1>
-                        <p class="lead">信誉积分:{{user.score}}</p>
-                        <p class="lead">我已累计预约{{user.time}}分钟</p>
+                        <h1 class="display-5">{{user.name}}</h1>
+                        <p class="lead">信誉积分:{{user.integral}}</p>
+                        <!-- <p class="lead">我已累计预约{{user.time}}分钟</p> -->
                     </div>
                 </div>
             </div>
@@ -142,32 +142,30 @@
 
                 <div style='width:1px;border:1px solid black;float:left;'></div>
 
-                <div class="col-lg-8">
-                    <div class="container">
-                        <div class="row">
-                            <div class="btn"></div>
-                        </div>
-                        <div class="row" v-for="(i, index) in list" :key="index">
-                            <div class="btn"></div>
-                            <div class="a col-lg-1" v-for="(j, ind in list[index]" :key="ind">
-
-                                <!-- ************************************ -->
-                                <form action="/Users/wuqiyou/Desktop/java学习/项目展示/subscribe.html" method="post">
-                                    <button name="set" type="submit" class="btn set" v-if="list[index][ind] === 'b'"
-                                        class="button" role="checkbox" aria-checked="false" focusable="true"
-                                        tabindex="-1">{{ind}}</button>
-                                    <div v-if="list[index][ind] === 'c'"></div>
-                                    <div v-else class="btn"> </div>
-                                </form>
-
-
-
-                            </div>
-                        </div>
-
-                    </div>
-
+                <div>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>1</th>
+                                <th>2</th>
+                                <th>3</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td scope="row"></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td scope="row"></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
+
             </div>
         </div>
     </div>
@@ -194,20 +192,31 @@
     let vue = new Vue({
         el: '#app',
         data: {
-            user:{username:"光头强",sex:"男",ID:"6666666",score:"90",time:"10000"},
+            user: [],
             date: ['2019-8-26', '2019-8-27', '2019-8-28'],
             set: [],
 
         },
-        // mounted() {
-        //   axios.get(url)
-        //   .then(res => {
-        //     console.log(res)
-        //   })
-        //   .catch(err => {
-        //     console.error(err); 
-        //   })
-        // },
+        methods: {
+            getUserInfo: function () {
+                axios.get('/userManager/getInfo')
+                    .then(res => {
+                        console.log(res)
+                        this.user=res.data.data;
+                        console.log(this.user);
+                        
+                    })
+                    .catch(err => {
+                        console.error(err);
+                    })
+            },
+        },
+        computed: {
+
+        },
+        mounted() {
+            this.getUserInfo();
+        },
 
     })
 </script>

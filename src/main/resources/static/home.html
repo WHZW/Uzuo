@@ -250,6 +250,19 @@
                         })
                 },
 
+                //确认签到
+                signIn:function(orderId){
+                    axios.get('/library/checkin/signin',{
+                        orderId: orderId
+                    })
+                    .then(res => {
+                        console.log(res)
+                    })
+                    .catch(err => {
+                        console.error(err); 
+                    })
+                },
+
                 //时段文字匹配
                 manChange: function (man) {
 
