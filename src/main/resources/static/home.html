@@ -17,7 +17,7 @@
     <!-- axios HTTP -->
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 </head>
-   
+
 <body style="background: rgb(255, 229, 182)">
     <div id='app'>
         <!-- 菜单栏 -->
@@ -82,15 +82,15 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-lg-2">
-                                        
+
                                     </div>
-                                    
+
                                     <div class="col-lg-8 col-sm-12">
-                                        
+
                                         <div v-if="isLogin">
                                             <div v-if="orders.length==0">
-    
-                                                <p>你还没有预约如何座位，快去预约一个座位开始学习吧！</p>
+
+                                                <p>你还没有预约任何座位，快去预约一个座位开始学习吧！</p>
                                             </div>
                                             <div v-else>
                                                 <table class="table">
@@ -100,10 +100,10 @@
                                                             <td>{{manChange(order.timeQuantum)}}</td>
                                                             <td><button type="button"
                                                                     class="btn btn-success btn-sm">签到</button></td>
-                                                            <td><button type="button"
+                                                            <td><button type="button" @click="cencelOrder(order.id)"
                                                                     class="btn btn-danger btn-sm">取消预约</button></td>
                                                         </tr>
-    
+
                                                     </tbody>
                                                 </table>
                                             </div>
@@ -232,8 +232,27 @@
                             console.error(err);
                         })
                 },
+
+                // 取消预约
+                cencelOrder: function (orderId) {
+                    console.log(orderId);
+
+                    axios.post('/seatOrder/cencle',
+                        {
+                            orderId: orderId
+                        })
+                        .then(res => {
+                            console.log(res)
+                            this.getOrderInfo();
+                        })
+                        .catch(err => {
+                            console.error(err);
+                        })
+                },
+
+                //时段文字匹配
                 manChange: function (man) {
-                    
+
                     if (man == 'M') {
                         return '早上'
                     } else if (man == 'A') {
@@ -247,8 +266,8 @@
             },
             computed: {
                 hello: function () {
-                    console.log('now'+this.now);
-                    
+                    console.log('now' + this.now);
+
                     if (this.now == 'M') {
                         return '早上好，' + this.userName + '!'
                     } else if (this.now == 'A') {
@@ -257,15 +276,7 @@
                         return '晚上好，' + this.userName + '!'
                     }
                 },
-                // manChange:function(man){
-                //     if(man=='M'){
-                //         return '早上'
-                //     }else if(man=='A'){
-                //         return '下午'
-                //     }else if(man=='N'){
-                //         return '晚上'
-                //     }
-                // },
+
 
 
 

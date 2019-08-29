@@ -29,7 +29,7 @@ public interface SeatOrderMapper {
 	@Options(useGeneratedKeys = true, keyProperty = "id")
 	public void addOrder(@Param("so") SeatOrder seatOrder);
 
-	@Delete("delete from seat_order where id = #{id}")
+	@Delete("delete from seat_order where order_id = #{id}")
 	public void deleteOrder(String id);
 
 	@Select("select * from `seat_order` where `order_code`=#{oc}")

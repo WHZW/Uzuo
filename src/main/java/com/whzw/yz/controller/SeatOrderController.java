@@ -40,6 +40,7 @@ public class SeatOrderController {
 	@PostMapping("/cencle")
 	@ResponseBody
 	public Result<Boolean> cencle(@RequestBody Map<String, String> map) {
+		System.out.println(map.get("orderId"));
 		seatOrderService.cancelOrder(map.get("orderId"));
 		return Result.success(true);
 	}
