@@ -37,13 +37,20 @@
         <div class="jumbotron jumbotron-fluid">
             <div class="container">
                 <h1 class="display-3">有座</h1>
-                <p class="lead">Jumbo helper text</p>
+                <p class="lead">人人都有座</p>
                 <hr class="my-2">
 
-                <p>More info</p>
-                <p class="lead">
-                    <a class="btn btn-primary btn-lg" href="login.html" role="button">现在登录</a>
-                </p>
+                <!-- <p>More info</p> -->
+                <div v-if="isLogin">
+                    <h4>{{hello}}</h4>
+                </div>
+                <div v-else>
+
+                    <p class="lead">
+                        <a class="btn btn-primary btn-lg" href="login.html" role="button">现在登录</a>
+                    </p>
+                </div>
+
             </div>
         </div>
 
@@ -57,28 +64,74 @@
             <hr class="my-2">
 
             <div class="row">
-                <div class="col-lg-4 col-sm-12">
+                <div class="col-lg-8 col-sm-12 ">
 
-                    <div class="card">
+                    <!-- 左边 -->
+                    <div class="card my-2">
                         <div class="card-body">
-                            <h4 class="card-title">我的预约</h4>
-                            <p class="card-text">Text</p>
+                            <div class="container ">
+                                <div class="row">
+                                    <div class="col-lg-2">
+
+                                    </div>
+                                    <div class="col-lg-8 col-sm-12">
+
+                                        <h4 class="card-title mx-2">我的预约</h4>
+                                    </div>
+
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-2">
+
+                                    </div>
+
+                                    <div class="col-lg-8 col-sm-12">
+
+                                        <div v-if="isLogin">
+                                            <div v-if="orders.length==0">
+
+                                                <p>你还没有预约任何座位，快去预约一个座位开始学习吧！</p>
+                                            </div>
+                                            <div v-else>
+                                                <table class="table">
+                                                    <tbody>
+                                                        <tr v-for="(order, index) in orders">
+                                                            <td>{{order.date}}</td>
+                                                            <td>{{manChange(order.timeQuantum)}}</td>
+                                                            <td><button type="button"
+                                                                    class="btn btn-success btn-sm">签到</button></td>
+                                                            <td><button type="button" @click="cencelOrder(order.id)"
+                                                                    class="btn btn-danger btn-sm">取消预约</button></td>
+                                                        </tr>
+
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                        <div v-else>
+                                            <p>你还没有登录，快去登录吧！</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
                         </div>
                     </div>
                 </div>
 
-                <div class="col-lg-8 col-sm-12">
+                <div class="col-lg-4 col-sm-12 my-2">
                     <div class="card">
                         <div class="card-body">
                             <div class="container">
                                 <div class="row">
                                     <div class="col-lg-12 col-sm-12 text-center">
                                         <h4 class="card-title">座位预约</h4>
-                                        <button @click="toSubcribe()" type="button" class="btn btn-primary">现在预约</button>
+                                        <button @click="toSubcribe()" type="button"
+                                            class="btn btn-primary">现在预约</button>
                                     </div>
                                 </div>
                             </div>
-                            
+
                         </div>
                     </div>
                 </div>
@@ -96,7 +149,7 @@
         </div>
 
         <!-- 页脚 -->
-    
+
     </div>
 
 
@@ -105,30 +158,131 @@
         new Vue({
             el: '#app',
             data: {
-                isLogin:false,
+                isLogin: false,
+                userName: '',
+                now: '',
+                orders: [],
 
             },
             methods: {
                 //跳转到预约页面
-                toSubcribe:function(){
-                    window.location.href='subscribe.html';
+                toSubcribe: function () {
+                    window.location.href = 'subscribe.html';
                 },
-                toLogin:function(){
-                    window.location.href='login.html';
-                }
+                //跳转到登录页面
+                toLogin: function () {
+                    window.location.href = 'login.html';
+                },
+                // 获取登录状态
+                getIsLogin: function () {
+                    axios.get('/login/islogin')
+                        .then(res => {
+                            console.log(res)
+                            if (res.data.code == 0) {
+                                this.isLogin = true;
+                                console.log(this.isLogin);
+
+                                this.getUserInfo();
+
+                                this.getTime();
+
+                                this.getOrderInfo();
+                            }
+                        })
+                        .catch(err => {
+                            console.error(err);
+                        })
+
+                },
+                // 获取用户信息
+                getUserInfo: function () {
+                    axios.get('/userManager/getInfo')
+                        .then(res => {
+                            console.log(res)
+                            this.userName = res.data.data.name;
+                            console.log(this.userName);
+                        })
+                        .catch(err => {
+                            console.error(err);
+                        })
+                },
+
+                //获取服务器时间
+                getTime: function () {
+                    axios.get('/datetime/now')
+                        .then(res => {
+                            console.log(res)
+                            this.now = res.data.data.today.timeQuantum;
+                        })
+                        .catch(err => {
+                            console.error(err);
+                        })
+                },
+
+                // 获取用户预约信息
+                getOrderInfo: function () {
+                    axios.get('/userManager/getOrders')
+                        .then(res => {
+                            console.log(res)
+                            this.orders = res.data.data;
+                            console.log(this.orders);
+
+                        })
+                        .catch(err => {
+                            console.error(err);
+                        })
+                },
+
+                // 取消预约
+                cencelOrder: function (orderId) {
+                    console.log(orderId);
+
+                    axios.post('/seatOrder/cencle',
+                        {
+                            orderId: orderId
+                        })
+                        .then(res => {
+                            console.log(res)
+                            this.getOrderInfo();
+                        })
+                        .catch(err => {
+                            console.error(err);
+                        })
+                },
+
+                //时段文字匹配
+                manChange: function (man) {
+
+                    if (man == 'M') {
+                        return '早上'
+                    } else if (man == 'A') {
+                        return '下午'
+                    } else if (man == 'N') {
+                        return '晚上'
+                    }
+                },
+
 
             },
             computed: {
+                hello: function () {
+                    console.log('now' + this.now);
+
+                    if (this.now == 'M') {
+                        return '早上好，' + this.userName + '!'
+                    } else if (this.now == 'A') {
+                        return '下午好，' + this.userName + '!'
+                    } else if (this.now == 'N') {
+                        return '晚上好，' + this.userName + '!'
+                    }
+                },
+
+
+
 
             },
             mounted() {
-                axios.get('/login/islogin',)
-                .then(res => {
-                    console.log(res)
-                })
-                .catch(err => {
-                    console.error(err); 
-                })
+                this.getIsLogin();
 
             },
         })

@@ -9,13 +9,13 @@
 
   <!-- <script src="https://cdn.jsdelivr.net/npm/vue"></script> -->
   <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-  
+
   <!-- Bootstrap CSS -->
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
     integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
-    <!-- axios Http客户端 用来进行Ajex操作 -->
-	<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <!-- axios Http客户端 用来进行Ajex操作 -->
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 
 
   <style>
@@ -50,18 +50,27 @@
     }
 
     .set {
+      margin: 5px 5px 5px 5px;
+      width: 50px;
       color: black;
       background-color: darkseagreen;
+    }
+
+    .set1 {
+      margin: 5px 5px 5px 5px;
+      width: 50px;
+      color: black;
+      background-color: red;
     }
 
     .container1 {
       width: 1600px;
       /* height: 400px; */
       background-color: white;
-      margin: 0,10,0,10;
+      margin: 0, 10, 0, 10;
     }
 
-    .row1{
+    .row1 {
       padding: 1em 3em;
     }
   </style>
@@ -110,56 +119,54 @@
               <h3 class="center-block">更改时间</h3>
             </div>
             <hr class="my-2">
-            
+
             <div class="row row1">
-                <div class="">
-                    <div class="form-group">
-                        <select class="form-control form-control-lg" v-model="selectDate"
-                            name="" id="">
-                            <option v-for="(item, index) in date">{{item}}</option>
-                        </select>
-                    </div>
+              <div class="">
+                <div class="form-group">
+                  <select class="form-control form-control-lg" v-model="selectDate" name="" id="">
+                    <option type="button" @click="refresh()" v-for="(item, index) in date">{{item}}</option>
+                  </select>
                 </div>
+              </div>
             </div>
 
             <hr class="my-2">
             <div class="row row1">
-                <div class="text-center">
-                    <div class="btn-group btn-group-toggle" data-toggle="buttons">
-                        <label class="btn btn-warning btn-lg active" style="width: 140px">
-                            <input type="radio" name="options" id="option1"
-                                autocomplete="off" checked> 上午
-                        </label>
-                    </div>
+              <div class="text-center">
+                <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                  <label class="btn btn-warning btn-lg active" style="width: 140px">
+                    <button @click="bm()" type="button" class="btn btn-warning">上午</button>
+                  </label>
                 </div>
+              </div>
             </div>
 
             <hr class="my-2">
             <div class="row row1">
-                <div class="text-center">
-                    <div class="btn-group btn-group-toggle" data-toggle="buttons">
-                        <label class="btn btn-warning btn-lg" style="width: 140px">
-                            <input type="radio" name="options" id="option2"
-                                autocomplete="off"> 下午
-                        </label>
-                    </div>
+              <div class="text-center">
+                <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                  <label class="btn btn-warning btn-lg" style="width: 140px">
+                    <button @click="ba()" type="button" class="btn btn-warning">中午</button>
+                  </label>
                 </div>
+              </div>
 
             </div>
             <hr class="my-2">
             <div class="row row1">
-                <div class="text-center">
-                    <div class="btn-group btn-group-toggle" data-toggle="buttons">
-                        <label class="btn btn-warning btn-lg" style="width: 140px">
-                            <input type="radio" name="options" id="option3"
-                                autocomplete="off"> 晚上
-                        </label>
-                    </div>
+              <div class="text-center">
+                <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                  <label class="btn btn-warning btn-lg" style="width: 140px">
+                    <button @click="bn()" type="button" class="btn btn-warning">晚上</button>
+                  </label>
                 </div>
+              </div>
             </div>
           </div>
         </div>
-        <div style='width:1px;border:1px solid black;float:left;'><!--这个div模拟一条红色的垂直分割线--></div>
+        <div style='width:1px;border:1px solid black;float:left;'>
+          <!--这个div模拟一条红色的垂直分割线-->
+        </div>
         <div class="col-lg-8">
           <div class="container">
             <div class="row">
@@ -168,22 +175,17 @@
             <div class="row" v-for="(i, index) in list" :key="index">
               <div class="btn"></div>
               <div class="a col-lg-1" v-for="(j, ind in list[index]" :key="ind">
-
-                <!-- ************************************ -->
                 <form action="/Users/wuqiyou/Desktop/java学习/项目展示/subscribe.html" method="post">
-                  <button name="set" type="submit" class="btn set" v-if="list[index][ind] === 'b'" class="button"
-                    role="checkbox" aria-checked="false" focusable="true" tabindex="-1">{{ind}}</button>
-                  <div v-if="list[index][ind] === 'c'"></div>
-                  <div v-else class="btn"> </div>
+                  <div name="set" type="" class="btn set1" v-if="list[index][ind] === 'c'" class="button">X</div>
+                  <div v-if="list[index][ind] === 'a'" class="btn"> </div>
+                  <button name="set" @click="select(list[index][ind])" name="" type="button" class="btn set" v-else
+                    class="button">{{j}}</button>
                 </form>
-
-
-
               </div>
             </div>
-            
+
           </div>
-          
+
         </div>
       </div>
     </div>
@@ -209,39 +211,204 @@
 
 <script>
   let vue = new Vue({
+
     el: '#app',
     data: {
-      date: ['2019-8-26', '2019-8-27', '2019-8-28'],
-      set:[],
+      id: '',
+      date: [],
+      selectDate: '',
+      year: '',
+      month: '',
+      day: '',
+      timeQuantum: '',
+      set: [],
+      seat: [],
       list: [
-        ['b', 'b', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'b', 'b'],
-        ['b', 'b', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'b', 'b'],
         ['a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a'],
-        ['b', 'b', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'b', 'b'],
-        ['b', 'b', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'b', 'b'],
         ['a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a'],
-        ['b', 'b', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'b', 'b'],
-        ['b', 'b', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'b', 'b'],
         ['a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a'],
-        ['b', 'b', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'b', 'b'],
-        ['b', 'b', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'b', 'b'],
         ['a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a'],
-        ['a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'b', 'b'],
-        ['a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'b', 'b'],
-        ['a', 'b', 'b', 'b', 'b', 'b', 'b', 'a', 'a', 'a', 'a'],
-        ['a', 'b', 'b', 'b', 'b', 'b', 'b', 'a', 'a', 'a', 'a'],
         ['a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a'],
-        ['a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'c', 'a', 'a']]
+        ['a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a'],
+        ['a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a'],
+        ['a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a'],
+        ['a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a'],
+        ['a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a'],
+        ['a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a'],
+        ['a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a'],
+        ['a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a'],
+        ['a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a'],
+        ['a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a'],
+        ['a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a'],
+        ['a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a'],
+        ['a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a']]
     },
-    // mounted() {
-    //   axios.get(url)
-    //   .then(res => {
-    //     console.log(res)
-    //   })
-    //   .catch(err => {
-    //     console.error(err); 
-    //   })
-    // },
+    methods: {
+      select: function (seatId) {
+        window.location.href = "subscribeOK.html?selectDate=" + this.selectDate + "&timeQuantum=" + this.timeQuantum + "&seatId=" + seatId;
+      },
+
+      changetime:function(){
+        let v = this.selectDate.split("-");
+        this.year = v[0];
+        this.month = v[1];
+        this.day = v[2];
+      },
+
+      bm: function () {
+        this.changetime();
+        this.b = 'M';
+        console.log(this.b);
+        this.refresh();
+      },
+
+      ba: function () {
+        this.changetime();
+        this.b = 'A'
+        console.log(this.b);
+        this.refresh();
+      },
+
+      bn: function () {
+        this.changetime();
+        this.b = 'N'
+        console.log(this.b);
+        this.refresh();
+      },
+
+      refresh: function () {
+        axios.get("/library/seat/show/status", {
+          params: {
+            "year": this.year,
+            "month": this.month,
+            "day": this.day,
+            "timeQuantum": this.timeQuantum,
+            "clroomId": this.id
+          }
+        })
+          .then(res => {
+            console.log(res);
+            this.seat = res.data.data;
+          })
+          .catch(err => {
+            console.error(err);
+          })
+        console.log("**********************************");
+
+        axios.get("/library/seat/show/clroom", {
+          params: {
+            "clroomId": this.id,
+          }
+        })
+          .then(res => {
+            console.log(res);
+            var table = res.data.data.tables;
+            for (let i = 0; i < table.length; i++) {
+              for (let j = 0; j < table[i].seats.length; j++) {
+                let col = table[i].seats[j].col;
+                let row = table[i].seats[j].row;
+                this.list[row][col] = table[i].seats[j].seatId;
+              }
+            }
+            for (let i = 0; i < table.length; i++) {
+              for (let j = 0; j < table[i].seats.length; j++) {
+                let col1 = table[i].seats[j].col;
+                let row1 = table[i].seats[j].row;
+                for (let k = 0; k < this.seat.length; k++) {
+                  if (table[i].seats[j].seatId === this.seat[k].seatId) {
+                    if (this.seat[k].status === 1) {
+                      this.list[row1][col1] = 'c';
+                    }
+                  }
+                }
+              }
+            }
+            this.$forceUpdate();
+          })
+          .catch(err => {
+            console.error(err);
+          })
+      },
+    },
+
+    mounted() {
+      axios.get("/datetime/now")
+        .then(res => {
+          console.log(res)
+          let d = res.data.data;
+          let a = d.today.year + "-" + d.today.month + "-" + d.today.day;
+          let b = d.tomorrow.year + "-" + d.tomorrow.month + "-" + d.tomorrow.day;
+          let c = d.afterTomorrow.year + "-" + d.afterTomorrow.month + "-" + d.afterTomorrow.day;
+          this.selectDate = a;
+          this.date = [a, b, c];
+        })
+        .catch(err => {
+          console.error(err);
+        })
+
+      var url = location.search;
+      let Lid = url.split("!");
+      this.id = Lid[1];
+      this.selectDate = Lid[3];
+      this.timeQuantum = Lid[5];
+      let a = this.selectDate.split("-")
+      this.year = a[0];
+      this.month = a[1];
+      this.day = a[2];
+
+      this.refresh();
+      // axios.get("/library/seat/show/status", {
+      //   params: {
+      //     "year": this.year,
+      //     "month": this.month,
+      //     "day": this.day,
+      //     "timeQuantum": this.timeQuantum,
+      //     "clroomId": this.id
+      //   }
+      // })
+      //   .then(res => {
+      //     console.log(res);
+      //     this.seat = res.data.data;
+      //   })
+      //   .catch(err => {
+      //     console.error(err);
+      //   })
+
+      // axios.get("/library/seat/show/clroom", {
+      //   params: {
+      //     "clroomId": this.id,
+      //   }
+      // })
+      //   .then(res => {
+      //     console.log(res);
+      //     var table = res.data.data.tables;
+      //     for (let i = 0; i < table.length; i++) {
+      //       for (let j = 0; j < table[i].seats.length; j++) {
+      //         let col = table[i].seats[j].col;
+      //         let row = table[i].seats[j].row;
+      //         this.list[row][col] = table[i].seats[j].seatId;
+      //       }
+      //     }
+      //     for (let i = 0; i < table.length; i++) {
+      //       for (let j = 0; j < table[i].seats.length; j++) {
+      //         let col1 = table[i].seats[j].col;
+      //         let row1 = table[i].seats[j].row;
+      //         for (let k = 0; k < this.seat.length; k++) {
+      //           if (table[i].seats[j].seatId === this.seat[k].seatId) {
+      //             if (this.seat[k].status === 1) {
+      //             this.list[row1][col1] = 'c';
+      //           }
+      //         }
+      //       }
+      //     }
+      //   }
+
+      //   this.$forceUpdate();
+      // })
+      // .catch(err => {
+      //   console.error(err);
+      //     })
+    },
 
   })
 </script>
