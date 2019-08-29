@@ -83,7 +83,21 @@ public class SeatOrderService {
 		try {
 			Date currentDate = Calendar.getInstance().getTime();
 			seatOrder.setOrderTime(currentDate);
-			Date date = new Date(orderVo.getYear() - 1900, orderVo.getMonth(), orderVo.getDay());
+			Date date = new Date(orderVo.getYear() - 1900, orderVo.getMonth() - 1, orderVo.getDay());
+			if(orderVo.getTimeQuantum() == 'M') {
+				date.setHours(12);
+				date.setMinutes(0);
+				date.setSeconds(0);
+			}else if(orderVo.getTimeQuantum() == 'A') {
+				date.setHours(18);
+				date.setMinutes(0);
+				date.setSeconds(0);
+			}else {
+				date.setHours(22);
+				date.setMinutes(0);
+				date.setSeconds(0);
+			}
+			System.out.println(date);
 			if (date.before(currentDate)) {
 				throw new GlobalException(CodeMsg.ORDER_TIME_PASS);
 			}

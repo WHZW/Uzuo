@@ -8,6 +8,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 import com.whzw.yz.pojo.SeatOrder;
 import com.whzw.yz.vo.SeatOrderVo;
@@ -41,13 +42,22 @@ public interface SeatOrderMapper {
 	@Select("select * from `seat_order` where `order_code` like #{ocp}")
 	public List<SeatOrder> findManyByCode(@Param("ocp") String orderCodePart);
 
-	@Select("select * from `seat_order` where `id`=#{oid}")
+	@Select("select * from `seat_order` where order_id=#{oid}")
 	public SeatOrder findOneById(@Param("oid") String orderId);
 	
-	@Select("select order_id, student_id, seat_id, order_time, date, time_quantum from seat_order "
+	@Select("select order_id, student_id, seat_id, order_time, date, time_quantum, is_signin from seat_order "
 			+ "where student_id = #{studentId}")
 	public List<SeatOrderVo> getOrderInfoByStudentId(String studentId);
 
 	@Select("select order_id from seat_order where order_id = #{orderId}")
 	public String getOrderIdByOrderId(String orderId);
+
+	@Update("update `seat_order` set `is_leave`==#{i} where `order_id`=#{oid}")
+	public void setIsLeave(@Param("il") int isLeave, @Param("oid") String orderId);
+
+	@Update("update `seat_order` set `is_signin`=1 where `order_id`=#{oid}")
+	public void signIn(@Param("oid") String orderId);
+	
+	@Select("select `is_signin` from `seat_order` where `order_id`=#{oid}")
+	public int getisSignIn(@Param("oid") String orderId);
 }

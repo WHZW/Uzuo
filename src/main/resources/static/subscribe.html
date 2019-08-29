@@ -16,6 +16,13 @@
 
     <!-- axios HTTP -->
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+    <style>
+        .c {
+            display: flex;
+            flex-direction: row;
+        }
+    </style>
 </head>
 
 <body style="background: rgb(255, 229, 182)">
@@ -31,19 +38,6 @@
                 aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-
-            <!-- 菜单 -->
-            <!-- <div class="collapse navbar-collapse" id="collapsibleNavId">
-                <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-                    <li class="nav-item active">
-                        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Link</a>
-                    </li>
-                </ul>
-            </div> -->
-
         </nav>
 
 
@@ -58,56 +52,37 @@
                 <div class="row">
                     <div class="col-lg-12 col-sm-12 ">
                         <div class="row my-3">
-
                             <!-- 选择时间段 -->
                             <div class="card w-100">
                                 <div class="card-body">
                                     <div class="container">
-
-
                                         <div class="row">
                                             <div class="col-lg-3 col-sm-6">
                                                 <h3 class="my-2">选择时间</h3>
                                             </div>
-
                                             <div class="col-lg-3 col-sm-6">
                                                 <div class="form-group">
                                                     <select class="form-control form-control-lg" v-model="selectDate"
                                                         name="" id="">
-                                                        <option type="button" @click="a()" v-for="(item, index) in date">{{item}}</option>
-
-
+                                                        <option type="button" @click="a()"
+                                                            v-for="(item, index) in date">{{item}}</option>
                                                     </select>
                                                 </div>
                                             </div>
-
-
-
-
-                                            <!-- <button type="button" @click="b1()" class="btn btn-primary">按钮</button> -->
-
-
-
-                                            
                                             <div class="col-lg-6 col-sm-12 text-center">
-
-                                                <div class="btn-group btn-group-toggle" data-toggle="buttons">
-                                                    <label class="btn btn-warning btn-lg active">
-                                                        <button @click="bm()" class="btn btn-waring" type="button">上午</button>
-                                                    </label>
-                                                    <label class="btn btn-warning btn-lg">
-                                                        <button @click="ba()" class="btn btn-waring" type="button">下午</button>
-                                                    </label>
-                                                    <label class="btn btn-warning btn-lg">
-                                                        <button @click="bn()" class="btn btn-waring" type="button">晚上</button>
-                                                    </label>
-                                                </div>
-
+                                                <div v-if="now == 'A' || now == 'N'" class="btn btn-lg"
+                                                    style="background-color: dimgrey">上午</div>
+                                                <button v-if="now == 'M'" @click="bm()" class="btn btn-lg" type="button"
+                                                    style="background-color:coral">上午</button>
+                                                <div v-if="now == 'N'" class="btn btn-lg"
+                                                    style="background-color: dimgrey">下午</div>
+                                                <button v-if="now == 'A' || now == 'M'" @click="ba()" class="btn btn-waring btn-lg" type="button"
+                                                    style="background-color:coral">下午</button>
+                                                <button @click="bn()" class="btn btn-waring btn-lg" type="button"
+                                                    style="background-color:coral">晚上</button>
                                             </div>
-
                                         </div>
                                     </div>
-
                                 </div>
                             </div>
                         </div>
@@ -120,7 +95,8 @@
                                         <div v-for="(citem,index) in rooms" v-if="index%2==0" class="row ">
                                             <!-- <div v-for="(ritem,rindex ) in citem" class="col-lg-6"> -->
                                             <div class="col-lg-6">
-                                                <button type="button" @click="select(rooms[index].clroomId)" class="card w-100 my-3">
+                                                <button type="button" @click="select(rooms[index].clroomId)"
+                                                    class="card w-100 my-3">
                                                     <div class="card-body">
                                                         <h4 class="card-title">{{rooms[index].name}}</h4>
                                                         <p class="card-text">{{rooms[index].desc}}</p>
@@ -129,7 +105,8 @@
                                                 </button>
                                             </div>
                                             <div class="col-lg-6">
-                                                <button type="button" @click="select(rooms[index+1].clroomId)" class="card w-100 my-3">
+                                                <button type="button" @click="select(rooms[index+1].clroomId)"
+                                                    class="card w-100 my-3">
                                                     <div class="card-body">
                                                         <h4 class="card-title">{{rooms[index+1].name}}</h4>
                                                         <p class="card-text">{{rooms[index+1].desc}}</p>
@@ -145,21 +122,14 @@
                     </div>
                 </div>
             </div>
-
-
         </div>
-
-
     </div>
-
-
-
-
     <script>
         let vue = new Vue({
             el: '#app',
             data: {
-                b:'M',
+                now:'',
+                b: 'M',
                 user: '',
                 selectDate: '',
                 selectMan: '',
@@ -191,27 +161,27 @@
                         })
                 },
 
-                bm:function(){
+                bm: function () {
                     this.b = 'M'
                     console.log(this.b);
-                    
+
                     this.a();
                 },
-                
-                ba:function(){
+
+                ba: function () {
                     this.b = 'A'
                     console.log(this.b);
                     this.a();
                 },
-                
-                bn:function(){
+
+                bn: function () {
                     this.b = 'N'
                     console.log(this.b);
                     this.a();
                 },
 
-                select:function(id){
-                    window.location.href="select.html?id=!"+id+"!&selectDate=!"+this.selectDate+"!&m=!"+this.b;
+                select: function (id) {
+                    window.location.href = "select.html?id=!" + id + "!&selectDate=!" + this.selectDate + "!&m=!" + this.b;
                 }
             },
             computed: {
@@ -222,6 +192,7 @@
                     .then(res => {
                         console.log(res)
                         let d = res.data.data;
+                        this.now = d.today.timeQuantum;
                         let a = d.today.year + "-" + d.today.month + "-" + d.today.day;
                         let b = d.tomorrow.year + "-" + d.tomorrow.month + "-" + d.tomorrow.day;
                         let c = d.afterTomorrow.year + "-" + d.afterTomorrow.month + "-" + d.afterTomorrow.day;
@@ -234,13 +205,7 @@
                     })
             },
         })
-
     </script>
-
-
-
-
-
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"

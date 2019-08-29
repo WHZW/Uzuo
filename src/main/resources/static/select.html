@@ -134,9 +134,10 @@
             <div class="row row1">
               <div class="text-center">
                 <div class="btn-group btn-group-toggle" data-toggle="buttons">
-                  <label class="btn btn-warning btn-lg active" style="width: 140px">
-                    <button @click="bm()" type="button" class="btn btn-warning">上午</button>
-                  </label>
+                  <div v-if="now == 'A' || now == 'N'" class="btn btn-lg"
+                    style="width: 140px; background-color: dimgrey">上午</div>
+                  <button v-else @click="bm()" type="button" class="btn btn-warning btn-lg"
+                    style="width: 140px">上午</button>
                 </div>
               </div>
             </div>
@@ -145,9 +146,9 @@
             <div class="row row1">
               <div class="text-center">
                 <div class="btn-group btn-group-toggle" data-toggle="buttons">
-                  <label class="btn btn-warning btn-lg" style="width: 140px">
-                    <button @click="ba()" type="button" class="btn btn-warning">中午</button>
-                  </label>
+                  <div v-if="now == 'N'" class="btn btn-lg" style="width: 140px; background-color: dimgrey">下午</div>
+                  <button v-else @click="ba()" type="button" class="btn btn-warning btn-lg"
+                    style="width: 140px">中午</button>
                 </div>
               </div>
 
@@ -156,16 +157,13 @@
             <div class="row row1">
               <div class="text-center">
                 <div class="btn-group btn-group-toggle" data-toggle="buttons">
-                  <label class="btn btn-warning btn-lg" style="width: 140px">
-                    <button @click="bn()" type="button" class="btn btn-warning">晚上</button>
-                  </label>
+                  <button @click="bn()" type="button" class="btn btn-warning btn-lg" style="width: 140px">晚上</button>
                 </div>
               </div>
             </div>
           </div>
         </div>
         <div style='width:1px;border:1px solid black;float:left;'>
-          <!--这个div模拟一条红色的垂直分割线-->
         </div>
         <div class="col-lg-8">
           <div class="container">
@@ -175,12 +173,10 @@
             <div class="row" v-for="(i, index) in list" :key="index">
               <div class="btn"></div>
               <div class="a col-lg-1" v-for="(j, ind in list[index]" :key="ind">
-                <form action="/Users/wuqiyou/Desktop/java学习/项目展示/subscribe.html" method="post">
-                  <div name="set" type="" class="btn set1" v-if="list[index][ind] === 'c'" class="button">X</div>
-                  <div v-if="list[index][ind] === 'a'" class="btn"> </div>
-                  <button name="set" @click="select(list[index][ind])" name="" type="button" class="btn set" v-else
-                    class="button">{{j}}</button>
-                </form>
+                <div name="set" type="" class="btn set1" v-if="list[index][ind] === 'c'" class="button">X</div>
+                <div v-else-if="list[index][ind] === 'a'" class="btn"> </div>
+                <button v-else name="set" @click="select(list[index][ind])" name="" type="button" class="btn set"
+                  class="button">{{j}}</button>
               </div>
             </div>
 
@@ -190,8 +186,6 @@
       </div>
     </div>
   </div>
-  <!-- </div> -->
-
   </div>
   </div>
 
@@ -214,6 +208,7 @@
 
     el: '#app',
     data: {
+      now: '',
       id: '',
       date: [],
       selectDate: '',
@@ -248,7 +243,7 @@
         window.location.href = "subscribeOK.html?selectDate=" + this.selectDate + "&timeQuantum=" + this.timeQuantum + "&seatId=" + seatId;
       },
 
-      changetime:function(){
+      changetime: function () {
         let v = this.selectDate.split("-");
         this.year = v[0];
         this.month = v[1];
@@ -257,22 +252,19 @@
 
       bm: function () {
         this.changetime();
-        this.b = 'M';
-        console.log(this.b);
+        this.timeQuantum = 'M';
         this.refresh();
       },
 
       ba: function () {
         this.changetime();
-        this.b = 'A'
-        console.log(this.b);
+        this.timeQuantum = 'A'
         this.refresh();
       },
 
       bn: function () {
         this.changetime();
-        this.b = 'N'
-        console.log(this.b);
+        this.timeQuantum = 'N'
         this.refresh();
       },
 
@@ -289,11 +281,11 @@
           .then(res => {
             console.log(res);
             this.seat = res.data.data;
+            this.seat[0].status = 1;
           })
           .catch(err => {
             console.error(err);
           })
-        console.log("**********************************");
 
         axios.get("/library/seat/show/clroom", {
           params: {
@@ -336,6 +328,7 @@
         .then(res => {
           console.log(res)
           let d = res.data.data;
+          // this.now = d.today.timeQuantum;
           let a = d.today.year + "-" + d.today.month + "-" + d.today.day;
           let b = d.tomorrow.year + "-" + d.tomorrow.month + "-" + d.tomorrow.day;
           let c = d.afterTomorrow.year + "-" + d.afterTomorrow.month + "-" + d.afterTomorrow.day;
@@ -412,37 +405,5 @@
 
   })
 </script>
-
-<!-- <script>
-  function BookRack(rack) {
-    var obj = document.getElementById(rack);
-    obj.bgColor = 'yellow';
-  }
-
-
-  /**
-    *obj: 要改变颜色的对象
-    *color: 要改变成的颜色
-  */
-  function changeColor(obj, color) {
-    if (obj != undefined) {
-      obj.bgColor = color;
-    };
-  }
-  window.onload = function () {  //动态的绑定事件
-    //取出tr元素对象 
-    var trObj = document.getElementsByName('set');   //只能给一个tr绑定事件，因为id是唯一的
-
-    //绑定鼠标进入事件
-    trObj.addEventListener('mouseover', function () {
-      changeColor(this, 'red');
-    }, false);
-
-    //绑定鼠标离开事件
-    trObj.addEventListener('mouseout', function () {
-      changeColor(this, 'F2F2F2');
-    }, false);
-  }
-</script> -->
 
 </html>

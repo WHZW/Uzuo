@@ -75,37 +75,43 @@
                             <div class="col-lg-3" style="margin-top: 60px">
                                 <h3>不</h3>
                             </div>
-                            <div class="col-lg-3"style="margin-top: 40px">
+                            <div class="col-lg-3" style="margin-top: 40px">
                                 <h2>yue</h2>
                             </div>
-                            <div class="col-lg-3"style="margin-top: 60px">
+                            <div class="col-lg-3" style="margin-top: 60px">
                                 <h1>?</h1>
                             </div>
                         </div>
                         <div class="row" style="margin-top: 100px">
-                           <div class="col-lg-6">
-                               <button type="button" class="btn btn-primary">约他妈的！</button>
-                           </div>
-                           <div class="col-lg-6">
-                               <button type="button" class="btn btn-primary">滚！不约！</button>
-                           </div>
+                            <div class="col-lg-6">
+                                <button type="button" class="btn btn-primary" @click="orderNow()">约他妈的！</button>
+                            </div>
+                            <div class="col-lg-6">
+                                <button type="button" class="btn btn-primary">滚！不约！</button>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
 
             <div class="row" style="margin: 40px 0 40px 0">
-                    <HR style="FILTER: alpha(opacity=100,finishopacity=0,style=3)" width="80%" color=#987cb9 SIZE=3>
+                <HR style="FILTER: alpha(opacity=100,finishopacity=0,style=3)" width="80%" color=#987cb9 SIZE=3>
             </div>
-            <div class="row">
-                <div class="col-lg-1">
-                    
-                </div>
-                <div class="col-lg-10">
-                    <p>中南林业科技大学（Central South University of Forestry and Technology），简称“林科大”或“中南林”，坐落于湖南省长沙市，是国家林业和草原局与湖南省人民政府共建的省部共建大学、省属重点大学、中西部高校基础能力建设工程、卓越农林人才教育培养计划、国家特色重点学科项目、湖南省2011计划建设高校，建有湖南北罗霄国家森林公园、湖南绿色发展研究院。学校是湖南省属具有研究生推免资格的六所高校之一，亦是湖南省第一个拥有研究生院的省属高校，涵盖理、工、农、文、经、法、管、教、艺等九大学科门类，是具有博士后科研流动站、博士学位授予权和研究生推免权、以林业科学为特色的综合型大学。</p>
-                </div>
-                <div class="col-lg-1">
+            <div v-if="isSuccess" class="row">
+                <div class="col-12">
+                    <div class="alert alert-success" role="alert">
+                        <h4 class="alert-heading">预约信息</h4>
+                        <p>{{orderMsg}}</p>
+                        <hr>
+                        <h4>预约编号： {{seatOrder.id}}</h4>
+                        <h4>座位编号： {{seatOrder.seatId}}</h4>
+                        <h4>预约生成时间： {{seatOrder.orderTime}}</h4>
+                        <h4>预约时间： {{seatOrder.date}}</h4>
+                        <h4>预约时间段： {{seatOrder.timeQuantum}}</h4>
+                        <hr>
+                        <h5>更多信息请到<a href="/home.html">主页</a> 我的预约 查看</h5>
                     </div>
+                </div>
             </div>
         </div>
 
@@ -116,19 +122,83 @@
 
 
     <script>
+        function getParam(name) {
+            var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+            var r = window.location.search.substr(1).match(reg);
+            if (r != null)
+                return unescape(r[2]);
+            return null
+        };
+
         new Vue({
             el: '#app',
             data: {
+                orderMsg: "",
+                year: "",
+                month: "",
+                day: "",
+                timeQuantum: "",
+                seatId: "",
+                seatOrder: { "id": "", "studentId": "", "seatId": "", "orderTime": "", "date": "", "timeQuantum": '' },
 
+                isSuccess: false,
             },
             methods: {
+                orderNow: function () {
+
+
+                    axios.post("/seatOrder/order", {
+
+                        "year": this.year,
+                        "month": this.month,
+                        "day": this.day,
+                        "timeQuantum": this.timeQuantum,
+                        "seatId": this.seatId
+                    },
+                    )
+                        .then(res => {
+                            console.log(res)
+                            let data = res.data;
+                            let code = data.code;
+
+                            if (code == 0) {
+                                let seatOrder = data.data;
+                                this.seatOrder.id = seatOrder.id;
+                                this.seatOrder.studentId = seatOrder.studentId;
+                                this.seatOrder.seatId = seatOrder.seatId;
+                                this.seatOrder.orderTime = seatOrder.orderTime;
+                                this.seatOrder.date = seatOrder.date;
+                                this.seatOrder.timeQuantum = seatOrder.timeQuantum;
+                                this.orderMsg = "预约成功";
+                                this.isSuccess = true;
+                            } else if (code == 6001) {
+                                this.orderMsg = "您手慢了，该座位已被预约"
+                            } else if (code == 6002) {
+                                this.orderMsg = "预约时间已过，换个时间看看"
+                            } else if (code == 6006) {
+                                this.orderMsg = "您的信用积分不足，请注意你的行为"
+                            } else if (code == 5002) {
+                                this.orderMsg = "您好象没有登陆"
+                                window.location.href = "/home.html";
+                            }
+                        })
+                        .catch(err => {
+                            console.error(err);
+                        })
+                }
 
             },
             computed: {
 
             },
             mounted() {
-
+                let time = getParam("selectDate")
+                let timeArr = time.split("-");
+                this.year = timeArr[0];
+                this.month = timeArr[1];
+                this.day = timeArr[2];
+                this.timeQuantum = getParam("timeQuantum");
+                this.seatId = getParam("seatId");
             },
         })
 

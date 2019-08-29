@@ -86,28 +86,40 @@
                                     </div>
 
                                     <div class="col-lg-8 col-sm-12">
-
+                                        <!-- 没有预约 -->
                                         <div v-if="isLogin">
                                             <div v-if="orders.length==0">
 
                                                 <p>你还没有预约任何座位，快去预约一个座位开始学习吧！</p>
                                             </div>
+                                            <!-- 预约列表 -->
                                             <div v-else>
                                                 <table class="table">
                                                     <tbody>
                                                         <tr v-for="(order, index) in orders">
                                                             <td>{{order.date}}</td>
                                                             <td>{{manChange(order.timeQuantum)}}</td>
-                                                            <td><button type="button"
+
+                                                            <td v-if="order.isSignin=='0'"><button type="button"
+                                                                    @click="signIn(order.id)"
                                                                     class="btn btn-success btn-sm">签到</button></td>
-                                                            <td><button type="button" @click="cencelOrder(order.id)"
+
+                                                            <td v-else><button type="button"
+                                                                    class="btn btn-primary btn-sm">暂时离开</button></td>
+
+                                                            <td v-if="order.isSignin=='0'"><button type="button" @click="cencelOrder(order.id)"
                                                                     class="btn btn-danger btn-sm">取消预约</button></td>
+
+                                                            <td v-else><button type="button" @click="sighOut(order.id)"
+                                                                    class="btn btn-danger btn-sm">提前离开</button></td>
+
                                                         </tr>
 
                                                     </tbody>
                                                 </table>
                                             </div>
                                         </div>
+                                        <!-- 没有登录 -->
                                         <div v-else>
                                             <p>你还没有登录，快去登录吧！</p>
                                         </div>
@@ -119,6 +131,7 @@
                     </div>
                 </div>
 
+                <!-- 右边 -->
                 <div class="col-lg-4 col-sm-12 my-2">
                     <div class="card">
                         <div class="card-body">
@@ -251,12 +264,35 @@
                 },
 
                 //确认签到
-                signIn:function(orderId){
+                signIn: function (orderId) {
+                    console.log(orderId);
+                    // axios.get('/library/checkin/signin?orderId=' + orderId)
                     axios.get('/library/checkin/signin',{
-                        orderId: orderId
+                        params: {
+                            orderId: orderId
+                        }
+                    })
+                        .then(res => {
+                            console.log(res)
+                            this.getOrderInfo();
+
+                        })
+                        .catch(err => {
+                            console.error(err);
+                        })
+                },
+
+                //提前离开
+                sighOut:function(orderId){
+                    axios.get('/library/checkin/signout',{
+                        params: {
+                            orderId: orderId
+                        }
                     })
                     .then(res => {
                         console.log(res)
+                        this.getOrderInfo();
+
                     })
                     .catch(err => {
                         console.error(err); 

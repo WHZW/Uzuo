@@ -23,6 +23,8 @@ public class SeatOrderVo{
 	
 	private char timeQuantum;
 	
+	private String isSignin = "0";
+	
 	public SeatOrderVo() {}
 	
 	public SeatOrderVo(SeatOrder seatOrder) {
@@ -92,13 +94,30 @@ public class SeatOrderVo{
 
 	public void setTimeQuantum(char timeQuantum) {
 		this.timeQuantum = timeQuantum;
+	}	
+
+	public String getOrderId() {
+		return orderId;
+	}
+
+	public void setOrderId(String orderId) {
+		this.orderId = orderId;
+	}
+
+	public String getIsSignin() {
+		return isSignin;
+	}
+
+	public void setIsSignin(String isSignin) {
+		this.isSignin = isSignin;
 	}
 
 	@Override
 	public String toString() {
 		return "SeatOrderVo [orderId=" + orderId + ", studentId=" + studentId + ", seatId=" + seatId + ", orderTime="
-				+ orderTime + ", date=" + date + ", timeQuantum=" + timeQuantum + "]";
+				+ orderTime + ", date=" + date + ", timeQuantum=" + timeQuantum + ", isSignin=" + isSignin + "]";
 	}
+
 	
 	
 	

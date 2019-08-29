@@ -26,6 +26,12 @@ public class CheckInController {
 
 	@Autowired
 	private CheckInService checkInService;
+	
+	@GetMapping("/issignin")
+	@ResponseBody
+	public Result<Boolean> isSignIn(@RequestParam("orderId") String orderId, HttpServletRequest req){
+		return Result.success(checkInService.isSignIn(orderId, req));
+	}
 
 	/**
 	 * 签到
@@ -36,13 +42,14 @@ public class CheckInController {
 	 */
 	@GetMapping("/signin")
 	@ResponseBody
-	public Result<String> signIn(@RequestParam("orderId") String orderId, @RequestParam("qrCode") String qrCode,
-			HttpServletRequest req) {
-		Date startTime = checkInService.signIn(orderId, qrCode, req);
+	public Result<String> signIn(@RequestParam("orderId") String orderId,HttpServletRequest req) {
+		System.out.println(orderId);
+		Date startTime = checkInService.signIn(orderId, req);
 		String startTimeStr = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(startTime);
 		
 		return Result.success(startTimeStr);
 	}
+	
 
 	/**
 	 * 签退
@@ -54,4 +61,10 @@ public class CheckInController {
 		checkInService.signOut(orderId, req);
 		return Result.success(true);
 	}
+	
+//	public Result<String> leaveForAMoment(HttpServletRequest req){
+//		
+//		CheckInService.leaveForAMoment(req);
+//		return null;
+//	}
 }
