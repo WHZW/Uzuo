@@ -23,6 +23,8 @@ public class SeatOrderVo{
 	
 	private char timeQuantum;
 	
+	private String is_Signin = "0";
+	
 	public SeatOrderVo() {}
 	
 	public SeatOrderVo(SeatOrder seatOrder) {
@@ -92,6 +94,22 @@ public class SeatOrderVo{
 
 	public void setTimeQuantum(char timeQuantum) {
 		this.timeQuantum = timeQuantum;
+	}	
+
+	public String getOrderId() {
+		return orderId;
+	}
+
+	public void setOrderId(String orderId) {
+		this.orderId = orderId;
+	}
+
+	public String getIs_Signin() {
+		return is_Signin;
+	}
+
+	public void setIs_Signin(String is_Signin) {
+		this.is_Signin = is_Signin;
 	}
 
 	@Override
