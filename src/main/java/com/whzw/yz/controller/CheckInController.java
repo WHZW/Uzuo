@@ -26,6 +26,12 @@ public class CheckInController {
 
 	@Autowired
 	private CheckInService checkInService;
+	
+	@GetMapping("/issignin")
+	@ResponseBody
+	public Result<Boolean> isSignIn(@RequestParam("orderId") String orderId, HttpServletRequest req){
+		return Result.success(checkInService.isSignIn(orderId, req));
+	}
 
 	/**
 	 * 签到
@@ -43,6 +49,7 @@ public class CheckInController {
 		
 		return Result.success(startTimeStr);
 	}
+	
 
 	/**
 	 * 签退

@@ -1,0 +1,399 @@
+<!doctype html>
+<html lang="zh">
+
+<head>
+    <title>登录</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <!-- Vue -->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+    <!-- axios HTTP -->
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+    <!-- MD5加密方法 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/blueimp-md5/2.10.0/js/md5.js"></script>
+</head>
+
+<body style="background: rgb(255, 229, 182)">
+    <div id="app">
+
+        <!-- 菜单栏 -->
+        <nav class="navbar navbar-expand-sm navbar-light" style="background-color: rgb(250, 162, 0);">
+
+            <!-- 平台标志，定向到主页 -->
+            <a class="navbar-brand" href="#">主页</a>
+            <button class="navbar-toggler d-lg-none" type="button" data-toggle="collapse"
+                data-target="#collapsibleNavId" aria-controls="collapsibleNavId" aria-expanded="false"
+                aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+        </nav>
+
+        <div class="container">
+
+            <div class="row my-5">
+
+            </div>
+            <div class="row my-5">
+
+            </div>
+            <!-- 登录 -->
+            <div v-if="isInLogin">
+
+                <div class="row">
+                    <div class="col-lg-12 col-sm-12 text-center">
+                        <h2>登录 /<button type="button" class="btn btn-link" @click="InLogup()">注册</button></h2>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-3">
+
+                    </div>
+                    <div class="col-lg-6 col-sm-12">
+
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="row my-3">
+
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-2">
+
+                                    </div>
+                                    <div class="col-lg-8 col-sm-12 text-center">
+                                        <div class="form-group">
+                                            <input v-model="studentId" type="text" class="form-control" name=""
+                                                aria-describedby="helpId" placeholder="请输入学号">
+                                        </div>
+                                        <div class="row my-3">
+
+                                        </div>
+
+                                        <div class="form-group ">
+
+                                            <input v-model="password" type="password" class="form-control" name=""
+                                                placeholder="请输入密码">
+                                        </div>
+
+                                        <div class="row my-3">
+
+                                        </div>
+
+                                        <div class="row">
+
+                                            <div class="col-lg-8 col-sm-12">
+
+                                                <button @click="login()" type="button"
+                                                    class="btn btn-primary btn-block">登录</button>
+                                            </div>
+                                            <div class="col-lg-4">
+                                                <a id="helpId" class="form-text text-muted" href="">忘记密码？</a>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-lg-12 text-center">
+                                                <p style="color: red">{{errMessage}}</p>
+                                            </div>
+                                        </div>
+                                        <div class="row my-3">
+
+                                        </div>
+
+
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 注册 -->
+            <div v-else>
+
+                <div class="row">
+                    <div class="col-lg-12 col-sm-12 text-center">
+                        <h2><button type="button" class="btn btn-link" @click="InLogin()">登录</button>\ 注册</h2>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-3">
+
+                    </div>
+                    <div class="col-lg-6 col-sm-12">
+
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="row my-3">
+
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-2">
+
+                                    </div>
+                                    <div class="col-lg-8 col-sm-12 text-center">
+                                        <div class="form-group">
+                                            <input v-model="studentId" type="text" class="form-control" name="" size="8"
+                                                aria-describedby="helpId" placeholder="请输入学号">
+                                        </div>
+                                        <div class="row my-3">
+
+                                        </div>
+                                        <div class="form-group">
+                                            <input v-model="stduentName" type="text" class="form-control" name=""
+                                                aria-describedby="helpId" placeholder="请输入姓名">
+                                        </div>
+
+                                        <div class="row my-3">
+
+                                        </div>
+                                        <div class="form-group ">
+
+                                            <input v-model="password" type="password" class="form-control" name=""
+                                                placeholder="请设置密码">
+                                        </div>
+
+                                        <div class="row my-3">
+
+                                        </div>
+
+                                        <div class="form-group ">
+
+                                            <input v-model="passwordAgain" type="password" class="form-control" name=""
+                                                placeholder="请再次输入设置的密码">
+                                        </div>
+                                        <div class="row my-3">
+
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="form-control form-control-lg">
+                                                <div class="row">
+                                                    <div class="col-lg-6 text-left">
+                                                        <small id="helpId"
+                                                            class="form-text text-muted mx-3">请选择性别</small>
+                                                    </div>
+                                                    <div class="col-lg-6 ">
+
+                                                        <div class="form-check form-check-inline">
+                                                            <label class="form-check-label">
+                                                                <input v-model="studentGender" type="radio"
+                                                                    class="form-check-input" name="gender" id=""
+                                                                    value="男">男
+                                                            </label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <label class="form-check-label">
+                                                                <input v-model="studentGender" type="radio"
+                                                                    class="form-check-input" name="gender" id=""
+                                                                    value="女">女
+                                                            </label>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row my-3">
+
+                                        </div>
+                                        <div class="form-group">
+                                            <input v-model="studentCollege" type="text" class="form-control" name=""
+                                                aria-describedby="helpId" placeholder="请输入所在学院">
+                                        </div>
+                                        <div class="row my-3">
+
+                                        </div>
+                                        <div class="form-group">
+                                            <input v-model="studentsubject" type="text" class="form-control" name=""
+                                                aria-describedby="helpId" placeholder="请输入所在专业">
+                                        </div>
+
+                                        <div class="row my-3">
+
+                                        </div>
+                                        <div class="form-group">
+                                            <input v-model="studentPhone" type="text" class="form-control" name=""
+                                                aria-describedby="helpId" placeholder="请输入联系电话">
+                                        </div>
+
+                                        <div class="row my-3">
+
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-lg-2">
+
+                                            </div>
+
+                                            <div class="col-lg-8 col-sm-12">
+
+                                                <button @click="logup()" type="button"
+                                                    class="btn btn-primary btn-block">注册</button>
+                                            </div>
+
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-lg-12 text-center">
+                                                <p style="color: red">{{errMessage}}</p>
+                                            </div>
+                                        </div>
+                                        <div class="row my-3">
+
+                                        </div>
+
+
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+        </div>
+
+    </div>
+
+    <script>
+
+        new Vue({
+            el: '#app',
+            data: {
+                isInLogin: true,
+                studentId: '',
+                password: '',
+                passwordAgain: '',
+                errMessage: '',
+                stduentName: '',
+                studentGender: '',
+                studentCollege: '',
+                studentsubject: '',
+                studentPhone: ''
+
+
+            },
+            methods: {
+                // 切换到注册
+                InLogup: function () {
+                    this.isInLogin = false;
+                },
+                // 切换到登录
+                InLogin: function () {
+                    this.isInLogin = true;
+                },
+                // 登录
+                login: function () {
+                    let MD5password = this.MD5change(this.password);
+                    console.log(this.studentId);
+                    console.log(MD5password);
+
+                    axios.post(
+                        'login/do_login',
+                        {
+                            studentId: this.studentId,
+                            password: MD5password
+                        })
+                        .then(res => {
+                            console.log(res)
+                            if (res.data.code == 0) {
+                                // 跳转到首页
+                                window.location.href = 'home.html';
+                            } else {
+                                this.errMessage = res.data.msg + '!';
+                            }
+                        })
+                        .catch(err => {
+                            console.error(err);
+                        })
+
+                },
+                //注册
+                logup: function () {
+                    if(this.passwordfit()){
+
+                    let MD5password = this.MD5change(this.password);
+                    axios.post('/do_registe',
+                        {
+                            studentId: this.studentId,
+                            password: MD5password,
+                            name: this.stduentName,
+                            gender: this.studentGender,
+                            college: this.studentCollege,
+                            subject: this.studentsubject,
+                            phone: this.studentPhone
+                        })
+                        .then(res => {
+                            console.log(res)
+                            if (res.data.code == 0) {
+                                //  跳转到登录
+                                this.isInLogin = true;
+                            } else {
+                                this.errMessage = res.data.msg + '!';
+                            }
+                        })
+                        .catch(err => {
+                            console.error(err);
+                        })
+                    }else{
+                        this.errMessage='两次输入的密码不一致，请重新输入！'
+                    }
+
+
+
+                },
+                //MD5转换
+                MD5change: function (value) {
+                    return md5(value);
+                },
+
+                //判断密码一致性
+                passwordfit:function(){
+                    if(this.password==this.passwordAgain){
+                        return true;
+                    }else{
+                        return false;
+                    }
+                },
+
+
+
+
+            },
+            computed: {
+
+            },
+            mounted() {
+
+            },
+        })
+    </script>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>

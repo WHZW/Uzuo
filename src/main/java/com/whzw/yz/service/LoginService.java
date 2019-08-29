@@ -34,7 +34,6 @@ public class LoginService {
 		LoginVo loginVoDb = loginMapper.getStudent(id);
 		HttpSession session = req.getSession();
 		
-		
 		if(loginVoDb==null) {
 			throw new GlobalException(CodeMsg.STUDENT_NOT_EXIST);
 		}
@@ -48,7 +47,7 @@ public class LoginService {
 		session.setAttribute("studentId", loginVo.getStudentId());
 		Cookie cookie = new Cookie("token", uuid);
 		cookie.setPath("/");
-		cookie.setMaxAge(300);
+		cookie.setMaxAge(3000);
 		resp.addCookie(cookie);
 		return true;
 	}

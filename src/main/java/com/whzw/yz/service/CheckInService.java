@@ -30,6 +30,15 @@ public class CheckInService {
 
 	@Autowired
 	SeatOrderService seatOrderService;
+	
+	public boolean isSignIn(String orderId,HttpServletRequest req) {
+		LoginUtil.LoginCheck(req);
+		
+		if(seatOrderMapper.getisSignIn(orderId)==1)
+			return true;
+		else
+			return false;
+	}
 
 	/**
 	 * 签到
@@ -102,6 +111,9 @@ public class CheckInService {
 		// 设置数据库预约表中的开始时间
 		orderLogMapper.updateStartTime(orderId, new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(now));
 
+		//更新已签到状态
+		seatOrderMapper.signIn(orderId);
+		
 		// 更新内存中 orderMap 的超时时间
 		seatOrderService.getOrderMap().put(orderId, timeOut);
 		return now;
