@@ -17,7 +17,7 @@
     <!-- axios HTTP -->
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 </head>
-
+   
 <body style="background: rgb(255, 229, 182)">
     <div id='app'>
         <!-- 菜单栏 -->
@@ -212,7 +212,7 @@
                     axios.get('/datetime/now')
                         .then(res => {
                             console.log(res)
-                            this.now = res.data.data.timeQuantum;
+                            this.now = res.data.data.today.timeQuantum;
                         })
                         .catch(err => {
                             console.error(err);
@@ -233,6 +233,7 @@
                         })
                 },
                 manChange: function (man) {
+                    
                     if (man == 'M') {
                         return '早上'
                     } else if (man == 'A') {
@@ -246,6 +247,8 @@
             },
             computed: {
                 hello: function () {
+                    console.log('now'+this.now);
+                    
                     if (this.now == 'M') {
                         return '早上好，' + this.userName + '!'
                     } else if (this.now == 'A') {
