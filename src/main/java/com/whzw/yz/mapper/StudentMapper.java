@@ -32,4 +32,7 @@ public interface StudentMapper {
 			+ "values(#{s.studentId}, #{s.name}, #{s.gender}, #{s.college}, #{s.subject}, #{s.phone})")
 	public void addStudent(@Param("s")Student student);
 
+	@Select("select name from student where student_id = #{studentId}")
+	public String getStudentNameById(String studentId);
+
 }

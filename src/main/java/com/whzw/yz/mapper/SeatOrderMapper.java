@@ -7,6 +7,8 @@ import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Result;
+import org.apache.ibatis.annotations.Results;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
@@ -45,9 +47,14 @@ public interface SeatOrderMapper {
 	@Select("select * from `seat_order` where order_id=#{oid}")
 	public SeatOrder findOneById(@Param("oid") String orderId);
 	
-	@Select("select order_id, student_id, t.clroom_id, s.table_id, so.seat_id, order_time, `date`, time_quantum, s.desc, is_signin " + 
-			"from seat_order so, seat s, `table` t " + 
-			"where so.seat_id = s.seat_id and s.table_id = t.table_id and student_id = #{studentId}")
+	@Select("select order_id, st.name as 'sn', cl.name as 'cn', s.table_id, so.seat_id, order_time, `date`, time_quantum, s.desc " + 
+			"from seat_order so, seat s, `table` t, student st, clroom cl " + 
+			"where so.seat_id = s.seat_id and s.table_id = t.table_id and t.clroom_id = cl.clroom_id and so.student_id = st.student_id "
+			+ "and so.student_id = #{studentId}")
+	@Results({
+		@Result(column = "sn",property = "studentName"),
+		@Result(column = "cn",property = "clroomName"),
+	})
 	public List<SeatOrderVo> getOrderInfoByStudentId(String studentId);
 
 	@Select("select order_id from seat_order where order_id = #{orderId}")
