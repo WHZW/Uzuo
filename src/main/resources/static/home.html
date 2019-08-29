@@ -48,9 +48,9 @@
         </nav>
 
         <!-- 首页展板 -->
-        <div class="jumbotron jumbotron-fluid">
+        <div class="jumbotron jumbotron-fluid my-2" style="background-color: white">
             <div class="container">
-                <h1 class="display-3">有座</h1>
+                <h1 class="display-3">优座 Uzuo</h1>
                 <p class="lead">人人都有座</p>
                 <hr class="my-2">
 
@@ -296,6 +296,9 @@
                     })
                         .then(res => {
                             console.log(res)
+                            if (res.data.code != 0) {
+                                alert(res.data.msg);
+                            }
 
                             this.getOrderInfo();
 

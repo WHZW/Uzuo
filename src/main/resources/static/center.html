@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="zh">
 
 <head>
     <title>Title</title>
@@ -55,7 +55,7 @@
         }
 
         .container1 {
-            width: 1600px;
+            /* width: 1600px; */
             /* height: 400px; */
             background-color: white;
             margin: 0, 10, 0, 10;
@@ -84,97 +84,174 @@
             <div class="collapse navbar-collapse" id="collapsibleNavId">
                 <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
                     <li class="nav-item active">
-                        <a class="nav-link" href="#">我的预约 <span class="sr-only">(current)</span></a>
+                        <a class="nav-link" href="home.html">首页 <span class="sr-only">(current)</span></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Link</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/userinfo">个人信息</a>
+                        <a class="nav-link" href="subscribe.html">预约教室</a>
                     </li>
                 </ul>
+                <a href="login.html">退出登陆</a>
+
+                </a>
             </div>
         </nav>
 
-        <div class="jumbotron">
-            <div class="container">
+        <div class="container">
+
+            <div class="jumbotron my-3" style="background-color: white">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <img src="pic/dog.jpeg" class="img-circle" width="40%" alt="">
+                        </div>
+                        <div class="col-lg-8">
+                            <h1 class="display-5">{{user.name}}</h1>
+                            <p class="lead">信誉积分:{{user.integral}}</p>
+                            <!-- <p class="lead">我已累计预约{{user.time}}分钟</p> -->
+                        </div>
+                    </div>
+                </div>
+                <hr class="my-2">
+            </div>
+            <!-- 座位图 -->
+            <!-- <div class="card"> -->
+            <div class="container container1">
                 <div class="row">
-                    <div class="col-lg-4">
-                        <img src="pic/timg.jpeg" class="img-circle" width="40%" alt="">
+                    <div class="col-lg-3">
+                        <div class="container">
+                            <div class="row row1">
+                                <button @click="changeToMyOrder()" type="button" name="" id=""
+                                    class="btn btn-lg btn-block">我的预约</button>
+                            </div>
+                            <hr class="my-2">
+
+                            <div class="row row1">
+                                <button @click="changeToHistoryOrder()" type="button" name="" id=""
+                                    class="btn btn-lg btn-block">预约记录</button>
+                            </div>
+                            <hr class="my-2">
+
+                            <div class="row row1">
+                                <button @click="changeToMyInfo()" type="button" name="" id=""
+                                    class="btn btn-lg btn-block">详细信息</button>
+                            </div>
+                            <hr class="my-2">
+
+                        </div>
                     </div>
-                    <div class="col-lg-8">
-                        <h1 class="display-5">{{user.name}}</h1>
-                        <p class="lead">信誉积分:{{user.integral}}</p>
-                        <!-- <p class="lead">我已累计预约{{user.time}}分钟</p> -->
+
+                    <div style='width:1px;border:1px solid black;float:left;'></div>
+
+                    <!-- 我的预约 -->
+                    <div v-if="record=='myOrder'" class="col-lg-8">
+
+                        <div v-if="orders.length==0">
+
+                            <p>你还没有预约任何座位，快去预约一个座位开始学习吧！</p>
+                        </div>
+                        <!-- 预约列表 -->
+                        <div v-else>
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center">日期</th>
+                                        <th class="text-center">时间段</th>
+                                        <th class="text-center">教室名称</th>
+                                        <th class="text-center">座位号</th>
+                                        <th></th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr v-for="(order, index) in orders">
+                                        <td class="text-center">{{order.date}}</td>
+                                        <td class="text-center">{{manChange(order.timeQuantum)}}</td>
+                                        <td class="text-center">{{order.clroomName}}</td>
+                                        <td class="text-center">{{order.seatId}}</td>
+
+                                        <td v-if="order.isSignin=='0'"><button type="button" @click="signIn(order.id)"
+                                                class="btn btn-success btn-sm">确认签到</button>
+                                        </td>
+
+                                        <td v-else><button type="button" class="btn btn-primary btn-sm">暂时离开</button>
+                                        </td>
+
+                                        <td v-if="order.isSignin=='0'"><button type="button"
+                                                @click="cencelOrder(order.id)"
+                                                class="btn btn-danger btn-sm">取消预约</button></td>
+
+                                        <td v-else><button type="button" @click="sighOut(order.id)"
+                                                class="btn btn-danger btn-sm">提前离开</button></td>
+
+                                    </tr>
+
+                                </tbody>
+                            </table>
+                        </div>
+
                     </div>
+
+                    <!-- 预约记录 -->
+                    <div v-else-if="record=='historyOrder'" class="col-lg-8">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>开始时间</th>
+                                    <th>结束时间</th>
+                                    <th>学习时长</th>
+                                    <th>状态</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="(order, index) in historyOrders">
+                                    <td>{{order.startTime}}</td>
+                                    <td>{{order.endTime}}</td>
+                                    <td>{{order.last}}分钟</td>
+                                    <td>{{order.status}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- 详细信息 -->
+                    <div v-else-if="record=='MyInfo'" class="col-lg-8">
+                        <table class="table">
+                            <tbody>
+                                <tr>
+                                    <td class="text-center">姓名:</td>
+                                    <td class="text-center">{{user.name}}</td>
+                                </tr>
+                                <tr>
+                                    <td class="text-center">学号:</td>
+                                    <td class="text-center">{{user.studentId}}</td>
+                                </tr>
+                                <tr>
+                                    <td class="text-center">性别:</td>
+                                    <td class="text-center">{{user.gender}}</td>
+                                </tr>
+                                <tr>
+                                    <td class="text-center">学院:</td>
+                                    <td class="text-center">{{user.college}}</td>
+                                </tr>
+                                <tr>
+                                    <td class="text-center">专业:</td>
+                                    <td class="text-center">{{user.subject}}</td>
+                                </tr>
+                                <tr>
+                                    <td class="text-center">电话:</td>
+                                    <td class="text-center">{{user.phone}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
                 </div>
             </div>
-            <hr class="my-2">
         </div>
-        <!-- <div class="jumbotron" style="background-color:rgb(255, 229, 182);padding: 0em 2em;">
-      <h1 style="margin: 1em 4em" class="display-4">座位预约</h1>
-      <hr class="my-4">
-    </div> -->
 
-        <!-- 座位图 -->
-        <!-- <div class="card"> -->
-        <div class="container container1">
-            <div class="row">
-                <div class="col-lg-3">
-                    <div class="container">
-                        <div class="row row1">
-                            <button type="button" name="" id="" class="btn btn-lg btn-block">我的预约</button>
-                        </div>
-                        <hr class="my-2">
-
-                        <div class="row row1">
-                            <button type="button" name="" id="" class="btn btn-lg btn-block">预约记录</button>
-                        </div>
-                        <hr class="my-2">
-
-                        <div class="row row1">
-                            <button type="button" name="" id="" class="btn btn-lg btn-block">详细信息</button>
-                        </div>
-                        <hr class="my-2">
-
-                    </div>
-                </div>
-
-                <div style='width:1px;border:1px solid black;float:left;'></div>
-
-                <div>
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>1</th>
-                                <th>2</th>
-                                <th>3</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td scope="row"></td>
-                                <td></td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <td scope="row"></td>
-                                <td></td>
-                                <td></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-
-            </div>
-        </div>
     </div>
     <!-- </div> -->
 
-    </div>
-    </div>
-
-    </div>
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
@@ -195,27 +272,85 @@
             user: [],
             date: ['2019-8-26', '2019-8-27', '2019-8-28'],
             set: [],
+            record: 'myOrder',
+            orders: [],
+            historyOrders: [],
 
         },
         methods: {
+            //获得用户信息
             getUserInfo: function () {
                 axios.get('/userManager/getInfo')
                     .then(res => {
                         console.log(res)
-                        this.user=res.data.data;
+                        this.user = res.data.data;
                         console.log(this.user);
-                        
+
                     })
                     .catch(err => {
                         console.error(err);
                     })
             },
+            //切换到我的预约
+            changeToMyOrder: function () {
+                this.record = 'myOrder';
+            },
+            //切换到预约记录
+            changeToHistoryOrder: function () {
+
+                this.record = 'historyOrder';
+            },
+            //切换到我的信息
+            changeToMyInfo: function () {
+                this.record = 'MyInfo';
+            },
+
+            //获取历史记录
+            getHistoryOrder: function () {
+                axios.get("/userManager/getHistory")
+                    .then(res => {
+                        console.log(res);
+                        this.historyOrders = res.data.data;
+                        console.log(this.historyOrders);
+
+                    })
+                    .catch(err => {
+                        console.error(err);
+                    })
+            },
+
+            //获取预约信息
+            getOrderInfo: function () {
+                axios.get('/userManager/getOrders')
+                    .then(res => {
+                        console.log(res)
+                        this.orders = res.data.data;
+                    })
+                    .catch(err => {
+                        console.error(err);
+                    })
+            },
+
+            //时段文字匹配
+            manChange: function (man) {
+
+                if (man == 'M') {
+                    return '早上'
+                } else if (man == 'A') {
+                    return '下午'
+                } else if (man == 'N') {
+                    return '晚上'
+                }
+            },
+
         },
         computed: {
 
         },
         mounted() {
             this.getUserInfo();
+            this.getOrderInfo();
+            this.getHistoryOrder();
         },
 
     })
