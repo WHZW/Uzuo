@@ -32,12 +32,27 @@
         <nav class="navbar navbar-expand-sm navbar-light" style="background-color: rgb(250, 162, 0);">
 
             <!-- 平台标志，定向到主页 -->
-            <a class="navbar-brand" href="#">主页</a>
+            <a class="navbar-brand" href="#">Uzuo</a>
             <button class="navbar-toggler d-lg-none" type="button" data-toggle="collapse"
                 data-target="#collapsibleNavId" aria-controls="collapsibleNavId" aria-expanded="false"
                 aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
+
+            <!-- 菜单 -->
+            <div class="collapse navbar-collapse" id="collapsibleNavId">
+                <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="home.html">首页 <span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="subscribe.html">预约教室</a>
+                    </li>
+                </ul>
+                <a v-if="isLogin == false" href="login.html">登陆</a>
+                <a v-if="isLogin == true" href="center.html">个人中心
+                </a>
+            </div>
         </nav>
 
 
@@ -62,21 +77,23 @@
                                             </div>
                                             <div class="col-lg-3 col-sm-6">
                                                 <div class="form-group">
-                                                    <select class="form-control form-control-lg" v-model="selectDate"
-                                                        name="" id="">
-                                                        <option type="button" @click="a()"
-                                                            v-for="(item, index) in date">{{item}}</option>
+                                                    <select class="form-control form-control-lg" @change="a()"
+                                                        v-model="selectDate" name="" id="">
+                                                        <option type="button" v-for="(item, index) in date">{{item}}
+                                                        </option>
                                                     </select>
                                                 </div>
                                             </div>
                                             <div class="col-lg-6 col-sm-12 text-center">
-                                                <div v-if="now == 'A' || now == 'N'" class="btn btn-lg"
-                                                    style="background-color: dimgrey">上午</div>
-                                                <button v-if="now == 'M'" @click="bm()" class="btn btn-lg" type="button"
+                                                <div v-if="selectDate == now.nowDate && (now.timeQuantum == 'A' || now.timeQuantum == 'N')"
+                                                    class="btn btn-lg" style="background-color: dimgrey">上午</div>
+                                                <button v-if="selectDate != now.nowDate || now == 'M'" @click="bm()"
+                                                    class="btn btn-lg" type="button"
                                                     style="background-color:coral">上午</button>
-                                                <div v-if="now == 'N'" class="btn btn-lg"
-                                                    style="background-color: dimgrey">下午</div>
-                                                <button v-if="now == 'A' || now == 'M'" @click="ba()" class="btn btn-waring btn-lg" type="button"
+                                                <div v-if="selectDate == now.nowDate && now.timeQuantum == 'N'"
+                                                    class="btn btn-lg" style="background-color: dimgrey">下午</div>
+                                                <button v-if="selectDate != now.nowDate || now == 'A' || now == 'M'"
+                                                    @click="ba()" class="btn btn-waring btn-lg" type="button"
                                                     style="background-color:coral">下午</button>
                                                 <button @click="bn()" class="btn btn-waring btn-lg" type="button"
                                                     style="background-color:coral">晚上</button>
@@ -128,8 +145,9 @@
         let vue = new Vue({
             el: '#app',
             data: {
-                now:'',
-                b: 'M',
+                isLogin: false,
+                now: {},
+                b: '',
                 user: '',
                 selectDate: '',
                 selectMan: '',
@@ -141,7 +159,6 @@
             methods: {
                 a: function () {
                     let v = this.selectDate.split("-");
-                    console.log(v);
                     axios.get('/library/clroom/show/all', {
                         params: {
                             "year": v[0],
@@ -163,20 +180,16 @@
 
                 bm: function () {
                     this.b = 'M'
-                    console.log(this.b);
-
                     this.a();
                 },
 
                 ba: function () {
                     this.b = 'A'
-                    console.log(this.b);
                     this.a();
                 },
 
                 bn: function () {
                     this.b = 'N'
-                    console.log(this.b);
                     this.a();
                 },
 
@@ -188,21 +201,35 @@
 
             },
             mounted() {
-                axios.get("/datetime/now")
+                // 获取登录状态
+                axios.get('/login/islogin')
                     .then(res => {
                         console.log(res)
-                        let d = res.data.data;
-                        this.now = d.today.timeQuantum;
-                        let a = d.today.year + "-" + d.today.month + "-" + d.today.day;
-                        let b = d.tomorrow.year + "-" + d.tomorrow.month + "-" + d.tomorrow.day;
-                        let c = d.afterTomorrow.year + "-" + d.afterTomorrow.month + "-" + d.afterTomorrow.day;
-                        this.selectDate = a;
-                        this.date = [a, b, c];
-                        this.a();
+                        if (res.data.code == 0) {
+                            this.isLogin = true;
+                            console.log(this.isLogin);
+                        }
                     })
                     .catch(err => {
                         console.error(err);
-                    })
+                    }),
+
+                    axios.get("/datetime/now")
+                        .then(res => {
+                            console.log(res)
+                            let d = res.data.data;
+                            let a = d.today.year + "-" + d.today.month + "-" + d.today.day;
+                            let b = d.tomorrow.year + "-" + d.tomorrow.month + "-" + d.tomorrow.day;
+                            let c = d.afterTomorrow.year + "-" + d.afterTomorrow.month + "-" + d.afterTomorrow.day;
+                            this.selectDate = a;
+                            this.b = d.today.timeQuantum;
+                            this.now = { timeQuantum: d.today.timeQuantum, nowDate: a };
+                            this.date = [a, b, c];
+                            this.a();
+                        })
+                        .catch(err => {
+                            console.error(err);
+                        })
             },
         })
     </script>

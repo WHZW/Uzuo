@@ -24,13 +24,27 @@
         <nav class="navbar navbar-expand-sm navbar-light" style="background-color: rgb(250, 162, 0);">
 
             <!-- 平台标志，定向到主页 -->
-            <a class="navbar-brand" href="#">主页</a>
+            <a class="navbar-brand" href="#">Uzuo</a>
             <button class="navbar-toggler d-lg-none" type="button" data-toggle="collapse"
                 data-target="#collapsibleNavId" aria-controls="collapsibleNavId" aria-expanded="false"
                 aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
 
+            <!-- 菜单 -->
+            <div class="collapse navbar-collapse" id="collapsibleNavId">
+                <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="home.html">首页 <span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="subscribe.html">预约教室</a>
+                    </li>
+                </ul>
+                <a v-if="isLogin == false" href="login.html">登陆</a>
+                <a v-if="isLogin == true" href="center.html">个人中心
+                </a>
+            </div>
         </nav>
 
         <!-- 首页展板 -->
@@ -99,18 +113,20 @@
                                                         <tr v-for="(order, index) in orders">
                                                             <td>{{order.date}}</td>
                                                             <td>{{manChange(order.timeQuantum)}}</td>
-                                                            
+
 
                                                             <td v-if="order.isSignin=='0'"><button type="button"
                                                                     @click="signIn(order.id)"
-                                                                    class="btn btn-success btn-sm">签到</button>
-                                                                
-                                                                </td>
+                                                                    class="btn btn-success btn-sm">确认签到</button>
+
+
+                                                            </td>
 
                                                             <td v-else><button type="button"
                                                                     class="btn btn-primary btn-sm">暂时离开</button></td>
 
-                                                            <td v-if="order.isSignin=='0'"><button type="button" @click="cencelOrder(order.id)"
+                                                            <td v-if="order.isSignin=='0'"><button type="button"
+                                                                    @click="cencelOrder(order.id)"
                                                                     class="btn btn-danger btn-sm">取消预约</button></td>
 
                                                             <td v-else><button type="button" @click="sighOut(order.id)"
@@ -177,7 +193,9 @@
                 isLogin: false,
                 userName: '',
                 now: '',
+                today: '',
                 orders: [],
+
 
             },
             methods: {
@@ -229,6 +247,7 @@
                         .then(res => {
                             console.log(res)
                             this.now = res.data.data.today.timeQuantum;
+                            // this.today=res.data.data.today.
                         })
                         .catch(err => {
                             console.error(err);
@@ -270,7 +289,25 @@
                 signIn: function (orderId) {
                     console.log(orderId);
                     // axios.get('/library/checkin/signin?orderId=' + orderId)
-                    axios.get('/library/checkin/signin',{
+                    axios.get('/library/checkin/signin', {
+                        params: {
+                            orderId: orderId
+                        }
+                    })
+                        .then(res => {
+                            console.log(res)
+
+                            this.getOrderInfo();
+
+                        })
+                        .catch(err => {
+                            console.error(err);
+                        })
+                },
+
+                //提前离开
+                sighOut: function (orderId) {
+                    axios.get('/library/checkin/signout', {
                         params: {
                             orderId: orderId
                         }
@@ -283,23 +320,6 @@
                         .catch(err => {
                             console.error(err);
                         })
-                },
-
-                //提前离开
-                sighOut:function(orderId){
-                    axios.get('/library/checkin/signout',{
-                        params: {
-                            orderId: orderId
-                        }
-                    })
-                    .then(res => {
-                        console.log(res)
-                        this.getOrderInfo();
-
-                    })
-                    .catch(err => {
-                        console.error(err); 
-                    })
                 },
 
                 //时段文字匹配

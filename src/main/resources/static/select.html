@@ -92,15 +92,15 @@
       <div class="collapse navbar-collapse" id="collapsibleNavId">
         <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
           <li class="nav-item active">
-            <a class="nav-link" href="#">我的预约 <span class="sr-only">(current)</span></a>
+            <a class="nav-link" href="home.html">首页 <span class="sr-only">(current)</span></a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Link</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/userinfo">个人信息</a>
+            <a class="nav-link" href="subscribe.html">预约教室</a>
           </li>
         </ul>
+        <a v-if="islogin == false" href="login.html">登陆</a>
+        <a v-if="islogin == true" href="center.html">个人中心
+        </a>
       </div>
     </nav>
 
@@ -123,8 +123,8 @@
             <div class="row row1">
               <div class="">
                 <div class="form-group">
-                  <select class="form-control form-control-lg" v-model="selectDate" name="" id="">
-                    <option type="button" @click="refresh()" v-for="(item, index) in date">{{item}}</option>
+                  <select class="form-control form-control-lg"  @change="refresh()" v-model="selectDate" name="" id="">
+                    <option type="button" v-for="(item, index) in date">{{item}}</option>
                   </select>
                 </div>
               </div>
@@ -134,7 +134,7 @@
             <div class="row row1">
               <div class="text-center">
                 <div class="btn-group btn-group-toggle" data-toggle="buttons">
-                  <div v-if="now == 'A' || now == 'N'" class="btn btn-lg"
+                  <div v-if="selectDate == now.nowDate && (now.timeQuantum == 'A' || now.timeQuantum == 'N')" class="btn btn-lg"
                     style="width: 140px; background-color: dimgrey">上午</div>
                   <button v-else @click="bm()" type="button" class="btn btn-warning btn-lg"
                     style="width: 140px">上午</button>
@@ -146,7 +146,7 @@
             <div class="row row1">
               <div class="text-center">
                 <div class="btn-group btn-group-toggle" data-toggle="buttons">
-                  <div v-if="now == 'N'" class="btn btn-lg" style="width: 140px; background-color: dimgrey">下午</div>
+                  <div v-if="selectDate == now.nowDate && now.timeQuantum == 'N'" class="btn btn-lg" style="width: 140px; background-color: dimgrey">下午</div>
                   <button v-else @click="ba()" type="button" class="btn btn-warning btn-lg"
                     style="width: 140px">中午</button>
                 </div>
@@ -208,7 +208,8 @@
 
     el: '#app',
     data: {
-      now: '',
+      islogin:'',
+      now:{},
       id: '',
       date: [],
       selectDate: '',
@@ -240,7 +241,7 @@
     },
     methods: {
       select: function (seatId) {
-        window.location.href = "subscribeOK.html?selectDate=" + this.selectDate + "&timeQuantum=" + this.timeQuantum + "&seatId=" + seatId;
+        window.location.href = "subscribeOK.html?selectDate=" + this.selectDate + "&timeQuantum=" + this.timeQuantum + "&seatId=" + seatId + "&clroomId=" + this.id;
       },
 
       changetime: function () {
@@ -323,15 +324,27 @@
     },
 
     mounted() {
+      axios.get("/login/islogin")
+      .then(res => {
+        console.log(res)
+        if (res.data.code == 5002) {
+          this.islogin = false;
+        }else{
+          this.islogin = true;
+        }
+      })
+      .catch(err => {
+        console.error(err); 
+      })
+
       axios.get("/datetime/now")
         .then(res => {
           console.log(res)
           let d = res.data.data;
-          this.now = d.today.timeQuantum;
           let a = d.today.year + "-" + d.today.month + "-" + d.today.day;
           let b = d.tomorrow.year + "-" + d.tomorrow.month + "-" + d.tomorrow.day;
           let c = d.afterTomorrow.year + "-" + d.afterTomorrow.month + "-" + d.afterTomorrow.day;
-          this.selectDate = a;
+          this.now = {timeQuantum:d.today.timeQuantum,nowDate:a};
           this.date = [a, b, c];
         })
         .catch(err => {
@@ -349,57 +362,6 @@
       this.day = a[2];
 
       this.refresh();
-      // axios.get("/library/seat/show/status", {
-      //   params: {
-      //     "year": this.year,
-      //     "month": this.month,
-      //     "day": this.day,
-      //     "timeQuantum": this.timeQuantum,
-      //     "clroomId": this.id
-      //   }
-      // })
-      //   .then(res => {
-      //     console.log(res);
-      //     this.seat = res.data.data;
-      //   })
-      //   .catch(err => {
-      //     console.error(err);
-      //   })
-
-      // axios.get("/library/seat/show/clroom", {
-      //   params: {
-      //     "clroomId": this.id,
-      //   }
-      // })
-      //   .then(res => {
-      //     console.log(res);
-      //     var table = res.data.data.tables;
-      //     for (let i = 0; i < table.length; i++) {
-      //       for (let j = 0; j < table[i].seats.length; j++) {
-      //         let col = table[i].seats[j].col;
-      //         let row = table[i].seats[j].row;
-      //         this.list[row][col] = table[i].seats[j].seatId;
-      //       }
-      //     }
-      //     for (let i = 0; i < table.length; i++) {
-      //       for (let j = 0; j < table[i].seats.length; j++) {
-      //         let col1 = table[i].seats[j].col;
-      //         let row1 = table[i].seats[j].row;
-      //         for (let k = 0; k < this.seat.length; k++) {
-      //           if (table[i].seats[j].seatId === this.seat[k].seatId) {
-      //             if (this.seat[k].status === 1) {
-      //             this.list[row1][col1] = 'c';
-      //           }
-      //         }
-      //       }
-      //     }
-      //   }
-
-      //   this.$forceUpdate();
-      // })
-      // .catch(err => {
-      //   console.error(err);
-      //     })
     },
 
   })
