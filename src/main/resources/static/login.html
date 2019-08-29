@@ -70,7 +70,7 @@
                                     </div>
                                     <div class="col-lg-8 col-sm-12 text-center">
                                         <div class="form-group">
-                                            <input v-model="studentId" type="text" class="form-control" name="" id=""
+                                            <input v-model="studentId" type="text" class="form-control" name=""
                                                 aria-describedby="helpId" placeholder="请输入学号">
                                         </div>
                                         <div class="row my-3">
@@ -79,7 +79,7 @@
 
                                         <div class="form-group ">
 
-                                            <input v-model="password" type="password" class="form-control" name="" id=""
+                                            <input v-model="password" type="password" class="form-control" name=""
                                                 placeholder="请输入密码">
                                         </div>
 
@@ -91,7 +91,8 @@
 
                                             <div class="col-lg-8 col-sm-12">
 
-                                                <button @click="login()" type="button" class="btn btn-primary btn-block">登录</button>
+                                                <button @click="login()" type="button"
+                                                    class="btn btn-primary btn-block">登录</button>
                                             </div>
                                             <div class="col-lg-4">
                                                 <a id="helpId" class="form-text text-muted" href="">忘记密码？</a>
@@ -142,28 +143,89 @@
                                     </div>
                                     <div class="col-lg-8 col-sm-12 text-center">
                                         <div class="form-group">
-                                            <input type="text" class="form-control" name="" id=""
+                                            <input v-model="studentId" type="text" class="form-control" name="" size="8"
                                                 aria-describedby="helpId" placeholder="请输入学号">
                                         </div>
+                                        <div class="row my-3">
+
+                                        </div>
+                                        <div class="form-group">
+                                            <input v-model="stduentName" type="text" class="form-control" name=""
+                                                aria-describedby="helpId" placeholder="请输入姓名">
+                                        </div>
+
+                                        <div class="row my-3">
+
+                                        </div>
+                                        <div class="form-group ">
+
+                                            <input v-model="password" type="password" class="form-control" name=""
+                                                placeholder="请设置密码">
+                                        </div>
+
                                         <div class="row my-3">
 
                                         </div>
 
                                         <div class="form-group ">
 
-                                            <input type="password" class="form-control" name="" id=""
-                                                placeholder="请设置密码">
+                                            <input v-model="passwordAgain" type="password" class="form-control" name=""
+                                                placeholder="请再次输入设置的密码">
+                                        </div>
+                                        <div class="row my-3">
+
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="form-control form-control-lg">
+                                                <div class="row">
+                                                    <div class="col-lg-6 text-left">
+                                                        <small id="helpId"
+                                                            class="form-text text-muted mx-3">请选择性别</small>
+                                                    </div>
+                                                    <div class="col-lg-6 ">
+
+                                                        <div class="form-check form-check-inline">
+                                                            <label class="form-check-label">
+                                                                <input v-model="studentGender" type="radio"
+                                                                    class="form-check-input" name="gender" id=""
+                                                                    value="男">男
+                                                            </label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <label class="form-check-label">
+                                                                <input v-model="studentGender" type="radio"
+                                                                    class="form-check-input" name="gender" id=""
+                                                                    value="女">女
+                                                            </label>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
                                         </div>
 
                                         <div class="row my-3">
 
-                                            </div>
-    
-                                            <div class="form-group ">
-    
-                                                <input type="password" class="form-control" name="" id=""
-                                                    placeholder="请再次输入设置的密码">
-                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <input v-model="studentCollege" type="text" class="form-control" name=""
+                                                aria-describedby="helpId" placeholder="请输入所在学院">
+                                        </div>
+                                        <div class="row my-3">
+
+                                        </div>
+                                        <div class="form-group">
+                                            <input v-model="studentsubject" type="text" class="form-control" name=""
+                                                aria-describedby="helpId" placeholder="请输入所在专业">
+                                        </div>
+
+                                        <div class="row my-3">
+
+                                        </div>
+                                        <div class="form-group">
+                                            <input v-model="studentPhone" type="text" class="form-control" name=""
+                                                aria-describedby="helpId" placeholder="请输入联系电话">
+                                        </div>
 
                                         <div class="row my-3">
 
@@ -171,19 +233,20 @@
 
                                         <div class="row">
                                             <div class="col-lg-2">
-                                                
+
                                             </div>
 
                                             <div class="col-lg-8 col-sm-12">
 
-                                                <button type="button" class="btn btn-primary btn-block">注册</button>
+                                                <button @click="logup()" type="button"
+                                                    class="btn btn-primary btn-block">注册</button>
                                             </div>
-                                            
+
                                         </div>
 
                                         <div class="row">
                                             <div class="col-lg-12 text-center">
-                                                <!-- <p style="color: red">密码错误！</p> -->
+                                                <p style="color: red">{{errMessage}}</p>
                                             </div>
                                         </div>
                                         <div class="row my-3">
@@ -212,59 +275,107 @@
             el: '#app',
             data: {
                 isInLogin: true,
-                studentId:'',
-                password:'',
-                errMessage:'',
+                studentId: '',
+                password: '',
+                passwordAgain: '',
+                errMessage: '',
+                stduentName: '',
+                studentGender: '',
+                studentCollege: '',
+                studentsubject: '',
+                studentPhone: ''
+
 
             },
             methods: {
                 // 切换到注册
-                InLogup:function(){
-                    this.isInLogin=false;
+                InLogup: function () {
+                    this.isInLogin = false;
                 },
                 // 切换到登录
-                InLogin:function(){
-                    this.isInLogin=true;
+                InLogin: function () {
+                    this.isInLogin = true;
                 },
                 // 登录
-                login:function(){
-                    let MD5password=this.MD5change(this.password);
+                login: function () {
+                    let MD5password = this.MD5change(this.password);
                     console.log(this.studentId);
                     console.log(MD5password);
-                    
+
                     axios.post(
                         'login/do_login',
                         {
-                            studentId:this.studentId,
-                            password:MD5password
+                            studentId: this.studentId,
+                            password: MD5password
                         })
-                    .then(res => {
-                        console.log(res)
-                        if(res.data.code==0){
-                            // TODO 跳转到首页
-                            window.location.href='home.html';
-                        }else{
-                            this.errMessage=res.data.msg+'!';
-                        }
-                    })
-                    .catch(err => {
-                        console.error(err); 
-                    })
-                    
+                        .then(res => {
+                            console.log(res)
+                            if (res.data.code == 0) {
+                                // 跳转到首页
+                                window.location.href = 'home.html';
+                            } else {
+                                this.errMessage = res.data.msg + '!';
+                            }
+                        })
+                        .catch(err => {
+                            console.error(err);
+                        })
+
                 },
                 //注册
-                logup:function(){
+                logup: function () {
+                    if(this.passwordfit()){
+
+                    let MD5password = this.MD5change(this.password);
+                    axios.post('/do_registe',
+                        {
+                            studentId: this.studentId,
+                            password: MD5password,
+                            name: this.stduentName,
+                            gender: this.studentGender,
+                            college: this.studentCollege,
+                            subject: this.studentsubject,
+                            phone: this.studentPhone
+                        })
+                        .then(res => {
+                            console.log(res)
+                            if (res.data.code == 0) {
+                                //  跳转到登录
+                                this.isInLogin = true;
+                            } else {
+                                this.errMessage = res.data.msg + '!';
+                            }
+                        })
+                        .catch(err => {
+                            console.error(err);
+                        })
+                    }else{
+                        this.errMessage='两次输入的密码不一致，请重新输入！'
+                    }
+
+
 
                 },
                 //MD5转换
-                MD5change:function(value){
+                MD5change: function (value) {
                     return md5(value);
                 },
+
+                //判断密码一致性
+                passwordfit:function(){
+                    if(this.password==this.passwordAgain){
+                        return true;
+                    }else{
+                        return false;
+                    }
+                },
+
+
 
 
             },
             computed: {
-                
+
             },
             mounted() {
 

@@ -48,7 +48,7 @@ public class LoginService {
 		session.setAttribute("studentId", loginVo.getStudentId());
 		Cookie cookie = new Cookie("token", uuid);
 		cookie.setPath("/");
-		cookie.setMaxAge(300);
+		cookie.setMaxAge(3000);
 		resp.addCookie(cookie);
 		return true;
 	}
