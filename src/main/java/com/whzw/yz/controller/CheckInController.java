@@ -54,4 +54,10 @@ public class CheckInController {
 		checkInService.signOut(orderId, req);
 		return Result.success(true);
 	}
+	
+//	public Result<String> leaveForAMoment(HttpServletRequest req){
+//		
+//		CheckInService.leaveForAMoment(req);
+//		return null;
+//	}
 }
