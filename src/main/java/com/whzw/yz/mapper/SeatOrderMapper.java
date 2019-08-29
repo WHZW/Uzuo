@@ -29,7 +29,7 @@ public interface SeatOrderMapper {
 	@Options(useGeneratedKeys = true, keyProperty = "id")
 	public void addOrder(@Param("so") SeatOrder seatOrder);
 
-	@Delete("delete from seat_order where id = #{id}")
+	@Delete("delete from seat_order where order_id = #{id}")
 	public void deleteOrder(String id);
 
 	@Select("select * from `seat_order` where `order_code`=#{oc}")
@@ -41,7 +41,7 @@ public interface SeatOrderMapper {
 	@Select("select * from `seat_order` where `order_code` like #{ocp}")
 	public List<SeatOrder> findManyByCode(@Param("ocp") String orderCodePart);
 
-	@Select("select * from `seat_order` where `id`=#{oid}")
+	@Select("select * from `seat_order` where order_id=#{oid}")
 	public SeatOrder findOneById(@Param("oid") String orderId);
 	
 	@Select("select order_id, student_id, seat_id, order_time, date, time_quantum from seat_order "
