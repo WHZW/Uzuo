@@ -37,7 +37,6 @@ public class LoginController {
 	}
 
 	@GetMapping("/islogin")
-	@ResponseBody
 	public Result<String> isLogin(HttpServletRequest req) {
 		return Result.success(LoginUtil.LoginCheck(req));
 	}

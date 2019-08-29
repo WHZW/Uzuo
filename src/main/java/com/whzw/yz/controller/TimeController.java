@@ -2,6 +2,7 @@ package com.whzw.yz.controller;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -11,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.whzw.yz.result.Result;
+import com.whzw.yz.util.TimeUtil;
+import com.whzw.yz.vo.TimeVo;
 
 @Controller
 @RequestMapping("/datetime")
@@ -18,22 +21,20 @@ public class TimeController {
 
 	@GetMapping("/now")
 	@ResponseBody
-	public Result<Map<String, Object>> getRightTime() {
-		Map<String, Object> map = new HashMap<>();
-		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd-HH-mm");
-		String time = format.format(Calendar.getInstance().getTime());
-		String[] arr = time.split("-");
-		map.put("year", arr[0]);
-		map.put("month", arr[1].replaceFirst("^0*", ""));
-		map.put("day", arr[2].replaceFirst("^0*", ""));
-		int hour = Integer.parseInt(arr[3]);
-		if (hour >= 0 && hour < 12) {
-			map.put("timeQuantum", 'M');
-		} else if (hour >= 12 && hour < 18) {
-			map.put("timeQuantum", 'A');
-		} else if (hour >= 18 && hour < 24) {
-			map.put("timeQuantum", 'N');
-		}
+	public Result<Map<String, TimeVo>> getRightTime() {
+		Map<String, TimeVo> map = new HashMap<>();
+		
+		Date today = Calendar.getInstance().getTime();
+		Calendar calendar = Calendar.getInstance();
+		calendar.add(Calendar.DAY_OF_MONTH, 1);
+		Date tomorrow = calendar.getTime();
+		calendar.add(Calendar.DAY_OF_MONTH, 1);
+		Date afterTomorrow = calendar.getTime();
+		
+		map.put("today", TimeUtil.getTimeVo(today));
+		map.put("tomorrow", TimeUtil.getTimeVo(tomorrow));
+		map.put("afterTomorrow", TimeUtil.getTimeVo(afterTomorrow));
+		
 		return Result.success(map);
 	}
 

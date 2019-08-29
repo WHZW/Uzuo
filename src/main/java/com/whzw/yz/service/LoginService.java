@@ -34,7 +34,6 @@ public class LoginService {
 		LoginVo loginVoDb = loginMapper.getStudent(id);
 		HttpSession session = req.getSession();
 		
-		
 		if(loginVoDb==null) {
 			throw new GlobalException(CodeMsg.STUDENT_NOT_EXIST);
 		}
