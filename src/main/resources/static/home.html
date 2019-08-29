@@ -99,10 +99,13 @@
                                                         <tr v-for="(order, index) in orders">
                                                             <td>{{order.date}}</td>
                                                             <td>{{manChange(order.timeQuantum)}}</td>
+                                                            
 
                                                             <td v-if="order.isSignin=='0'"><button type="button"
                                                                     @click="signIn(order.id)"
-                                                                    class="btn btn-success btn-sm">签到</button></td>
+                                                                    class="btn btn-success btn-sm">签到</button>
+                                                                
+                                                                </td>
 
                                                             <td v-else><button type="button"
                                                                     class="btn btn-primary btn-sm">暂时离开</button></td>

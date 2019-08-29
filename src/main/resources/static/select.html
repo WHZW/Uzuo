@@ -281,7 +281,6 @@
           .then(res => {
             console.log(res);
             this.seat = res.data.data;
-            this.seat[0].status = 1;
           })
           .catch(err => {
             console.error(err);
@@ -328,7 +327,7 @@
         .then(res => {
           console.log(res)
           let d = res.data.data;
-          // this.now = d.today.timeQuantum;
+          this.now = d.today.timeQuantum;
           let a = d.today.year + "-" + d.today.month + "-" + d.today.day;
           let b = d.tomorrow.year + "-" + d.tomorrow.month + "-" + d.tomorrow.day;
           let c = d.afterTomorrow.year + "-" + d.afterTomorrow.month + "-" + d.afterTomorrow.day;

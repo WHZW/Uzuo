@@ -45,7 +45,7 @@ public interface SeatOrderMapper {
 	@Select("select * from `seat_order` where order_id=#{oid}")
 	public SeatOrder findOneById(@Param("oid") String orderId);
 	
-	@Select("select order_id, student_id, t.clroom_id, s.table_id, so.seat_id, order_time, `date`, time_quantum, s.desc " + 
+	@Select("select order_id, student_id, t.clroom_id, s.table_id, so.seat_id, order_time, `date`, time_quantum, s.desc, is_signin " + 
 			"from seat_order so, seat s, `table` t " + 
 			"where so.seat_id = s.seat_id and s.table_id = t.table_id and student_id = #{studentId}")
 	public List<SeatOrderVo> getOrderInfoByStudentId(String studentId);
