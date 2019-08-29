@@ -5,6 +5,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,6 +30,15 @@ public class CheckInService {
 
 	@Autowired
 	SeatOrderService seatOrderService;
+	
+	public boolean isSignIn(String orderId,HttpServletRequest req) {
+		LoginUtil.LoginCheck(req);
+		
+		if(seatOrderMapper.getisSignIn(orderId)==1)
+			return true;
+		else
+			return false;
+	}
 
 	/**
 	 * 签到
@@ -101,6 +111,9 @@ public class CheckInService {
 		// 设置数据库预约表中的开始时间
 		orderLogMapper.updateStartTime(orderId, new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(now));
 
+		//更新已签到状态
+		seatOrderMapper.signIn(orderId);
+		
 		// 更新内存中 orderMap 的超时时间
 		seatOrderService.getOrderMap().put(orderId, timeOut);
 		return now;
@@ -143,7 +156,7 @@ public class CheckInService {
 
 			// 更新预约记录
 			orderLogMapper.updateEndtimeStatusLast(orderId, endTime, last, "完成");
-			
+
 		} catch (RuntimeException e) {
 			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
 			e.printStackTrace();
@@ -171,6 +184,82 @@ public class CheckInService {
 			return 'E';
 		}
 
+	}
+
+	/**
+	 * 设置临时离开
+	 * 
+	 * @param req
+	 * @param orderId
+	 * @return
+	 */
+	public Date leaveForAMoment(HttpServletRequest req, String orderId) {
+		String studentId = LoginUtil.LoginCheck(req);
+
+		Date now = Calendar.getInstance().getTime();
+
+		SeatOrder seatOrder = seatOrderMapper.findOneById(orderId);
+
+		if (seatOrder == null || !seatOrder.getStudentId().equals(studentId)) {
+			throw new GlobalException(CodeMsg.ORDER_NOT_EXIST);
+		}
+
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(now);
+		calendar.add(Calendar.MINUTE, 15);
+		Date newTimeOut = calendar.getTime();
+		Date oldTimeOout = seatOrderService.getOrderMap().get("orderId");
+
+		if (newTimeOut.after(oldTimeOout)) {
+			newTimeOut = oldTimeOout;
+		}
+		// 数据库更改临时离开状态
+		seatOrderMapper.setIsLeave(1, orderId);
+		// 更改超时时间
+		seatOrderService.getOrderMap().put(orderId, newTimeOut);
+		return newTimeOut;
+	}
+
+	public void back(HttpServletRequest req, String orderId) {
+
+		String studentId = LoginUtil.LoginCheck(req);
+		SeatOrder seatOrder = seatOrderMapper.findOneById(orderId);
+
+		if (seatOrder == null || !seatOrder.getStudentId().equals(studentId)) {
+			throw new GlobalException(CodeMsg.ORDER_NOT_EXIST);
+		}
+		
+		Date now = Calendar.getInstance().getTime();
+
+		// 获取预定时间段
+		char timeQuantumNow = getTimeQuantum(now.getHours());
+
+		// 创建超时时间对象
+		Date timeOut = (Date) now.clone();
+
+		// 设置超时时间
+		switch (timeQuantumNow) {
+		case 'M':
+			timeOut.setHours(12);
+			timeOut.setMinutes(0);
+			timeOut.setSeconds(0);
+			break;
+		case 'A':
+			timeOut.setHours(18);
+			timeOut.setMinutes(0);
+			timeOut.setSeconds(0);
+			break;
+		case 'N':
+			timeOut.setHours(22);
+			timeOut.setMinutes(0);
+			timeOut.setSeconds(0);
+			break;
+		}
+
+		// 数据库取消临时离开状态
+		seatOrderMapper.setIsLeave(0, orderId);
+		// 更改超时时间
+		seatOrderService.getOrderMap().put(orderId, timeOut);
 	}
 
 }
