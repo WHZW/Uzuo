@@ -62,8 +62,8 @@ public class SeatOrderService {
 	 * @return
 	 */
 	public SeatOrderVo order(OrderVo orderVo, HttpServletRequest request) {
-		String studentId = LoginUtil.LoginCheck(request);
-//		String studentId = "20164545";// 测试用
+//		String studentId = LoginUtil.LoginCheck(request);
+		String studentId = "20164545";// 测试用
 		// 检查信用积分
 		int integral = studentMapper.getIntegralByStudentId(studentId);
 		if (integral < 60) {
@@ -151,8 +151,10 @@ public class SeatOrderService {
 			SeatOrderVo seatOrderVo = new SeatOrderVo(seatOrder);
 			String tableId = seatMapper.getTableIdBySeatId(orderVo.getSeatId());
 			String desc = seatMapper.getDescBySeatId(orderVo.getSeatId());
-			String roomId = tableMapper.getRoomIdByTableId(tableId); 
-			seatOrderVo.setClroomId(roomId);
+			String roomName = tableMapper.getRoomNameByTableId(tableId); 
+			String studentName = studentMapper.getStudentNameById(studentId);
+			seatOrderVo.setStudentName(studentName);
+			seatOrderVo.setClroomName(roomName);
 			seatOrderVo.setTableId(tableId);
 			seatOrderVo.setDesc(desc);
 			return seatOrderVo;

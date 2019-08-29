@@ -13,9 +13,9 @@ public class SeatOrderVo{
 	
 	private String orderId;
 
-	private String studentId;
+	private String studentName;
 	
-	private String clroomId;
+	private String clroomName;
 	
 	private String tableId;
 
@@ -36,22 +36,11 @@ public class SeatOrderVo{
 	public SeatOrderVo(SeatOrder seatOrder) {
 		this.orderId = seatOrder.getId();
 		this.seatId = seatOrder.getSeatId();
-		this.studentId = seatOrder.getStudentId();
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		this.orderTime = format.format(seatOrder.getOrderTime());
 		format.applyPattern("yyyy-MM-dd");
 		this.date = format.format(seatOrder.getDate());
 		this.timeQuantum = seatOrder.getTimeQuantun();
-	}
-	
-
-	public SeatOrderVo(String orderId, String studentId, String seatId, String orderTime, String date) {
-		super();
-		this.orderId = orderId;
-		this.studentId = studentId;
-		this.seatId = seatId;
-		this.orderTime = orderTime;
-		this.date = date;
 	}
 
 	public String getId() {
@@ -61,14 +50,22 @@ public class SeatOrderVo{
 	public void setId(String id) {
 		this.orderId = id;
 	}
-
-	public String getStudentId() {
-		return studentId;
+	
+	public String getStudentName() {
+		return studentName;
 	}
 
-	public void setStudentId(String studentId) {
-		this.studentId = studentId;
-	}	
+	public void setStudentName(String studentName) {
+		this.studentName = studentName;
+	}
+
+	public String getClroomName() {
+		return clroomName;
+	}
+
+	public void setClroomName(String clroomName) {
+		this.clroomName = clroomName;
+	}
 
 	public String getTableId() {
 		return tableId;
@@ -126,16 +123,6 @@ public class SeatOrderVo{
 		this.isSignin = isSignin;
 	}
 	
-	
-
-	public String getClroomId() {
-		return clroomId;
-	}
-
-	public void setClroomId(String roomId) {
-		this.clroomId = roomId;
-	}
-	
 	public String getDesc() {
 		return desc;
 	}
@@ -143,12 +130,5 @@ public class SeatOrderVo{
 	public void setDesc(String desc) {
 		this.desc = desc;
 	}
-
-	@Override
-	public String toString() {
-		return "SeatOrderVo [orderId=" + orderId + ", studentId=" + studentId + ", roomId=" + clroomId + ", tableId="
-				+ tableId + ", seatId=" + seatId + ", orderTime=" + orderTime + ", date=" + date + ", timeQuantum="
-				+ timeQuantum + ", isSignin=" + isSignin + "]";
-	}	
 	
 }
