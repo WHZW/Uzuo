@@ -28,6 +28,7 @@ public class CodeMsg {
 	public static final CodeMsg NOT_IN_TIME = new CodeMsg(6004, "未到时间");
 	public static final CodeMsg ORDER_NOT_EXIST = new CodeMsg(6005, "该预约不存在");
 	public static final CodeMsg INTEGRAL_NOT_ENOUGH = new CodeMsg(6006, "信用积分不足");
+	public static final CodeMsg QUANTUM_HAS_ORDERED = new CodeMsg(6007, "同一时间段不可重复预约");
 
 	// 教室及座位信息查看相关
 	public static final CodeMsg NOT_FIND_SEAT = new CodeMsg(7001, "没找到座位");

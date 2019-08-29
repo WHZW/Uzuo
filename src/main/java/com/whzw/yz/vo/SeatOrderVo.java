@@ -14,6 +14,10 @@ public class SeatOrderVo{
 	private String orderId;
 
 	private String studentId;
+	
+	private String clroomId;
+	
+	private String tableId;
 
 	private String seatId;
 
@@ -22,6 +26,8 @@ public class SeatOrderVo{
 	private String date;
 	
 	private char timeQuantum;
+	
+	private String desc;
 	
 	private String isSignin = "0";
 	
@@ -62,6 +68,14 @@ public class SeatOrderVo{
 
 	public void setStudentId(String studentId) {
 		this.studentId = studentId;
+	}	
+
+	public String getTableId() {
+		return tableId;
+	}
+
+	public void setTableId(String tableId) {
+		this.tableId = tableId;
 	}
 
 	public String getSeatId() {
@@ -111,16 +125,30 @@ public class SeatOrderVo{
 	public void setIsSignin(String isSignin) {
 		this.isSignin = isSignin;
 	}
+	
+	
+
+	public String getClroomId() {
+		return clroomId;
+	}
+
+	public void setClroomId(String roomId) {
+		this.clroomId = roomId;
+	}
+	
+	public String getDesc() {
+		return desc;
+	}
+
+	public void setDesc(String desc) {
+		this.desc = desc;
+	}
 
 	@Override
 	public String toString() {
-		return "SeatOrderVo [orderId=" + orderId + ", studentId=" + studentId + ", seatId=" + seatId + ", orderTime="
-				+ orderTime + ", date=" + date + ", timeQuantum=" + timeQuantum + ", isSignin=" + isSignin + "]";
-	}
-
-	
-	
-	
-	
+		return "SeatOrderVo [orderId=" + orderId + ", studentId=" + studentId + ", roomId=" + clroomId + ", tableId="
+				+ tableId + ", seatId=" + seatId + ", orderTime=" + orderTime + ", date=" + date + ", timeQuantum="
+				+ timeQuantum + ", isSignin=" + isSignin + "]";
+	}	
 	
 }

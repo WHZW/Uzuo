@@ -50,7 +50,6 @@ public class UserManageController {
 	@ResponseBody
 	public Result<List<SeatOrderVo>> getOrders(HttpServletRequest request){
 		List<SeatOrderVo> seatOrders = userManagerService.getSeatOrders(request);
-		System.out.println(seatOrders);
 		return Result.success(seatOrders);
 	}
 	

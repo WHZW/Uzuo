@@ -14,8 +14,10 @@ import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import com.whzw.yz.exception.GlobalException;
 import com.whzw.yz.mapper.OrderLogMapper;
+import com.whzw.yz.mapper.SeatMapper;
 import com.whzw.yz.mapper.SeatOrderMapper;
 import com.whzw.yz.mapper.StudentMapper;
+import com.whzw.yz.mapper.TableMapper;
 import com.whzw.yz.pojo.OrderLog;
 import com.whzw.yz.pojo.SeatOrder;
 import com.whzw.yz.pojo.TimeQuantum;
@@ -37,11 +39,18 @@ public class SeatOrderService {
 
 	@Autowired
 	SeatOrderMapper seatOrderMapper;
+	
 	@Autowired
 	OrderLogMapper orderLogMapper;
 
 	@Autowired
 	StudentMapper studentMapper;
+	
+	@Autowired
+	SeatMapper seatMapper;
+	
+	@Autowired
+	TableMapper tableMapper;
 
 	private static final Map<String, Date> orderMap = new ConcurrentHashMap<>();
 
@@ -62,9 +71,17 @@ public class SeatOrderService {
 		}
 		
 		String orderCode = OrderCodeUtil.encode(orderVo);
-		System.out.println(orderCode);
+		//检查该座位是否已被预定
 		if (seatOrderMapper.getOrderCode(orderCode) != null) {
 			throw new GlobalException(CodeMsg.SEAT_ALREDY_ORDERED);
+		}
+		
+		//检查该时间段用户是否重复预定
+		String orderCodePart = OrderCodeUtil.encode(new OrderVo(orderVo.getYear(), orderVo.getMonth(), 
+				orderVo.getDay(), orderVo.getTimeQuantum())) + "%" ;
+		String orderId = seatOrderMapper.getOrderIdByOrderCode(studentId, orderCodePart);
+		if(orderId != null) {
+			throw new GlobalException(CodeMsg.QUANTUM_HAS_ORDERED);
 		}
 		SeatOrderVo seatOrderVo = createOrder(orderVo, studentId, orderCode);
 		return seatOrderVo;
@@ -130,7 +147,15 @@ public class SeatOrderService {
 			// 记录超时时间
 			Date timeoutDate = getTimeoutDate(date, orderVo.getTimeQuantum());
 			orderMap.put(seatOrder.getId(), timeoutDate);
-			return new SeatOrderVo(seatOrder);
+			
+			SeatOrderVo seatOrderVo = new SeatOrderVo(seatOrder);
+			String tableId = seatMapper.getTableIdBySeatId(orderVo.getSeatId());
+			String desc = seatMapper.getDescBySeatId(orderVo.getSeatId());
+			String roomId = tableMapper.getRoomIdByTableId(tableId); 
+			seatOrderVo.setClroomId(roomId);
+			seatOrderVo.setTableId(tableId);
+			seatOrderVo.setDesc(desc);
+			return seatOrderVo;
 		} catch (Exception e) {
 			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
 			e.printStackTrace();

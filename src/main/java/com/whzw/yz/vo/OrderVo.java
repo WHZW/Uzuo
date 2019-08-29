@@ -1,5 +1,10 @@
 package com.whzw.yz.vo;
 
+/**
+ * 预定
+ * @author wubn
+ *
+ */
 public class OrderVo {
 	
 	private int year;
@@ -10,11 +15,21 @@ public class OrderVo {
 	
 	private char timeQuantum;
 	
-	private String seatId;
+	private String seatId = "";
 	
 	public OrderVo() {
 		super();
 	}
+
+	public OrderVo(int year, int month, int day, char timeQuantum) {
+		super();
+		this.year = year;
+		this.month = month;
+		this.day = day;
+		this.timeQuantum = timeQuantum;
+	}
+
+
 
 	public int getYear() {
 		return year;

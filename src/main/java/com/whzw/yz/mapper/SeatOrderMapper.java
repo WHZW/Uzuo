@@ -45,8 +45,9 @@ public interface SeatOrderMapper {
 	@Select("select * from `seat_order` where order_id=#{oid}")
 	public SeatOrder findOneById(@Param("oid") String orderId);
 	
-	@Select("select order_id, student_id, seat_id, order_time, date, time_quantum, is_signin from seat_order "
-			+ "where student_id = #{studentId}")
+	@Select("select order_id, student_id, t.clroom_id, s.table_id, so.seat_id, order_time, `date`, time_quantum, s.desc " + 
+			"from seat_order so, seat s, `table` t " + 
+			"where so.seat_id = s.seat_id and s.table_id = t.table_id and student_id = #{studentId}")
 	public List<SeatOrderVo> getOrderInfoByStudentId(String studentId);
 
 	@Select("select order_id from seat_order where order_id = #{orderId}")
@@ -60,4 +61,7 @@ public interface SeatOrderMapper {
 	
 	@Select("select `is_signin` from `seat_order` where `order_id`=#{oid}")
 	public int getisSignIn(@Param("oid") String orderId);
+
+	@Select("select order_id from seat_order where student_id = #{s} and order_code like #{o}")
+	public String getOrderIdByOrderCode(@Param("s")String studentId, @Param("o")String orderCodePart);
 }

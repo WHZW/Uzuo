@@ -38,4 +38,7 @@ public interface TableMapper {
 	@Select("select `table_id` from `table` where `clroom_id`=#{cid}")
 	public List<String> findAllTablesId(@Param("cid") String clroomId);
 
+	@Select("select clroom_id from `table` where table_id = #{tableId}")
+	public String getRoomIdByTableId(String tableId);
+
 }

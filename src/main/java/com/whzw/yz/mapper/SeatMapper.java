@@ -34,4 +34,12 @@ public interface SeatMapper {
 	
 	@Select("select `seat_id` from `seat` where table_id=#{tid}")
 	public List<String> findAllIdByTableId(@Param("tid") String tableId);
+
+	@Select("select table_id from seat where seat_id = #{seatId}")
+	public String getTableIdBySeatId(String seatId);
+
+	@Select("select `desc` from seat where seat_id = #{seatId}")
+	public String getDescBySeatId(String seatId);
+	
+	
 }
