@@ -32,7 +32,6 @@ public class SeatOrderController {
 	@PostMapping("/order")
 	@ResponseBody
 	public Result<SeatOrderVo> order(@RequestBody OrderVo orderVo, HttpServletRequest request) {
-		System.out.println(orderVo);
 		SeatOrderVo seatOrderVo = seatOrderService.order(orderVo, request);
 		return Result.success(seatOrderVo);
 	}
@@ -40,7 +39,6 @@ public class SeatOrderController {
 	@PostMapping("/cencle")
 	@ResponseBody
 	public Result<Boolean> cencle(@RequestBody Map<String, String> map) {
-		System.out.println(map.get("orderId"));
 		seatOrderService.cancelOrder(map.get("orderId"));
 		return Result.success(true);
 	}

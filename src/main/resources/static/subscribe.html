@@ -87,12 +87,12 @@
                                             <div class="col-lg-6 col-sm-12 text-center">
                                                 <div v-if="selectDate == now.nowDate && (now.timeQuantum == 'A' || now.timeQuantum == 'N')"
                                                     class="btn btn-lg" style="background-color: dimgrey">上午</div>
-                                                <button v-if="selectDate != now.nowDate || now == 'M'" @click="bm()"
+                                                <button v-if="selectDate != now.nowDate || now.timeQuantum == 'M'" @click="bm()"
                                                     class="btn btn-lg" type="button"
                                                     style="background-color:coral">上午</button>
                                                 <div v-if="selectDate == now.nowDate && now.timeQuantum == 'N'"
                                                     class="btn btn-lg" style="background-color: dimgrey">下午</div>
-                                                <button v-if="selectDate != now.nowDate || now == 'A' || now == 'M'"
+                                                <button v-if="selectDate != now.nowDate || now.timeQuantum == 'A' || now.timeQuantum == 'M'"
                                                     @click="ba()" class="btn btn-waring btn-lg" type="button"
                                                     style="background-color:coral">下午</button>
                                                 <button @click="bn()" class="btn btn-waring btn-lg" type="button"
@@ -117,7 +117,7 @@
                                                     <div class="card-body">
                                                         <h4 class="card-title">{{rooms[index].name}}</h4>
                                                         <p class="card-text">{{rooms[index].desc}}</p>
-                                                        <p class="card-text">可用座位：{{rooms[index].seatNum}}</p>
+                                                        <p class="card-text">可用座位：{{text[index]}}</p>
                                                     </div>
                                                 </button>
                                             </div>
@@ -127,7 +127,7 @@
                                                     <div class="card-body">
                                                         <h4 class="card-title">{{rooms[index+1].name}}</h4>
                                                         <p class="card-text">{{rooms[index+1].desc}}</p>
-                                                        <p class="card-text">可用座位：{{rooms[index+1].seatNum}}</p>
+                                                        <p class="card-text">可用座位：{{text[index+1]}}</p>
                                                     </div>
                                                 </button>
                                             </div>
@@ -145,6 +145,7 @@
         let vue = new Vue({
             el: '#app',
             data: {
+                text:[45,46,48,48,47,46],
                 isLogin: false,
                 now: {},
                 b: '',

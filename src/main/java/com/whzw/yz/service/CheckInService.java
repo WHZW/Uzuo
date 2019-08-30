@@ -72,7 +72,6 @@ public class CheckInService {
 			throw new GlobalException(CodeMsg.NO_VALID_ORDER);
 
 		// 获取该预定的日期
-		System.out.println(seatOrder.getOrderCode());
 		String orderTimeStr = seatOrder.getOrderCode().substring(0, 8);
 		char timeQuantumNow = getTimeQuantum(now.getHours());
 

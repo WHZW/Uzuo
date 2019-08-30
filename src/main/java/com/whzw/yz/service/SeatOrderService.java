@@ -62,8 +62,8 @@ public class SeatOrderService {
 	 * @return
 	 */
 	public SeatOrderVo order(OrderVo orderVo, HttpServletRequest request) {
-//		String studentId = LoginUtil.LoginCheck(request);
-		String studentId = "20164545";// 测试用
+		String studentId = LoginUtil.LoginCheck(request);
+//		String studentId = "20164545";// 测试用
 		// 检查信用积分
 		int integral = studentMapper.getIntegralByStudentId(studentId);
 		if (integral < 60) {
@@ -83,6 +83,7 @@ public class SeatOrderService {
 		if(orderId != null) {
 			throw new GlobalException(CodeMsg.QUANTUM_HAS_ORDERED);
 		}
+		System.out.println(studentId + ": " + orderVo);
 		SeatOrderVo seatOrderVo = createOrder(orderVo, studentId, orderCode);
 		return seatOrderVo;
 	}
@@ -114,7 +115,6 @@ public class SeatOrderService {
 				date.setMinutes(0);
 				date.setSeconds(0);
 			}
-			System.out.println(date);
 			if (date.before(currentDate)) {
 				throw new GlobalException(CodeMsg.ORDER_TIME_PASS);
 			}

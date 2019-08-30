@@ -43,7 +43,6 @@ public class CheckInController {
 	@GetMapping("/signin")
 	@ResponseBody
 	public Result<String> signIn(@RequestParam("orderId") String orderId,HttpServletRequest req) {
-		System.out.println(orderId);
 		Date startTime = checkInService.signIn(orderId, req);
 		String startTimeStr = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(startTime);
 		

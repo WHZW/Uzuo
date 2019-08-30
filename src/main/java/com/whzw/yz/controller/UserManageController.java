@@ -37,7 +37,6 @@ public class UserManageController {
 	@ResponseBody
 	public Result<Student> getUserInfo(HttpServletRequest request){
 		Student studentInfo = userManagerService.getUserInfo(request);
-		System.out.println(studentInfo);
 		return Result.success(studentInfo);
 	}
 	

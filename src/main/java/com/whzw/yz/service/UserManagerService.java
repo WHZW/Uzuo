@@ -52,8 +52,8 @@ public class UserManagerService {
 	 * @return
 	 */
 	public List<SeatOrderVo> getSeatOrders(HttpServletRequest request) {
-//		String studentId = LoginUtil.LoginCheck(request);
-		String studentId = "20164545";
+		String studentId = LoginUtil.LoginCheck(request);
+//		String studentId = "20164545";
 		List<SeatOrderVo> orders = seatOrderMapper.getOrderInfoByStudentId(studentId);
 		return orders;
 	}
